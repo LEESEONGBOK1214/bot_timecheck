@@ -9,100 +9,83 @@ import de.btobastian.javacord.Javacord;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.listener.message.MessageCreateListener;
 
-
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-
-
-
 public class TimeCheckListener extends ListenerAdapter {
-	String 명령어목록[] = { "ping", "echo", "시작", "끝", "총시간", "홀리" };
+	
 	final ArrayList<user> user_arr = new ArrayList<user>();
 
 	@Override
-	public void onMessageReceived(MessageReceivedEvent e)
-    {
-		Message msg = e.getMessage(); 
+	public void onMessageReceived(MessageReceivedEvent e) {
+		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
-
-		//System.out.println(cmd);
+		
+		System.out.println(cmd);
+		// System.out.println(cmd);
 		if (cmd.startsWith("$")) {
 
 			cmd = cmd.substring(1);
-			//System.out.println(cmd);
+			// System.out.println(cmd);
 
+			TimeCheckcmd tcc = new TimeCheckcmd();
+			System.out.println(cmd);
 			switch (cmd) {
-			case "echo":
-				if (cmd.isEmpty()) {
-					sayMsg(e.getChannel(), "echo는 메아리할 말을 입력해야 합니다.");
-				} else {
-					sayMsg(ch, cmd);
-				}
+			case "홀리":
+					tcc.holy(e, ch);
 				return;
-			// echo 명령어 끝=========================
-
+				
+			case "산산":
+					e.getChannel().sendMessage("산은 산산").queue();
+				return;
+				
 			case "ping":
-				e.getChannel().sendMessage("pong!").queue();
+					e.getChannel().sendMessage("pong!").queue();
 				return;
-			// ping 명령어 끝=========================
-
+				
 			case "복령어":
-				String 출력 = "";
-				출력 += "===명령어 목록===\n";
-				for (int i = 0; i < 명령어목록.length; i++) {
-					출력 += (명령어목록[i] + "\n");
-				}
-				sayMsg(ch, 출력);
-				// 복령어 명령어 끝=========================
+					tcc.cmdList(e, ch);
 				return;
 			case "시작": // 시작
-				// 메세지제거(message);
 				del_Msg(msg);
-				
-				// message.delete();
-				//System.out.println(e.getAuthor().getId());
-				
-				int 번호 = -1;
-				for (int i = 0; i < user_arr.size(); i++) { // 중복값 확인
-					// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
-					if (user_arr.get(i).중복확인(e.getAuthor().getId())) {// System.out.println("중복
-																		// 시작!!!");
-						if (user_arr.get(i).진행중) {
-							e.getChannel().sendMessage(user_arr.get(i).name + "-> 중복 시작했습니다.");
-							return;
-						} else {
-							// 진행중은 아닌데 해당 유저가 있을경우.
-							// 아이디를 안만들어야함.
-							번호 = i;
-							return;
-						}
-					}
+				System.out.println("start");
+					tcc.start(user_arr, e);
+				System.out.println("end");
+				return;
 
-				}
-				// System.out.println(번호);
-				if (번호 >= 0) {
-					user_arr.get(번호).시작();
-				} else {
-					user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
-					번호 = user_arr.size() - 1;
-				}
+			case "끝":
+				del_Msg(msg);
+					tcc.end(user_arr, e, msg);
+				return;
+			case "큐":
+   			  //메세지제거(message);
+				del_Msg(msg);
+					tcc.queue(user_arr);
+	           	return;
+			case "총시간":
+				del_Msg(msg);
+	  			  
+	          	  for(int i=0;i<user_arr.size();i++) { // 시작에 아이디가 있다면, 끝 실행.
+	          		  //  System.out.println("현재 id : " + user_arr.get(i).id);
+	          		  if(user_arr.get(i).중복확인(e.getAuthor().getId()))
+	          		  {// 값 찾아서 해당 값 총시간 출력.
+	          			  //System.out.println("못찾음?");
+	          			  //message.reply("i");
+	          			  user_arr.get(i).총시간(e, msg);
+	          		  }
+	          	  }
+	          	return;
+			case "시험기능":
 
-				// System.out.println("==========" + 번호 + "==========");
-
-				// System.out.println("해당 유저의 시작시간 : " + user_arr.get(번호).get시작시간());
-				String 시작시간 = ToTime(user_arr.get(번호).get시작시간());
-				e.getChannel().sendMessage("```ini\r\n[" + e.getAuthor().getName() + "]의 시작 시간\n[" + 시작시간 + "]```");
-				// 시작 명령어 끝=========================
 				return;
 			}
 		}
 
-    }
-	private void del_Msg(Message msg)
-	{
+	}
+
+	private void del_Msg(Message msg) {
 		msg.delete().queue();
 	}
 
@@ -137,7 +120,7 @@ class user {
 	// String 끝 = 시작시간.format(cal.getTime());
 
 	user(String id, String name) { // 시작 시 호출.
-		// System.out.println("받은 아이디 : " + id);
+		System.out.println("받은 아이디 : " + id);
 		if (id.equals(null)) {
 			// System.out.println("널값 들어옴 종료함");
 			return;
@@ -172,12 +155,11 @@ class user {
 		String 시작시간_문자열 = 시간출력포맷.format(시작시간.getTime());
 		시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
 		String 끝시간_문자열 = 시간출력포맷.format(끝시간.getTime());
-		// System.out.println(message.getAuthor().getName() + "님은 "+ 시작시간_문자열 + "부터 "+
-		// 끝시간_문자열 + "까지 하여 총" +min + "분 " + sec + "초 공부했습니다.");
+		
 		if (hour >= 1) {
 			// 1시간 이상일때
 			e.getChannel().sendMessage("```yaml\r\n" + e.getAuthor().getName() + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
-					+ "까지 하여\n" + "총" + hour + "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```");
+					+ "까지 하여\n" + "총" + hour + "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```").queue();
 			/*
 			 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
 			 * "님은\n#" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n#" + "총" + hour + "시간 " +min
@@ -189,7 +171,7 @@ class user {
 			// 1시간 미만일때,
 			// 시간 출력 x
 			e.getChannel().sendMessage("```yaml\r\n" + e.getAuthor().getName() + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
-					+ "까지 하여\n" + "총" + min + "분 " + sec + "초 공부했습니다.\n" + "```");
+					+ "까지 하여\n" + "총" + min + "분 " + sec + "초 공부했습니다.\n" + "```").queue();;
 			// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
 			// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
 		}
@@ -198,7 +180,7 @@ class user {
 		총시간 = 총시간 + diff; // 합 저장. 포맷 가독성 위해서 그냥 저장.
 	}
 
-	void 총시간(MessageReceivedEvent e) {
+	void 총시간(MessageReceivedEvent e, Message msg) {
 		long hour = 총시간 / (60 * 60 * 1000);
 		long min = 총시간 / (60 * 1000) % 60;
 		long sec = 총시간 / 1000 % 60;
