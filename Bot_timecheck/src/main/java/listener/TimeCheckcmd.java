@@ -4,16 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.btobastian.javacord.DiscordAPI;
-import de.btobastian.javacord.Javacord;
-import de.btobastian.javacord.entities.message.Message;
-import de.btobastian.javacord.listener.message.MessageCreateListener;
-
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import oracleDB.OracleDB;
 
 public class TimeCheckcmd {
+	OracleDB DB = new OracleDB();
+
+	void test() {
+		DB.test();
+	}
 	void echo(MessageReceivedEvent e, MessageChannel ch,String cmd) {
 		if (cmd.isEmpty()) {
 			sayMsg(ch, "echo는 메아리할 말을 입력해야 합니다.");
@@ -42,6 +43,9 @@ public class TimeCheckcmd {
 	}
 	
 	void start(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		String 유저ID = e.getAuthor().getId();
+		String 유저명 = e.getAuthor().getName();
+
 		System.out.println("start 들어옴.");
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		for (int i = 0; i < user_arr.size(); i++) { // 중복값 확인
@@ -65,6 +69,10 @@ public class TimeCheckcmd {
 			user_arr.get(유저번호).시작();
 		} else {
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
+			String quary = 
+					"insert into t_record values(" + 유저ID + ", " + 유저명 + ")";
+			System.out.println(quary);
+			DB.insert(quary);
 			유저번호 = user_arr.size() - 1;
 		}
 		System.out.println(유저번호);

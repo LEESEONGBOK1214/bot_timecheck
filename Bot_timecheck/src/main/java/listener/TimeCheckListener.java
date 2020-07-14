@@ -4,12 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.btobastian.javacord.DiscordAPI;
-import de.btobastian.javacord.Javacord;
-import de.btobastian.javacord.entities.message.Message;
-import de.btobastian.javacord.listener.message.MessageCreateListener;
-
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -78,7 +74,7 @@ public class TimeCheckListener extends ListenerAdapter {
 	          	  }
 	          	return;
 			case "시험기능":
-
+				tcc.test();
 				return;
 			}
 		}
