@@ -5,71 +5,123 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import listener.user;
 
 public class OracleDB {
 	Connection conn;
 	PreparedStatement pstm;
 	ResultSet rs;
-	public OracleDB() {
+
+	int users = 0;
+
+	public int getusers() {
+		return users;
+		// conn.
+	}
+
+	public OracleDB(ArrayList<user> user_arr) {
 		conn = null;
 		pstm = null;
 		rs = null;
+		
+		select_user(user_arr);
 	}
 
-	public void insert(String quary) {
+	public int select_user(ArrayList<user> user_arr) {
+		String query = "select * from t_user";
 		try {
-			System.out.println("start insert");
+			// System.out.println("count users");
+			
 			conn = DBConnection.getConnection();
-			pstm = conn.prepareStatement(quary);
+			System.out.println("쿼리 : " + query);
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
+			
+			while (rs.next()) {
+				users++;
+				user_arr.add(new user(rs.getString(1), rs.getString(2)));
+				// users = rs.getInt(1);
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+
+		}
+		System.out.println("유저 수 : " + users);
+		// return은 user 수 == count(*)
+		return users;
+	}
+
+	public boolean ck_user(String id) {
+		String query = "select * from t_user where usr_id = " + id;
+		
+		try {
+			// System.out.println("ck user");
+
+			conn = DBConnection.getConnection();
+			System.out.println("쿼리 : " + query);
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
-			// rs = pstm.executeQuery();
-			conn.commit();
-			System.out.println("end of insert");
+
+
+			if (rs.next()) {
+				// 해당 id가 없을 경우!
+				// System.out.println("해당 id가 있음!");
+				return true;
+			} else {
+				// 있을 경우
+				// System.out.println("해당 id가 없음. 새로 만들어야 함.");
+				return false;
+			}
 
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
-		} finally {
-			// DB 연결을 종료한다.
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstm != null) {
-					pstm.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
+		}
+		return false;
+	}
+	public void insert(String query) {
+		try {
+			// System.out.println("start insert");
+			conn = DBConnection.getConnection();
+			System.out.println("쿼리 : " + query);
+			pstm = conn.prepareStatement(query);
+			// insert into t_record
+			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
+			rs = pstm.executeQuery();
+
+			if (rs.next()) {
+				// 성공.
+				// System.out.println("===============insert success ==============");
+				conn.commit();
+			} else {
+				conn.rollback();
 			}
+
+			// System.out.println("end of insert");
+
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
 
 		}
 	}// end of insert_user
 
-	public void test() {
-		// Connection conn = null; // DB연결된 상태(세션)을 담은 객체
-		// PreparedStatement pstm = null; // SQL 문을 나타내는 객체
-		// ResultSet rs = null; // 쿼리문을 날린것에 대한 반환값을 담을 객체
+	
 
+	public void time_week(String query) {
 		try {
-			// SQL 문장을 만들고 만약 문장이 질의어(SELECT문)라면
-			// 그 결과를 담을 ResulSet 객체를 준비한 후 실행시킨다.
-			String quary = "SELECT * FROM t_record";
+			System.out.println("쿼리 : " + query);
 
 			conn = DBConnection.getConnection();
-			pstm = conn.prepareStatement(quary);
+			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
-			/*
-			
-			*/
-
-			System.out.println("id\tdate\ttime");
-			System.out.println("============================================");
 
 			while (rs.next()) {
 				// System.out.println("a");
@@ -85,27 +137,79 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
-		} finally {
-			// DB 연결을 종료한다.
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstm != null) {
-					pstm.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	public long total_time(String id) {
+		String query = "select sum(rec_time) from t_record r where rec_id = " + id;
+		String tot_t = null;
+		try {
+			System.out.println("쿼리 : " + query);
+
+			conn = DBConnection.getConnection();
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
+
+			while (rs.next()) {
+
+				tot_t = rs.getString(1);
 			}
 
+			// System.out.println(id + "님의 총 시간 : " + tot_t);
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		}
+		// long total = Long.parseLong(tot_t);
+		// System.out.println("total : " + total);
+		return Long.parseLong(tot_t);
+	}
+
+	// db connection 종료.
+	{
+		try
+
+		{
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstm != null) {
+				pstm.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 }
 /*
- * try{
+ * public void test() { // Connection conn = null; // DB연결된 상태(세션)을 담은 객체 //
+ * PreparedStatement pstm = null; // SQL 문을 나타내는 객체 // ResultSet rs = null; //
+ * 쿼리문을 날린것에 대한 반환값을 담을 객체
+ * 
+ * try { // SQL 문장을 만들고 만약 문장이 질의어(SELECT문)라면 // 그 결과를 담을 ResulSet 객체를 준비한 후
+ * 실행시킨다. String quary = "SELECT * FROM t_record";
+ * 
+ * conn = DBConnection.getConnection(); pstm = conn.prepareStatement(quary); rs
+ * = pstm.executeQuery();
+ * 
+ * 
+ * //System.out.println("id\tdate\ttime");
+ * //System.out.println("============================================");
+ * 
+ * while (rs.next()) { // System.out.println("a"); String rec_id =
+ * rs.getString(1); String rec_date = rs.getString(2); int rec_time =
+ * rs.getInt(3);
+ * 
+ * String result = rec_id + "\t" + rec_date + "\t" + rec_time;
+ * //System.out.println(result); }
+ * 
+ * } catch (SQLException sqle) { System.out.println("SELECT문에서 예외 발생");
+ * sqle.printStackTrace();
+ * 
+ * } } try{
  * 
  * } catch (SQLException sqle) { System.out.println("SELECT문에서 예외 발생");
  * sqle.printStackTrace();

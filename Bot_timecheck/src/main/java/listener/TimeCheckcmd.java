@@ -10,10 +10,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import oracleDB.OracleDB;
 
 public class TimeCheckcmd {
-	OracleDB DB = new OracleDB();
+	OracleDB DB;
+
+	TimeCheckcmd(ArrayList<user> user_arr) {
+		DB = new OracleDB(user_arr);
+	}
 
 	void test() {
-		DB.test();
+		// DB.test();
 	}
 	void echo(MessageReceivedEvent e, MessageChannel ch,String cmd) {
 		if (cmd.isEmpty()) {
@@ -41,45 +45,69 @@ public class TimeCheckcmd {
 		}
 		sayMsg(ch, 출력);
 	}
+
+	void total_time(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		String 유저ID = e.getAuthor().getId();
+		String 유저명 = e.getAuthor().getName();
+		
+		for (int i = 0; i < user_arr.size(); i++) {
+			// System.out.println("현재 id : " + user_arr.get(i).id);
+			if (user_arr.get(i).id.equals(유저ID))
+      		  {// 값 찾아서 해당 값 총시간 출력.
+      			  //System.out.println("못찾음?");
+      			  //message.reply("i");
+					user_arr.get(i).총시간(e, user_arr);
+					return;
+      		  }
+      	  }
+	}
 	
 	void start(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
 
 		System.out.println("start 들어옴.");
+
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
-		for (int i = 0; i < user_arr.size(); i++) { // 중복값 확인
+		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
 			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
-			if (user_arr.get(i).중복확인(e.getAuthor().getId())) {
+			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
+				System.out.println("유저ID : " + 유저ID);
+				System.out.println("유저명 : " + 유저명);
 				if (user_arr.get(i).진행중) {
-					e.getChannel().sendMessage(user_arr.get(i).name + "-> 중복 시작했습니다.");
+					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> 중복 시작했습니다.]```").queue();
+					System.out.println("중복 시작 : " + user_arr.get(i).name);
 					return;
 				} else {
 					// 진행중은 아닌데 해당 유저가 있을경우.
 					// 아이디를 안만들어야함.
 					유저번호 = i;
-					return;
+					break;
 				}
 			}
 
 		}
 		// System.out.println(번호);
+
 		if (유저번호 >= 0) {
 			user_arr.get(유저번호).시작();
-		} else {
+		} else { // 유저가 없을 경우.
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
 			String quary = 
-					"insert into t_record values(" + 유저ID + ", " + 유저명 + ")";
+					"insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
 			System.out.println(quary);
 			DB.insert(quary);
 			유저번호 = user_arr.size() - 1;
+			user_arr.get(유저번호).시작();
 		}
 		System.out.println(유저번호);
 		// System.out.println("==========" + 번호 + "==========");
 
 		System.out.println("해당 유저의 시작시간 : " + user_arr.get(유저번호).get시작시간());
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
+
+
 		sayMsg(e.getChannel(), "```ini\r\n[" + e.getAuthor().getName() + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
 		System.out.println("start 마지막.");
@@ -93,6 +121,17 @@ public class TimeCheckcmd {
 				if (user_arr.get(i).진행중 == false)
 					return;
 				user_arr.get(i).끝(e);
+				{ // DB에 유저의 시작시간 넣기.
+					OracleDB DB = new OracleDB(user_arr);
+
+					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
+					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
+					System.out.println("========================start_date : " + start_date + "=============");
+					String quary = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
+							+ user_arr.get(i).diff / 1000
+							+ ")";
+					DB.insert(quary);
+				}
 				// user_arr.remove(i);
 				return;
 			}
@@ -109,9 +148,24 @@ public class TimeCheckcmd {
      	  System.out.println("===========큐==========");
 	}
 	
+	void pause(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		String 유저ID = e.getAuthor().getId();
+		String 유저명 = e.getAuthor().getName();
+
+		// System.out.println("일시정지 메세지 유저 ID" + 유저ID);
+		for (int i = 0; i < user_arr.size(); i++) {
+			if (유저ID.equals(user_arr.get(i).id)) {
+				// System.out.println("일시정지 메세지 일치 유저 ID" + user_arr.get(i).id);
+				user_arr.get(i).일시정지(e);
+				break;
+			}
+		}
+
+	}
 	
-	
-	
+	void view_week() {
+
+	}
 	
 	
 	
@@ -137,4 +191,5 @@ public class TimeCheckcmd {
 
 		return 시간포맷.format(date);
 	}
+
 }
