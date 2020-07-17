@@ -14,6 +14,7 @@ public class TimeCheckcmd {
 
 	TimeCheckcmd(ArrayList<user> user_arr) {
 		DB = new OracleDB(user_arr);
+		DB.select_user(user_arr);
 	}
 
 	void test() {
@@ -67,10 +68,11 @@ public class TimeCheckcmd {
 		String 유저명 = e.getAuthor().getName();
 
 		System.out.println("start 들어옴.");
-
+		// System.out.println("DB.getusers() : " + DB.getusers());
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
 			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
+			System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
 				System.out.println("유저ID : " + 유저ID);
@@ -86,25 +88,21 @@ public class TimeCheckcmd {
 					break;
 				}
 			}
-
 		}
-		// System.out.println(번호);
-
-		if (유저번호 >= 0) {
-			user_arr.get(유저번호).시작();
-		} else { // 유저가 없을 경우.
+		// 만들어야함!!
+		if (유저번호 < 0) { // -1일때는 유저가 없을 때임!!
+			System.out.println("유저가 없음!!");
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
-			String quary = 
-					"insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
+			String quary = "insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
 			System.out.println(quary);
 			DB.insert(quary);
 			유저번호 = user_arr.size() - 1;
-			user_arr.get(유저번호).시작();
-		}
-		System.out.println(유저번호);
-		// System.out.println("==========" + 번호 + "==========");
 
-		System.out.println("해당 유저의 시작시간 : " + user_arr.get(유저번호).get시작시간());
+		}
+		
+		user_arr.get(유저번호).시작();
+
+		// System.out.println("해당 유저의 시작시간 : " + user_arr.get(유저번호).get시작시간());
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
 
 
@@ -112,14 +110,17 @@ public class TimeCheckcmd {
 		
 		System.out.println("start 마지막.");
 	}
+
 	
 	// end의 시작
 	void end(ArrayList<user> user_arr, MessageReceivedEvent e, Message msg) {
 		for (int i = 0; i < user_arr.size(); i++) { // 시작에 아이디가 있다면, 끝 실행.
 
 			if (user_arr.get(i).중복확인(msg.getAuthor().getId())) {
-				if (user_arr.get(i).진행중 == false)
+				if (user_arr.get(i).진행중 == false) {
 					return;
+				}
+
 				user_arr.get(i).끝(e);
 				{ // DB에 유저의 시작시간 넣기.
 					OracleDB DB = new OracleDB(user_arr);
@@ -163,8 +164,15 @@ public class TimeCheckcmd {
 
 	}
 	
-	void view_week() {
-
+	void view_week(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		String query = 
+				"select u.usr_name, sum(nvl(rec_time, 0))총시간 \r\n" + 
+				"from t_record r, t_user u \r\n" + 
+				"where \r\n" + 
+				"      r.rec_id = u.usr_id and\r\n" + 
+				"      rec_date between to_number(to_char((next_day(sysdate, '일요일')),'yyMMdd'))-6 and next_day(sysdate, '일요일')\r\n" + 
+						"group by u.usr_name";
+		sayMsg(e.getChannel(), DB.week_time(query, user_arr.size()));
 	}
 	
 	

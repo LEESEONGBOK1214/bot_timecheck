@@ -26,7 +26,7 @@ public class user {
 	// String 끝 = 시작시간.format(cal.getTime());
 
 	public user(String id, String name) { // 시작 시 호출.
-		System.out.println("받은 아이디 : " + id);
+		// System.out.println("받은 아이디 : " + id);
 		if (id.equals(null)) {
 			// System.out.println("널값 들어옴 종료함");
 			return;
@@ -93,7 +93,7 @@ public class user {
 		// System.out.println("총시간 진입..!");
 		OracleDB DB = new OracleDB(user_arr);
 		// System.out.println("총시간 들어온 유저의 ID : " + id);
-		총시간 = DB.total_time(id); // 총시간은 초단위로 저장되고 반환한다.
+		총시간 = DB.today_time(id); // 총시간은 초단위로 저장되고 반환한다.
 		// System.out.println("유저의 총시간 : " + 총시간);
 
 		long hour = 총시간 / (60 * 60);

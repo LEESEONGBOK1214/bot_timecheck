@@ -12,7 +12,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class TimeCheckListener extends ListenerAdapter {
 	
 	final ArrayList<user> user_arr = new ArrayList<user>();
+	TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
+	// OracleDB DB = new OracleDB(user_arr);
 
+	public TimeCheckListener() {
+		// DB.select_user(user_arr);
+	}
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
 		Message msg = e.getMessage();
@@ -26,7 +31,7 @@ public class TimeCheckListener extends ListenerAdapter {
 			cmd = cmd.substring(1);
 			// System.out.println(cmd);
 
-			TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
+
 			// System.out.println(cmd);
 			switch (cmd) {
 			case "홀리":
@@ -73,7 +78,7 @@ public class TimeCheckListener extends ListenerAdapter {
 				return;
 
 			case "주간시간보기":
-				tcc.view_week();
+				tcc.view_week(user_arr, e);
 				return;
 			}
 		}

@@ -1,6 +1,5 @@
 package oracleDB;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ public class OracleDB {
 	int users = 0;
 
 	public int getusers() {
+		// System.out.println("USERS 반환 " + users);
 		return users;
 		// conn.
 	}
@@ -26,7 +26,7 @@ public class OracleDB {
 		pstm = null;
 		rs = null;
 		
-		select_user(user_arr);
+		// select_user(user_arr);
 	}
 
 	public int select_user(ArrayList<user> user_arr) {
@@ -140,8 +140,8 @@ public class OracleDB {
 		}
 	}
 	
-	public long total_time(String id) {
-		String query = "select sum(rec_time) from t_record r where rec_id = " + id;
+	public long today_time(String id) {
+		String query = "select nvl(sum(rec_time), 0) from t_record r where rec_id = " + id;
 		String tot_t = null;
 		try {
 			System.out.println("쿼리 : " + query);
@@ -154,7 +154,6 @@ public class OracleDB {
 
 				tot_t = rs.getString(1);
 			}
-
 			// System.out.println(id + "님의 총 시간 : " + tot_t);
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -162,9 +161,40 @@ public class OracleDB {
 		}
 		// long total = Long.parseLong(tot_t);
 		// System.out.println("total : " + total);
+		
 		return Long.parseLong(tot_t);
 	}
 
+	public String week_time(String query, int size) {
+		String 유저명[] = new String[size];
+		int 주간시간[] = new int[size];
+
+		try {
+			System.out.println("쿼리 : " + query);
+
+			conn = DBConnection.getConnection();
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
+			int i = 0;
+			while (rs.next()) {
+				System.out.println("현재 i" + i);
+				유저명[i] = rs.getString(1);
+				주간시간[i++] = rs.getInt(2);
+			}
+			// System.out.println(id + "님의 총 시간 : " + tot_t);
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		}
+		
+		String 출력문 = "";
+		System.out.println("us : " + size);
+		for (int i = 0; i < size; i++)
+		{
+			출력문 += 유저명[i] + "님의 주간시간 : " + 주간시간[i] + "\n";
+		}
+		return 출력문;
+	}
 	// db connection 종료.
 	{
 		try
