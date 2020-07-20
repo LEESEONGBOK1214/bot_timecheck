@@ -65,7 +65,7 @@ public class TimeCheckListener extends ListenerAdapter {
 				del_Msg(msg);
 					tcc.queue(user_arr);
 	           	return;
-			case "총시간":
+			case "시간확인":
 				del_Msg(msg);
 				tcc.total_time(user_arr, e);
 	          	return;
@@ -82,7 +82,6 @@ public class TimeCheckListener extends ListenerAdapter {
 				return;
 			}
 		}
-
 	}
 
 	private void del_Msg(Message msg) {

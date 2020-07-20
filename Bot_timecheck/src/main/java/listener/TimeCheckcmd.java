@@ -165,14 +165,11 @@ public class TimeCheckcmd {
 	}
 	
 	void view_week(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		String query = 
-				"select u.usr_name, sum(nvl(rec_time, 0))총시간 \r\n" + 
-				"from t_record r, t_user u \r\n" + 
-				"where \r\n" + 
-				"      r.rec_id = u.usr_id and\r\n" + 
-				"      rec_date between to_number(to_char((next_day(sysdate, '일요일')),'yyMMdd'))-6 and next_day(sysdate, '일요일')\r\n" + 
-						"group by u.usr_name";
-		sayMsg(e.getChannel(), DB.week_time(query, user_arr.size()));
+		String 출력문[] = DB.week_time(user_arr.size());
+		출력문[0] += "\n";
+		sayMsg(e.getChannel(), 출력문[0]);
+		// sayMsg(e.getChannel(), "\n");
+		sayMsg(e.getChannel(), 출력문[1]);
 	}
 	
 	

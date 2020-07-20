@@ -112,36 +112,9 @@ public class OracleDB {
 		}
 	}// end of insert_user
 
-	
 
-	public void time_week(String query) {
-		try {
-			System.out.println("쿼리 : " + query);
-
-			conn = DBConnection.getConnection();
-			pstm = conn.prepareStatement(query);
-			rs = pstm.executeQuery();
-
-
-			while (rs.next()) {
-				// System.out.println("a");
-				String rec_id = rs.getString(1);
-				String rec_date = rs.getString(2);
-				int rec_time = rs.getInt(3);
-
-				String result = rec_id + "\t" + rec_date + "\t" + rec_time;
-				System.out.println(result);
-			}
-
-		} catch (SQLException sqle) {
-			System.out.println("SELECT문에서 예외 발생");
-			sqle.printStackTrace();
-
-		}
-	}
-	
 	public long today_time(String id) {
-		String query = "select nvl(sum(rec_time), 0) from t_record r where rec_id = " + id;
+		String query = "select nvl(sum(rec_time), 0) from t_record where rec_id = " + id;
 		String tot_t = null;
 		try {
 			System.out.println("쿼리 : " + query);
@@ -165,21 +138,27 @@ public class OracleDB {
 		return Long.parseLong(tot_t);
 	}
 
-	public String week_time(String query, int size) {
+	public String[] week_time(int size) {
 		String 유저명[] = new String[size];
 		int 주간시간[] = new int[size];
 
+		String query = "select u.usr_name, sum(nvl(rec_time, 0))총시간 \r\n" + "from t_record r, t_user u \r\n"
+				+ "where \r\n" + "      r.rec_id = u.usr_id and\r\n"
+				+ "      rec_date between to_number(to_char((next_day(sysdate, '일요일')),'yyMMdd'))-6 and next_day(sysdate, '일요일')\r\n"
+				+ "group by u.usr_name";
+
+		int count = 0;
 		try {
 			System.out.println("쿼리 : " + query);
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
-			int i = 0;
+
 			while (rs.next()) {
-				System.out.println("현재 i" + i);
-				유저명[i] = rs.getString(1);
-				주간시간[i++] = rs.getInt(2);
+				System.out.println("현재 count" + count);
+				유저명[count] = rs.getString(1);
+				주간시간[count++] = rs.getInt(2);
 			}
 			// System.out.println(id + "님의 총 시간 : " + tot_t);
 		} catch (SQLException sqle) {
@@ -187,13 +166,56 @@ public class OracleDB {
 			sqle.printStackTrace();
 		}
 		
-		String 출력문 = "";
+
 		System.out.println("us : " + size);
-		for (int i = 0; i < size; i++)
-		{
-			출력문 += 유저명[i] + "님의 주간시간 : " + 주간시간[i] + "\n";
+		String 공부시간문자열 = "";
+		String 공부학생문자열 = "====공부한 학생 목록====\n";
+		if (count <= 0) {
+			공부시간문자열 = "이번 주 공부한 학생이 없습니다.";
+			공부학생문자열 += "없습니다.";
+		} else {
+			공부학생문자열 += 유저명[0];
+			공부시간문자열 += 유저명[0] + "님의 주간시간 : " + 주간시간[0] + "\n";
+			for (int i = 1; i < count; i++) {
+				공부시간문자열 += 유저명[i] + "님의 주간시간 : " + 주간시간[i] + "\n";
+				공부학생문자열 += ", " + 유저명[i];
+				if (i % 5 == 4) {
+					공부학생문자열 += "\n";
+				}
+			}
 		}
+
+		String[] 출력문 = new String[2];
+		출력문[0] = 공부학생문자열;
+		출력문[0] += "\n===================";
+
+		출력문[1] += "\n===================";
+		출력문[1] = 공부시간문자열;
+		출력문[1] += "===================";
+
 		return 출력문;
+	}
+
+	public String run_sql(String query) {
+		String 출력문 = "";
+		try {
+			System.out.println("쿼리 : " + query);
+
+			conn = DBConnection.getConnection();
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
+
+			while (rs.next()) {
+
+			}
+			// System.out.println(id + "님의 총 시간 : " + tot_t);
+		} catch (SQLException sqle) {
+			System.out.println("sql문에서 예외 발생");
+			출력문 = "sql문에서 예외 발생";
+			sqle.printStackTrace();
+		}
+
+		return query;
 	}
 	// db connection 종료.
 	{
