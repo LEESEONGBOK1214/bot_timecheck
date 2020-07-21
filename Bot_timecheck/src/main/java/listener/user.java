@@ -4,14 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.javacord.api.DiscordApi;
+
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import oracleDB.OracleDB;
 
 public class user {
 	String id;
 	String name;
-	private Date 시작시간 = null;
-	private Date 끝시간 = null;
+	Date 시작시간 = null;
+	Date 끝시간 = null;
 	long 멈춘시간 = 0;
 	long 총시간 = 0;
 	boolean 진행중 = false;
@@ -25,8 +27,13 @@ public class user {
 	String 시간출력; // 시작 or 끝시간.format(cal.getTime());
 	// String 끝 = 시작시간.format(cal.getTime());
 
+	DiscordApi DA;
 	public user(String id, String name) { // 시작 시 호출.
 		// System.out.println("받은 아이디 : " + id);
+		// ServerLeaveListener SLL = new ServerLeaveListener();
+
+		// ServerMemberLeaveEvent SMLE = new ServerMemberLeaveEvent(DA.getServers()
+		// server, user);
 		if (id.equals(null)) {
 			// System.out.println("널값 들어옴 종료함");
 			return;
@@ -45,12 +52,15 @@ public class user {
 		this.시작시간 = new Date();
 		// System.out.println(시작시간);
 		this.진행중 = true;
+
 	}
 
 	// @SuppressWarnings("deprecation")
 	long diff;
-	void 끝(MessageReceivedEvent e) {
 
+	String 끝() {
+		System.out.println("끝 - 입장");
+		String retn;
 		끝시간 = new Date();
 
 		diff = 끝시간.getTime() - 시작시간.getTime() - (멈춘시간 * 1000); // 멈춘시간은 초단위로 설정되어있다.
@@ -65,8 +75,8 @@ public class user {
 
 		if (hour >= 1) {
 			// 1시간 이상일때
-			e.getChannel().sendMessage("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
-					+ "까지 하여\n" + "총" + hour + "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```").queue();
+			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
+					+ "까지 하여\n" + "총" + hour + "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```");
 			/*
 			 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
 			 * "님은\n#" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n#" + "총" + hour + "시간 " +min
@@ -77,17 +87,21 @@ public class user {
 		} else {
 			// 1시간 미만일때,
 			// 시간 출력 x
-			e.getChannel().sendMessage("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
-					+ "까지 하여\n" + "총" + min + "분 " + sec + "초 공부했습니다.\n" + "```").queue();
+			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
+					+ "초 공부했습니다.\n" + "```");
 			;
 			// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
 			// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
 		}
 
 		진행중 = false;
-
+		
+		System.out.println("끝 - retn : \n\t" + retn);
+		System.out.println("끝 - retn 끝남!");
+		return retn;
 		// 총시간 = 총시간 + diff; // 합 저장. 포맷 가독성 위해서 그냥 저장.
 	}
+
 
 	void 총시간(MessageReceivedEvent e, ArrayList<user> user_arr) {
 		// System.out.println("총시간 진입..!");
@@ -110,6 +124,8 @@ public class user {
 	Date 정지끝낸시간 = null;
 
 	void 일시정지(MessageReceivedEvent e) {
+
+		//print(e.getChannel(), "test!");
 		if (진행중 == false) {
 			e.getChannel().sendMessage("시작 미입력.").queue();
 			return;
@@ -136,6 +152,8 @@ public class user {
 
 		정지 = !정지;
 	}
+
+
 
 	boolean 중복확인(String id) {
 		if (id.equals(this.id)) {

@@ -86,6 +86,7 @@ public class OracleDB {
 		return false;
 	}
 	public void insert(String query) {
+		System.out.println("DB - insert - 입장\n Query : " + query);
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
@@ -97,7 +98,7 @@ public class OracleDB {
 
 			if (rs.next()) {
 				// 성공.
-				// System.out.println("===============insert success ==============");
+				System.out.println("===============insert success ==============");
 				conn.commit();
 			} else {
 				conn.rollback();
@@ -134,7 +135,7 @@ public class OracleDB {
 		}
 		// long total = Long.parseLong(tot_t);
 		// System.out.println("total : " + total);
-		
+
 		return Long.parseLong(tot_t);
 	}
 

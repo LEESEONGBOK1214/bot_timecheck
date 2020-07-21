@@ -12,6 +12,7 @@ import oracleDB.OracleDB;
 public class TimeCheckcmd {
 	OracleDB DB;
 
+	// int 유저수 = 0;
 	TimeCheckcmd(ArrayList<user> user_arr) {
 		DB = new OracleDB(user_arr);
 		DB.select_user(user_arr);
@@ -67,19 +68,19 @@ public class TimeCheckcmd {
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
 
-		System.out.println("start 들어옴.");
+		// System.out.println("start 들어옴.");
 		// System.out.println("DB.getusers() : " + DB.getusers());
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
 			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
-			System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
+			// System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
-				System.out.println("유저ID : " + 유저ID);
-				System.out.println("유저명 : " + 유저명);
+				// System.out.println("유저ID : " + 유저ID);
+				// System.out.println("유저명 : " + 유저명);
 				if (user_arr.get(i).진행중) {
 					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> 중복 시작했습니다.]```").queue();
-					System.out.println("중복 시작 : " + user_arr.get(i).name);
+					// System.out.println("중복 시작 : " + user_arr.get(i).name);
 					return;
 				} else {
 					// 진행중은 아닌데 해당 유저가 있을경우.
@@ -108,11 +109,12 @@ public class TimeCheckcmd {
 
 		sayMsg(e.getChannel(), "```ini\r\n[" + e.getAuthor().getName() + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
-		System.out.println("start 마지막.");
+		// System.out.println("start 마지막.");
 	}
 
 	
 	// end의 시작
+
 	void end(ArrayList<user> user_arr, MessageReceivedEvent e, Message msg) {
 		for (int i = 0; i < user_arr.size(); i++) { // 시작에 아이디가 있다면, 끝 실행.
 
@@ -121,22 +123,49 @@ public class TimeCheckcmd {
 					return;
 				}
 
-				user_arr.get(i).끝(e);
+				sayMsg(e.getChannel(), user_arr.get(i).끝());
 				{ // DB에 유저의 시작시간 넣기.
-					OracleDB DB = new OracleDB(user_arr);
+					// OracleDB DB = new OracleDB(user_arr);
 
 					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 					System.out.println("========================start_date : " + start_date + "=============");
-					String quary = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
+					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 							+ user_arr.get(i).diff / 1000
 							+ ")";
-					DB.insert(quary);
+					DB.insert(query);
 				}
 				// user_arr.remove(i);
 				return;
 			}
 		}
+	}
+
+	public String end(ArrayList<user> user_arr, String id) {
+		System.out.println("end - 입장.");
+		// TODO Auto-generated method stub
+		int 유저수 = DB.getusers();
+		String retn = "";
+		System.out.println("tcc - end - 유저수 : " + 유저수);
+		for (int i = 0; i < 유저수; i++) {
+			if (user_arr.get(i).id.equals(id) && user_arr.get(i).진행중) {
+				if (!user_arr.get(i).진행중) {
+					System.out.println("end - 진행중이 아님.");
+					continue;
+				}
+				retn = user_arr.get(i).끝();
+
+
+				SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
+				String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
+				String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
+						+ user_arr.get(i).diff / 1000 + ")";
+				DB.insert(query);
+				break;
+			}
+		}
+		System.out.println("end - 리턴 직전.\n" + "retn : " + retn);
+		return retn;
 	}
 	// end of end
 	
@@ -173,14 +202,6 @@ public class TimeCheckcmd {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	private void del_Msg(Message msg) {
 		msg.delete().queue();
 	}
@@ -196,5 +217,6 @@ public class TimeCheckcmd {
 
 		return 시간포맷.format(date);
 	}
+
 
 }
