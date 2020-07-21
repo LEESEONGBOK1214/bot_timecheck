@@ -29,6 +29,7 @@ public class OracleDB {
 		// select_user(user_arr);
 	}
 
+
 	public int select_user(ArrayList<user> user_arr) {
 		String query = "select * from t_user";
 		try {
@@ -90,7 +91,7 @@ public class OracleDB {
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
-			System.out.println("Äõ¸® : " + query);
+			// System.out.println("Äõ¸® : " + query);
 			pstm = conn.prepareStatement(query);
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));

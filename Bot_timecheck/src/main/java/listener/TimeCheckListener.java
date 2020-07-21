@@ -1,6 +1,7 @@
 package listener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.javacord.api.entity.channel.Channel;
 
@@ -11,15 +12,29 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class TimeCheckListener extends ListenerAdapter{
+public class TimeCheckListener extends ListenerAdapter {
 	// DiscordApi discordbot;
 	final ArrayList<user> user_arr = new ArrayList<user>();
 	TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
-	// OracleDB DB = new OracleDB(user_arr);
 
+	void Operations(String op) {
+//		for (int i = 0; i < user_arr.size(); i++) {
+//			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).진행중);
+//		}
+		switch (op) {
+		case "끝":
+			System.out.println("go to tcc-end");
+
+			// String 출력문 = tcc.end(user_arr, ch.getId());
+			// System.out.println("받은 출력문 ##################\n" + 출력문);
+			return;
+		}
+	}
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
+		System.out.println("채팅치는 채널 id :" + e.getChannel().getId());
+
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
@@ -99,7 +114,6 @@ public class TimeCheckListener extends ListenerAdapter{
 //		System.out.println("os : " + e.getOldStatus());
 //	}
 
-
 //	public void onUserActivityStart(@Nonnull UserActivityStartEvent e)
 //	{
 //		// System.out.println(e.getGuild());
@@ -138,6 +152,9 @@ public class TimeCheckListener extends ListenerAdapter{
 //	}
 	boolean sw = false;
 	int count = 1;
+
+	// public void on
+
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent e) {
 		// 유저 상태 확인 리스너.
 		// System.out.println("onUserUpdateOnlineStatus");
@@ -149,46 +166,68 @@ public class TimeCheckListener extends ListenerAdapter{
 		if (!(count++ % 3 == 0))
 			return;
 		// sw = !sw;
-		System.out.println(e.getNewOnlineStatus().name());
+		// System.out.println(e.getNewOnlineStatus().name());
 		// message.editMessage("test1");
+		List<TextChannel> ch_list = e.getGuild().getTextChannels();
+
 		String id = e.getUser().getId();
 		String name = e.getUser().getName();
-		System.out.println("=========================상태변환!!!");
+		// System.out.println("=========================상태변환!!!");
 		// e.getGuild().getSystemChannel().sendMessage("=========================상태변환!!!").queue();
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
+			int i = -1;
 
+			for (int j = 0; j < user_arr.size(); j++) {
+				if (user_arr.get(j).id.equals(e.getUser().getId())) {
+					System.out.println("기준 : " + user_arr.get(j).now_ch);
+					i = j;
+					break;
+				}
+			}
+			/*
+			 * for (int j = 0; j < ch_list.size(); j++) {
+			 * 
+			 * System.out.println("비교 : " + ch_list.get(j).getId()); if
+			 * (ch_list.get(j).getId().equals(user_arr.get(i).now_ch)) {
+			 * System.out.println("채널 id 같음"); } }
+			 */
 			System.out.println(name + "유저가 offline상태로 변환.");
 			String autoP = "";
 			// System.out.println("id : " + id);
 			// System.out.println("유저 사이즈 : " + user_arr.size());
-			for (int i = 0; i < user_arr.size(); i++) {
-				// System.out.println("ua.get i id : " + user_arr.get(i).id);
-				if (user_arr.get(i).id.equals(id)) {
-					if (user_arr.get(i).진행중) {
-						System.out.println("진행중 true!");
-						break;
-					}else {
 
-					}
+			if (user_arr.get(i).id.equals(id)) {
+				if (user_arr.get(i).진행중) {
+					System.out.println("진행중 true!");
+					// break;
+				} else {
+
 				}
 			}
+
 			autoP = tcc.end(user_arr, id);
 			// System.out.println("@@@@@@tcc.end : " + tcc.end(user_arr, id));
 			if (autoP == null || autoP.equals("")) {
 				return;
 			}
-			System.out.println("############상태변환 이벤트 리스너 - autoP : \n  " + autoP);
-			sayMsg(e.getGuild().getSystemChannel(), autoP);
+			// System.out.println("############상태변환 이벤트 리스너 - autoP : \n " + autoP);
+			// System.out.println("ch_id : " + ch_id);
+			// System.out.println("e.getJDA().getTextChannelById(ch_id).getName() :" +
+			// e.getJDA().getTextChannelById(ch_id).getName());
+			// System.out.println("e.getJDA().getTextChannelById(ch_id) :" +
+			// e.getJDA().getTextChannelById(ch_id));
+			System.out.println();
 
+			sayMsg(e.getGuild().getTextChannelById(user_arr.get(i).now_ch), autoP);
+
+			// public MessageUpdateEvent(@Nonnull JDA api, long responseNumber, @Nonnull
+			// Message message)
 		}
-
-		//public MessageUpdateEvent(@Nonnull JDA api, long responseNumber, @Nonnull Message message)
-
 		return;
 	}
 
 	private void sayMsg(TextChannel channel, String msg) {
-		System.out.println("메세지 @ : \n" + msg);
+		// System.out.println("메세지 @ : \n" + msg);
 
 		channel.sendMessage(msg).queue();
 //		channel.sendMessage("asdfasdfasdfasdf").apply();
@@ -201,4 +240,3 @@ public class TimeCheckListener extends ListenerAdapter{
 		msg.delete().queue();
 	}
 }
-

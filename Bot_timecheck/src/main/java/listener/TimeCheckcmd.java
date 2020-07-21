@@ -19,6 +19,7 @@ public class TimeCheckcmd {
 	}
 
 	void test() {
+
 		// DB.test();
 	}
 	void echo(MessageReceivedEvent e, MessageChannel ch,String cmd) {
@@ -39,7 +40,7 @@ public class TimeCheckcmd {
 	}
 	
 	void cmdList(MessageReceivedEvent e, MessageChannel ch) {
-		String 명령어목록[] = { "ping", "echo", "시작", "끝", "총시간", "홀리" };
+		String 명령어목록[] = { "시작", "끝", "주간시간보기", "시간확인(미구현?)", "일시정지 => 다시하면 해제", "ping", "홀리" };
 		String 출력 = "";
 		출력 += "===명령어 목록===\n";
 		for (int i = 0; i < 명령어목록.length; i++) {
@@ -78,6 +79,7 @@ public class TimeCheckcmd {
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
 				// System.out.println("유저ID : " + 유저ID);
 				// System.out.println("유저명 : " + 유저명);
+				user_arr.get(i).now_ch = e.getChannel().getId();
 				if (user_arr.get(i).진행중) {
 					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> 중복 시작했습니다.]```").queue();
 					// System.out.println("중복 시작 : " + user_arr.get(i).name);
@@ -92,16 +94,19 @@ public class TimeCheckcmd {
 		}
 		// 만들어야함!!
 		if (유저번호 < 0) { // -1일때는 유저가 없을 때임!!
-			System.out.println("유저가 없음!!");
+			// System.out.println("유저가 없음!!");
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
-			String quary = "insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
-			System.out.println(quary);
-			DB.insert(quary);
+			String query = "insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
+			System.out.println(query);
+			DB.insert(query);
 			유저번호 = user_arr.size() - 1;
 
 		}
 		
 		user_arr.get(유저번호).시작();
+		System.out.println(
+				"번호 : " + 유저번호 + " " + user_arr.get(유저번호).name + "이 시작" + "했습니다!!!!!!" + user_arr.get(유저번호).진행중);
+
 
 		// System.out.println("해당 유저의 시작시간 : " + user_arr.get(유저번호).get시작시간());
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
@@ -129,12 +134,15 @@ public class TimeCheckcmd {
 
 					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
-					System.out.println("========================start_date : " + start_date + "=============");
+					// System.out.println("========================start_date : " + start_date +
+					// "=============");
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 							+ user_arr.get(i).diff / 1000
 							+ ")";
 					DB.insert(query);
 				}
+
+
 				// user_arr.remove(i);
 				return;
 			}
@@ -142,17 +150,42 @@ public class TimeCheckcmd {
 	}
 
 	public String end(ArrayList<user> user_arr, String id) {
-		System.out.println("end - 입장.");
+		// System.out.println("end - 입장.");
 		// TODO Auto-generated method stub
-		int 유저수 = DB.getusers();
+
+//		for (int i = 0; i < user_arr.size(); i++) { // 시작에 아이디가 있다면, 끝 실행.
+//
+//			if (user_arr.get(i).중복확인(msg.getAuthor().getId())) {
+//				if (user_arr.get(i).진행중 == false) {
+//					return;
+//				}
+//
+//				sayMsg(e.getChannel(), user_arr.get(i).끝());
+//				{ // DB에 유저의 시작시간 넣기.
+//					// OracleDB DB = new OracleDB(user_arr);
+//
+//					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
+//					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
+//					// System.out.println("========================start_date : " + start_date +
+//					// "=============");
+//					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
+//							+ user_arr.get(i).diff / 1000
+//							+ ")";
+//					DB.insert(query);
+//				}
+//
+//
+//				// user_arr.remove(i);
+//				return;
+//			}
+//		}
+
+
 		String retn = "";
-		System.out.println("tcc - end - 유저수 : " + 유저수);
-		for (int i = 0; i < 유저수; i++) {
+
+		for (int i = 0; i < user_arr.size(); i++) {
+			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).진행중);
 			if (user_arr.get(i).id.equals(id) && user_arr.get(i).진행중) {
-				if (!user_arr.get(i).진행중) {
-					System.out.println("end - 진행중이 아님.");
-					continue;
-				}
 				retn = user_arr.get(i).끝();
 
 
@@ -164,7 +197,7 @@ public class TimeCheckcmd {
 				break;
 			}
 		}
-		System.out.println("end - 리턴 직전.\n" + "retn : " + retn);
+		// System.out.println("end - 리턴 직전.\n" + "retn : " + retn);
 		return retn;
 	}
 	// end of end

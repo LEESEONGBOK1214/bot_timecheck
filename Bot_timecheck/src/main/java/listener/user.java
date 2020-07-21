@@ -12,6 +12,7 @@ import oracleDB.OracleDB;
 public class user {
 	String id;
 	String name;
+	String now_ch;
 	Date 시작시간 = null;
 	Date 끝시간 = null;
 	long 멈춘시간 = 0;
@@ -59,7 +60,7 @@ public class user {
 	long diff;
 
 	String 끝() {
-		System.out.println("끝 - 입장");
+		// System.out.println("끝 - 입장");
 		String retn;
 		끝시간 = new Date();
 
@@ -96,8 +97,8 @@ public class user {
 
 		진행중 = false;
 		
-		System.out.println("끝 - retn : \n\t" + retn);
-		System.out.println("끝 - retn 끝남!");
+		// System.out.println("끝 - retn : \n\t" + retn);
+		// System.out.println("끝 - retn 끝남!");
 		return retn;
 		// 총시간 = 총시간 + diff; // 합 저장. 포맷 가독성 위해서 그냥 저장.
 	}
