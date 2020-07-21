@@ -11,6 +11,7 @@ public class MainApp {
 		builder.setToken(token);
 		try {
 			builder.addEventListeners(new TimeCheckListener());
+			// builder.addEventListeners(new Guild_Voice_Events());
 			builder.build();
 		} catch (Exception e) {
 			e.printStackTrace();
