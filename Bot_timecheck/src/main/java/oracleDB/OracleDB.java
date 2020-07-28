@@ -100,7 +100,7 @@ public class OracleDB {
 			if (rs.next()) {
 				// 己傍.
 				System.out.println("===============insert success ==============");
-				conn.commit();
+//				conn.commit();
 			} else {
 				conn.rollback();
 			}
@@ -146,7 +146,7 @@ public class OracleDB {
 
 		String query = "select u.usr_name, sum(nvl(rec_time, 0))醚矫埃 \r\n" + "from t_record r, t_user u \r\n"
 				+ "where \r\n" + "      r.rec_id = u.usr_id and\r\n"
-				+ "      rec_date between to_number(to_char((next_day(sysdate, '老夸老')),'yyMMdd'))-6 and next_day(sysdate, '老夸老')\r\n"
+				+ "      rec_date between to_number(to_char((next_day(sysdate-6, '老夸老')),'yyMMdd')) and next_day(sysdate, '老夸老')\r\n"
 				+ "group by u.usr_name";
 
 		int count = 0;

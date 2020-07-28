@@ -40,7 +40,7 @@ public class TimeCheckcmd {
 	}
 	
 	void cmdList(MessageReceivedEvent e, MessageChannel ch) {
-		String 명령어목록[] = { "시작", "끝", "주간시간보기", "시간확인(미구현?)", "일시정지 => 다시하면 해제", "ping", "홀리" };
+		String 명령어목록[] = { "시작", "끝", "주간시간보기", "시간확인(여태 총 시간)", "일시정지 (다시하면 해제기능함)", "ping", "홀리", "산산" };
 		String 출력 = "";
 		출력 += "===명령어 목록===\n";
 		for (int i = 0; i < 명령어목록.length; i++) {
@@ -68,7 +68,8 @@ public class TimeCheckcmd {
 	void start(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
-
+		
+		
 		// System.out.println("start 들어옴.");
 		// System.out.println("DB.getusers() : " + DB.getusers());
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
@@ -76,6 +77,7 @@ public class TimeCheckcmd {
 			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
 			// System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
+				System.out.println("===============id검색 성공.");
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
 				// System.out.println("유저ID : " + 유저ID);
 				// System.out.println("유저명 : " + 유저명);

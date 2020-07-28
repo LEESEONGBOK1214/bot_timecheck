@@ -34,7 +34,7 @@ public class TimeCheckListener extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
 		System.out.println("채팅치는 채널 id :" + e.getChannel().getId());
-
+//		System.out.println(e.toString());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
@@ -67,15 +67,16 @@ public class TimeCheckListener extends ListenerAdapter {
 			case "tlwkr":
 			case "시작": // 시작
 				del_Msg(msg);
-				System.out.println("시작 입력됨");
+//				System.out.println("시작 입력됨");
 				tcc.start(user_arr, e);
-				System.out.println("시작 파트 끝");
+//				System.out.println("시작 파트 끝");
 				return;
 
 			case "whdfy":
 			case "Rmx":
 			case "종료":
 			case "끝":
+			case "긑":
 				del_Msg(msg);
 				tcc.end(user_arr, e, msg);
 				return;
@@ -218,7 +219,16 @@ public class TimeCheckListener extends ListenerAdapter {
 			// e.getJDA().getTextChannelById(ch_id));
 			System.out.println();
 
-			sayMsg(e.getGuild().getTextChannelById(user_arr.get(i).now_ch), autoP);
+//			System.out.println(user_arr.get(i).now_ch);
+//			System.out.println("현재 유저가 있는 TextChannel id : " + 
+//								e.getJDA().getTextChannelById(user_arr.get(i).now_ch));
+//			System.out.println("현재 유저가 있는 TextChannel id : " + 
+//								e.getGuild().getTextChannelById(user_arr.get(i).now_ch));
+			
+//			System.out.println(e.getGuild().getChannels().equals(user_arr.get(i).now_ch));
+			sayMsg(e.getJDA().getTextChannelById(user_arr.get(i).now_ch), autoP);
+			
+			
 
 			// public MessageUpdateEvent(@Nonnull JDA api, long responseNumber, @Nonnull
 			// Message message)
@@ -228,7 +238,8 @@ public class TimeCheckListener extends ListenerAdapter {
 
 	private void sayMsg(TextChannel channel, String msg) {
 		// System.out.println("메세지 @ : \n" + msg);
-
+		System.out.print("채널 : ");
+		// System.out.println(channel.);
 		channel.sendMessage(msg).queue();
 //		channel.sendMessage("asdfasdfasdfasdf").apply();
 //		channel.sendMessage("이건 되겠지").queue();
