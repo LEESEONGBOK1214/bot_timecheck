@@ -158,7 +158,7 @@ public class OracleDB {
 			rs = pstm.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("현재 count" + count);
+//				System.out.println("현재 count" + count);
 				유저명[count] = rs.getString(1);
 				주간시간[count++] = rs.getInt(2);
 			}
@@ -177,9 +177,13 @@ public class OracleDB {
 			공부학생문자열 += "없습니다.";
 		} else {
 			공부학생문자열 += 유저명[0];
-			공부시간문자열 += 유저명[0] + "님의 주간시간 : " + 주간시간[0] + "\n";
+			공부시간문자열 += 유저명[0] + "님의 주간시간 : " + 주간시간[0]/3600 + "h" + (주간시간[0]/60)%60 + "m" + 주간시간[0]%60 + "s" + "\n";
 			for (int i = 1; i < count; i++) {
-				공부시간문자열 += 유저명[i] + "님의 주간시간 : " + 주간시간[i] + "\n";
+				long hour = 주간시간[i]/3600;
+				long min = (주간시간[i]/60)%60;
+				long sec = 주간시간[i]%60;
+				
+				공부시간문자열 += 유저명[i] + "님의 주간시간 : " + hour + "h" + min + "m" + sec + "s" + "\n";
 				공부학생문자열 += ", " + 유저명[i];
 				if (i % 5 == 4) {
 					공부학생문자열 += "\n";

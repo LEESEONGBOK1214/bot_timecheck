@@ -29,6 +29,7 @@ public class user {
 	// String 끝 = 시작시간.format(cal.getTime());
 
 	DiscordApi DA;
+
 	public user(String id, String name) { // 시작 시 호출.
 		// System.out.println("받은 아이디 : " + id);
 		// ServerLeaveListener SLL = new ServerLeaveListener();
@@ -76,8 +77,8 @@ public class user {
 
 		if (hour >= 1) {
 			// 1시간 이상일때
-			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열
-					+ "까지 하여\n" + "총" + hour + "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```");
+			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 " + min
+					+ "분 " + sec + "초 공부했습니다.\n" + "```");
 			/*
 			 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
 			 * "님은\n#" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n#" + "총" + hour + "시간 " +min
@@ -96,13 +97,12 @@ public class user {
 		}
 
 		진행중 = false;
-		
+
 		// System.out.println("끝 - retn : \n\t" + retn);
 		// System.out.println("끝 - retn 끝남!");
 		return retn;
 		// 총시간 = 총시간 + diff; // 합 저장. 포맷 가독성 위해서 그냥 저장.
 	}
-
 
 	void 총시간(MessageReceivedEvent e, ArrayList<user> user_arr) {
 		// System.out.println("총시간 진입..!");
@@ -117,8 +117,8 @@ public class user {
 		// System.out.println();
 		// e.getChannel().sendMessage("시스템 시작 이후로, " + message.getAuthor().getName() +
 		// "님은 총" + hour + "시간 " +min + "분 " + sec + "초 공부했습니다.");
-		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + name + "님은 총\n-" + hour
-				+ "시간 " + min + "분 " + sec + "초 공부했습니다.\n" + "```").queue();
+		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + name + "님은 총\n-" + hour + "시간 " + min + "분 "
+				+ sec + "초 공부했습니다.\n" + "```").queue();
 	}
 
 	Date 정지시작시간 = null;
@@ -126,7 +126,7 @@ public class user {
 
 	void 일시정지(MessageReceivedEvent e) {
 
-		//print(e.getChannel(), "test!");
+		// print(e.getChannel(), "test!");
 		if (진행중 == false) {
 			e.getChannel().sendMessage("시작 미입력.").queue();
 			return;
@@ -147,14 +147,16 @@ public class user {
 
 			멈춘시간 = (정지끝낸시간.getTime() - 정지시작시간.getTime()) / 1000;
 
+			long hour = 멈춘시간 / (60 * 60);
+			long min = (멈춘시간 / 60) % 60;
+			long sec = 멈춘시간 % 60;
 			System.out.println("멈춘 시간 : " + 멈춘시간);
-			e.getChannel().sendMessage("```tex\n$" + name + "멈춘시간 : " + 멈춘시간 + "\n```").queue();
+			e.getChannel().sendMessage("```tex\n$" + name + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
+					.queue();
 		}
-
+		멈춘시간 = 0;
 		정지 = !정지;
 	}
-
-
 
 	boolean 중복확인(String id) {
 		if (id.equals(this.id)) {

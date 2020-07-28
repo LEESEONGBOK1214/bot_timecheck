@@ -33,7 +33,7 @@ public class TimeCheckListener extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
-		System.out.println("채팅치는 채널 id :" + e.getChannel().getId());
+//		System.out.println("채팅치는 채널 id :" + e.getChannel().getId());
 //		System.out.println(e.toString());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
@@ -72,11 +72,8 @@ public class TimeCheckListener extends ListenerAdapter {
 //				System.out.println("시작 파트 끝");
 				return;
 
-			case "whdfy":
-			case "Rmx":
-			case "종료":
+			case "whdfy":case "Rmx":case "정지":case "종료":case "긑":case "rmx":
 			case "끝":
-			case "긑":
 				del_Msg(msg);
 				tcc.end(user_arr, e, msg);
 				return;
