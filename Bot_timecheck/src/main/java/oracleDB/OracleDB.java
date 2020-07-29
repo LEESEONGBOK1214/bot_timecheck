@@ -70,11 +70,9 @@ public class OracleDB {
 
 
 			if (rs.next()) {
-				// 해당 id가 없을 경우!
 				// System.out.println("해당 id가 있음!");
 				return true;
 			} else {
-				// 있을 경우
 				// System.out.println("해당 id가 없음. 새로 만들어야 함.");
 				return false;
 			}
@@ -100,7 +98,8 @@ public class OracleDB {
 			if (rs.next()) {
 				// 성공.
 				System.out.println("===============insert success ==============");
-//				conn.commit();
+				users++;
+				conn.commit();
 			} else {
 				conn.rollback();
 			}
@@ -144,10 +143,12 @@ public class OracleDB {
 		String 유저명[] = new String[size];
 		int 주간시간[] = new int[size];
 
-		String query = "select u.usr_name, sum(nvl(rec_time, 0))총시간 \r\n" + "from t_record r, t_user u \r\n"
-				+ "where \r\n" + "      r.rec_id = u.usr_id and\r\n"
-				+ "      rec_date between to_number(to_char((next_day(sysdate-6, '일요일')),'yyMMdd')) and next_day(sysdate, '일요일')\r\n"
-				+ "group by u.usr_name";
+		String query = "select usr_name, sum(nvl(rec_time, 0))/3600 hour, mod(sum(nvl(rec_time, 0))/60, 60) min, mod(sum(nvl(rec_time, 0)),60) sec \r\n" + 
+				"from t_record, t_user\r\n" + 
+				"where rec_id = usr_id and\r\n" + 
+				"rec_date between to_number(to_char((next_day(sysdate-6, '일요일')),'yyMMdd')) and next_day(sysdate, '일요일')\r\n" + 
+				"group by usr_name\r\n" + 
+				"order by sum(rec_time) desc;";
 
 		int count = 0;
 		try {

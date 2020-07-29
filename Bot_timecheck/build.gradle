@@ -33,3 +33,4 @@ dependencies {
 	
 	implementation 'org.javacord:javacord:3.0.6'
 }
+
