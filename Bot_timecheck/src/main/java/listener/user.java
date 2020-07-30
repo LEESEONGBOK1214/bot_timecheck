@@ -95,7 +95,8 @@ public class user {
 			// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
 			// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
 		}
-
+		
+		멈춘시간 = 0;
 		진행중 = false;
 
 		// System.out.println("끝 - retn : \n\t" + retn);
@@ -145,7 +146,7 @@ public class user {
 
 			정지끝낸시간 = new Date();
 
-			멈춘시간 = (정지끝낸시간.getTime() - 정지시작시간.getTime()) / 1000;
+			멈춘시간 = 멈춘시간 + (정지끝낸시간.getTime() - 정지시작시간.getTime()) / 1000;
 
 			long hour = 멈춘시간 / (60 * 60);
 			long min = (멈춘시간 / 60) % 60;
@@ -153,8 +154,9 @@ public class user {
 			System.out.println("멈춘 시간 : " + 멈춘시간);
 			e.getChannel().sendMessage("```tex\n$" + name + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
 					.queue();
+			
 		}
-		멈춘시간 = 0;
+		
 		정지 = !정지;
 	}
 

@@ -73,6 +73,7 @@ public class TimeCheckcmd {
 		// System.out.println("start 들어옴.");
 		// System.out.println("DB.getusers() : " + DB.getusers());
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
+		
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
 			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
 			// System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
@@ -114,7 +115,7 @@ public class TimeCheckcmd {
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
 
 
-		sayMsg(e.getChannel(), "```ini\r\n[" + e.getAuthor().getName() + "]의 시작 시간\n[" + 시작시간 + "]```");
+		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).name + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
 		// System.out.println("start 마지막.");
 	}

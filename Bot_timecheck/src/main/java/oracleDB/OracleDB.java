@@ -99,7 +99,7 @@ public class OracleDB {
 				// 성공.
 				System.out.println("===============insert success ==============");
 				users++;
-				conn.commit();
+//				conn.commit();
 			} else {
 				conn.rollback();
 			}
@@ -143,12 +143,12 @@ public class OracleDB {
 		String 유저명[] = new String[size];
 		int 주간시간[] = new int[size];
 
-		String query = "select usr_name, sum(nvl(rec_time, 0))/3600 hour, mod(sum(nvl(rec_time, 0))/60, 60) min, mod(sum(nvl(rec_time, 0)),60) sec \r\n" + 
+		String query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
 				"from t_record, t_user\r\n" + 
 				"where rec_id = usr_id and\r\n" + 
 				"rec_date between to_number(to_char((next_day(sysdate-6, '일요일')),'yyMMdd')) and next_day(sysdate, '일요일')\r\n" + 
 				"group by usr_name\r\n" + 
-				"order by sum(rec_time) desc;";
+				"order by sum(rec_time) desc";
 
 		int count = 0;
 		try {
@@ -172,7 +172,7 @@ public class OracleDB {
 
 		System.out.println("us : " + size);
 		String 공부시간문자열 = "";
-		String 공부학생문자열 = "====공부한 학생 목록====\n";
+		String 공부학생문자열 = "========공부한 학생 목록========\n";
 		if (count <= 0) {
 			공부시간문자열 = "이번 주 공부한 학생이 없습니다.";
 			공부학생문자열 += "없습니다.";
@@ -185,7 +185,10 @@ public class OracleDB {
 				long sec = 주간시간[i]%60;
 				
 				공부시간문자열 += 유저명[i] + "님의 주간시간 : " + hour + "h" + min + "m" + sec + "s" + "\n";
-				공부학생문자열 += ", " + 유저명[i];
+				if(i%5!=0) {
+					공부학생문자열 += ", ";
+				}
+				공부학생문자열 += 유저명[i];
 				if (i % 5 == 4) {
 					공부학생문자열 += "\n";
 				}
@@ -194,11 +197,11 @@ public class OracleDB {
 
 		String[] 출력문 = new String[2];
 		출력문[0] = 공부학생문자열;
-		출력문[0] += "\n===================";
+		출력문[0] += "\n===========================";
 
-		출력문[1] += "\n===================";
+		출력문[1] += "\n===========================";
 		출력문[1] = 공부시간문자열;
-		출력문[1] += "===================";
+		출력문[1] += "===========================";
 
 		return 출력문;
 	}

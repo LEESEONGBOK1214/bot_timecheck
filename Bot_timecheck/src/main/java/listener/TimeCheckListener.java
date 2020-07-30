@@ -161,17 +161,19 @@ public class TimeCheckListener extends ListenerAdapter {
 		// String 출력문 = "";
 //		if()
 		// if(e.)
+		System.out.println("상태변환..?" + e.getNewOnlineStatus());
 		if (!(count++ % 3 == 0))
 			return;
 		// sw = !sw;
 		// System.out.println(e.getNewOnlineStatus().name());
 		// message.editMessage("test1");
-		List<TextChannel> ch_list = e.getGuild().getTextChannels();
+//		List<TextChannel> ch_list = e.getGuild().getTextChannels();
 
 		String id = e.getUser().getId();
 		String name = e.getUser().getName();
 		// System.out.println("=========================상태변환!!!");
 		// e.getGuild().getSystemChannel().sendMessage("=========================상태변환!!!").queue();
+		System.out.println("여기까진?");
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
 			int i = -1;
 
