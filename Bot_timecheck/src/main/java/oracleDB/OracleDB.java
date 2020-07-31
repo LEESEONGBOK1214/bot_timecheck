@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import listener.user;
 
+
+
+
 public class OracleDB {
 	Connection conn;
 	PreparedStatement pstm;
@@ -206,27 +209,73 @@ public class OracleDB {
 		return 출력문;
 	}
 
-	public String run_sql(String query) {
+//	public String run_sql(String query) {
+//		String 출력문 = "";
+//		try {
+//			System.out.println("쿼리 : " + query);
+//
+//			conn = DBConnection.getConnection();
+//			pstm = conn.prepareStatement(query);
+//			rs = pstm.executeQuery();
+//
+//			while (rs.next()) {
+//
+//			}
+//			// System.out.println(id + "님의 총 시간 : " + tot_t);
+//		} catch (SQLException sqle) {
+//			System.out.println("sql문에서 예외 발생");
+//			출력문 = "sql문에서 예외 발생";
+//			sqle.printStackTrace();
+//		}
+//
+//		return query;
+//	}
+
+	public String getAttendance(String query) {
+		// TODO Auto-generated method stub
 		String 출력문 = "";
+
 		try {
-			System.out.println("쿼리 : " + query);
+			System.out.println("쿼리  : " + query);
+//			select usr_name
+//			from t_user, t_record
+//			where usr_id = rec_id and
+//			      rec_date between to_char(sysdate, 'RRMMDD') || '06' and to_char(sysdate+1, 'RRMMDD') || '06'
+//			group by usr_name;
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
-			while (rs.next()) {
+			출력문 += "========오늘 출석한 사람 목록========\n";
+			int count = 0; // , or 줄넘김 해주기 위해.
 
+			while (rs.next()) {
+				출력문 += rs.getString(1);
+				if (count % 5 < 4) {
+					출력문 += ", ";
+				} else {
+					출력문 += "\n";
+				}
+				count++;
 			}
-			// System.out.println(id + "님의 총 시간 : " + tot_t);
+
+			System.out.println(출력문.charAt(출력문.length() - 2));
+			System.out.println(출력문.charAt(출력문.length() - 3));
+			if (출력문.charAt(출력문.length() - 2) == ',') {
+				출력문 = 출력문.substring(0, 출력문.length() - 2);
+			}
+//			StringUtils.removeEnd(출력문, ",");
+			출력문 += "\n==============================";
+
 		} catch (SQLException sqle) {
-			System.out.println("sql문에서 예외 발생");
-			출력문 = "sql문에서 예외 발생";
 			sqle.printStackTrace();
 		}
 
-		return query;
+		return 출력문;
+
 	}
+
 	// db connection 종료.
 	{
 		try
