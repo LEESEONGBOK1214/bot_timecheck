@@ -160,6 +160,7 @@ public class user {
 		정지 = !정지;
 	}
 
+
 	boolean 중복확인(String id) {
 		if (id.equals(this.id)) {
 			// 중복!!

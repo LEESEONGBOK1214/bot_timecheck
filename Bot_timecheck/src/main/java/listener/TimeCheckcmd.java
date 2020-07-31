@@ -51,14 +51,11 @@ public class TimeCheckcmd {
 
 	void total_time(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 유저ID = e.getAuthor().getId();
-		String 유저명 = e.getAuthor().getName();
 		
 		for (int i = 0; i < user_arr.size(); i++) {
 			// System.out.println("현재 id : " + user_arr.get(i).id);
 			if (user_arr.get(i).id.equals(유저ID))
       		  {// 값 찾아서 해당 값 총시간 출력.
-      			  //System.out.println("못찾음?");
-      			  //message.reply("i");
 					user_arr.get(i).총시간(e, user_arr);
 					return;
       		  }
@@ -69,19 +66,14 @@ public class TimeCheckcmd {
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
 		
-		
-		// System.out.println("start 들어옴.");
-		// System.out.println("DB.getusers() : " + DB.getusers());
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
-			// System.out.println("user_arr.get(i).id : " + user_arr.get(i).id);
-			// System.out.println(i + "의 유저 id : " + user_arr.get(i).id);
+
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				System.out.println("===============id검색 성공.");
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
-				// System.out.println("유저ID : " + 유저ID);
-				// System.out.println("유저명 : " + 유저명);
+
 				user_arr.get(i).now_ch = e.getChannel().getId();
 				if (user_arr.get(i).진행중) {
 					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> 중복 시작했습니다.]```").queue();
@@ -100,27 +92,18 @@ public class TimeCheckcmd {
 			// System.out.println("유저가 없음!!");
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
 			String query = "insert into t_user values('" + 유저ID + "', '" + 유저명 + "')";
-			System.out.println(query);
 			DB.insert(query);
 			유저번호 = user_arr.size() - 1;
-
 		}
-		
 		user_arr.get(유저번호).시작();
-		System.out.println(
-				"번호 : " + 유저번호 + " " + user_arr.get(유저번호).name + "이 시작" + "했습니다!!!!!!" + user_arr.get(유저번호).진행중);
-
-
-		// System.out.println("해당 유저의 시작시간 : " + user_arr.get(유저번호).get시작시간());
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
-
-
 		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).name + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
 		// System.out.println("start 마지막.");
 	}
 
 	
+
 	// end의 시작
 
 	void end(ArrayList<user> user_arr, MessageReceivedEvent e, Message msg) {
@@ -130,68 +113,28 @@ public class TimeCheckcmd {
 				if (user_arr.get(i).진행중 == false) {
 					return;
 				}
-
 				sayMsg(e.getChannel(), user_arr.get(i).끝());
 				{ // DB에 유저의 시작시간 넣기.
 					// OracleDB DB = new OracleDB(user_arr);
 
 					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
-					// System.out.println("========================start_date : " + start_date +
-					// "=============");
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 							+ user_arr.get(i).diff / 1000
 							+ ")";
 					DB.insert(query);
 				}
-
-
-				// user_arr.remove(i);
 				return;
 			}
 		}
 	}
 
 	public String end(ArrayList<user> user_arr, String id) {
-		// System.out.println("end - 입장.");
-		// TODO Auto-generated method stub
-
-//		for (int i = 0; i < user_arr.size(); i++) { // 시작에 아이디가 있다면, 끝 실행.
-//
-//			if (user_arr.get(i).중복확인(msg.getAuthor().getId())) {
-//				if (user_arr.get(i).진행중 == false) {
-//					return;
-//				}
-//
-//				sayMsg(e.getChannel(), user_arr.get(i).끝());
-//				{ // DB에 유저의 시작시간 넣기.
-//					// OracleDB DB = new OracleDB(user_arr);
-//
-//					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
-//					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
-//					// System.out.println("========================start_date : " + start_date +
-//					// "=============");
-//					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
-//							+ user_arr.get(i).diff / 1000
-//							+ ")";
-//					DB.insert(query);
-//				}
-//
-//
-//				// user_arr.remove(i);
-//				return;
-//			}
-//		}
-
-
 		String retn = "";
-
 		for (int i = 0; i < user_arr.size(); i++) {
 			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).진행중);
 			if (user_arr.get(i).id.equals(id) && user_arr.get(i).진행중) {
 				retn = user_arr.get(i).끝();
-
-
 				SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
 				String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 				String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
@@ -200,7 +143,6 @@ public class TimeCheckcmd {
 				break;
 			}
 		}
-		// System.out.println("end - 리턴 직전.\n" + "retn : " + retn);
 		return retn;
 	}
 	// end of end
@@ -237,6 +179,22 @@ public class TimeCheckcmd {
 		sayMsg(e.getChannel(), 출력문[1]);
 	}
 	
+	public void Attendance(MessageReceivedEvent e) {
+		// TODO Auto-generated method stub
+
+		String query = "select usr_name, sum(rec_time) from t_user, t_record where usr_id = rec_id\r\n"
+				+ "and rec_date between to_char(sysdate, 'RRMMDD') || '06' and\r\n"
+				+ "to_char(sysdate+1, 'RRMMDD') || '06' group by usr_name";
+
+		sayMsg(e.getChannel(), DB.getAttendance(query));
+
+		/*
+		 * 
+		 * select usr_name, sum(rec_time) from t_user, t_record where usr_id = rec_id
+		 * and rec_date between to_char(sysdate, 'RRMMDD') || '06' and
+		 * to_char(sysdate+1, 'RRMMDD') || '06' group by usr_name;
+		 */
+	}
 	
 	private void del_Msg(Message msg) {
 		msg.delete().queue();
@@ -253,6 +211,7 @@ public class TimeCheckcmd {
 
 		return 시간포맷.format(date);
 	}
+
 
 
 }
