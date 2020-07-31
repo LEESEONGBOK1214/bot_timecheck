@@ -1,7 +1,6 @@
 package listener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.javacord.api.entity.channel.Channel;
 
@@ -100,6 +99,10 @@ public class TimeCheckListener extends ListenerAdapter {
 
 			case "주간시간보기":
 				tcc.view_week(user_arr, e);
+				return;
+				
+			case "출석":
+				tcc.Attendance(e);
 				return;
 			}
 		}
