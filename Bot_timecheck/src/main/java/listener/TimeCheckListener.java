@@ -79,7 +79,7 @@ public class TimeCheckListener extends ListenerAdapter {
 			case "큐":
 				// 메세지제거(message);
 				del_Msg(msg);
-				tcc.queue(user_arr);
+				tcc.queue(user_arr, e);
 				return;
 			case "시간확인":
 				del_Msg(msg);
