@@ -65,39 +65,45 @@ public class user {
 		String retn;
 		끝시간 = new Date();
 
-		diff = 끝시간.getTime() - 시작시간.getTime() - (멈춘시간 * 1000); // 멈춘시간은 초단위로 설정되어있다.
+		if(정지) {
+			retn = "일시정지를 끝내주세요.";
+		}else {
+			diff = 끝시간.getTime() - 시작시간.getTime() - (멈춘시간 * 1000); // 멈춘시간은 초단위로 설정되어있다.
 
-		long hour = diff / (60 * 60 * 1000);
-		long min = diff / (60 * 1000) % 60;
-		long sec = diff / 1000 % 60;
+			long hour = diff / (60 * 60 * 1000);
+			long min = diff / (60 * 1000) % 60;
+			long sec = diff / 1000 % 60;
 
-		String 시작시간_문자열 = 시간출력포맷.format(시작시간.getTime());
-		시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
-		String 끝시간_문자열 = 시간출력포맷.format(끝시간.getTime());
+			String 시작시간_문자열 = 시간출력포맷.format(시작시간.getTime());
+			시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
+			String 끝시간_문자열 = 시간출력포맷.format(끝시간.getTime());
 
-		if (hour >= 1) {
-			// 1시간 이상일때
-			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 " + min
-					+ "분 " + sec + "초 공부했습니다.\n" + "```");
-			/*
-			 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
-			 * "님은\n#" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n#" + "총" + hour + "시간 " +min
-			 * + "분 " + sec + "초 공부했습니다.\n" + "```");
-			 */
-			// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
-			// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" + hour + "시간 " +min + "분 " + sec + "초 공부했습니다.");
-		} else {
-			// 1시간 미만일때,
-			// 시간 출력 x
-			retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
-					+ "초 공부했습니다.\n" + "```");
-			;
-			// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
-			// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
+			if (hour >= 1) {
+				// 1시간 이상일때
+				retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 " + min
+						+ "분 " + sec + "초 공부했습니다.\n" + "```");
+				/*
+				 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
+				 * "님은\n#" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n#" + "총" + hour + "시간 " +min
+				 * + "분 " + sec + "초 공부했습니다.\n" + "```");
+				 */
+				// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
+				// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" + hour + "시간 " +min + "분 " + sec + "초 공부했습니다.");
+			} else {
+				// 1시간 미만일때,
+				// 시간 출력 x
+				retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
+						+ "초 공부했습니다.\n" + "```");
+				;
+				// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
+				// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
+			}
+			
+			멈춘시간 = 0;
+			진행중 = false;
 		}
 		
-		멈춘시간 = 0;
-		진행중 = false;
+		
 
 		// System.out.println("끝 - retn : \n\t" + retn);
 		// System.out.println("끝 - retn 끝남!");
