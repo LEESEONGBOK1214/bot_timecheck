@@ -152,8 +152,10 @@ public class TimeCheckcmd {
 		sayMsg(e.getChannel(), "==============진행중인 사람==============");
 	 	for(int i=0;i<user_arr.size();i++)
 	 	{
-	 		System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
-	 		sayMsg(e.getChannel(), (user_arr.get(i).name + " " + user_arr.get(i).id));
+	 		if(user_arr.get(i).진행중) {
+	 			System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
+	 			sayMsg(e.getChannel(), (user_arr.get(i).name + " " + user_arr.get(i).id));
+	 		}
 	 	}
 	 	System.out.println("===========큐==========");
 	 	sayMsg(e.getChannel(), "==============진행중인 사람==============");
