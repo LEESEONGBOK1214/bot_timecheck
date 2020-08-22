@@ -7,13 +7,13 @@
 //
 ////	Operations(String op, MessageChannel ch) {
 ////		for (int i = 0; i < user_arr.size(); i++) {
-////			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).ÁøÇàÁß);
+////			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).ì§„í–‰ì¤‘);
 ////		}
 ////		switch (op) {
-////		case "³¡":
+////		case "ë":
 ////			System.out.println("go to tcc-end");
-////			String Ãâ·Â¹® = tcc.end(user_arr, ch.getId());
-////			System.out.println("¹ÞÀº Ãâ·Â¹® ##################\n" + Ãâ·Â¹®);
+////			String ì¶œë ¥ë¬¸ = tcc.end(user_arr, ch.getId());
+////			System.out.println("ë°›ì€ ì¶œë ¥ë¬¸ ##################\n" + ì¶œë ¥ë¬¸);
 ////			return;
 ////		}
 ////	}

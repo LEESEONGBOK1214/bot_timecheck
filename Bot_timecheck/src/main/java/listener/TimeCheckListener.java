@@ -18,21 +18,21 @@ public class TimeCheckListener extends ListenerAdapter {
 
 	void Operations(String op) {
 //		for (int i = 0; i < user_arr.size(); i++) {
-//			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).ÁøÇàÁß);
+//			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).ì§„í–‰ì¤‘);
 //		}
 		switch (op) {
-		case "³¡":
+		case "ë":
 			System.out.println("go to tcc-end");
 
-			// String Ãâ·Â¹® = tcc.end(user_arr, ch.getId());
-			// System.out.println("¹ÞÀº Ãâ·Â¹® ##################\n" + Ãâ·Â¹®);
+			// String ì¶œë ¥ë¬¸ = tcc.end(user_arr, ch.getId());
+			// System.out.println("ë°›ì€ ì¶œë ¥ë¬¸ ##################\n" + ì¶œë ¥ë¬¸);
 			return;
 		}
 	}
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
-//		System.out.println("Ã¤ÆÃÄ¡´Â Ã¤³Î id :" + e.getChannel().getId());
+//		System.out.println("ì±„íŒ…ì¹˜ëŠ” ì±„ë„ id :" + e.getChannel().getId());
 //		System.out.println(e.toString());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
@@ -47,49 +47,50 @@ public class TimeCheckListener extends ListenerAdapter {
 
 			// System.out.println(cmd);
 			switch (cmd) {
-			case "È¦¸®":
+			case "í™€ë¦¬":
 				tcc.holy(e, ch);
 				return;
 
-			case "»ê»ê":
-				e.getChannel().sendMessage("»êÀº »ê»ê").queue();
+			case "ì‚°ì‚°":
+				e.getChannel().sendMessage("ì‚°ì€ ì‚°ì‚°").queue();
 				return;
 
 			case "ping":
 				e.getChannel().sendMessage("pong!").queue();
 				return;
 
-			case "º¹·É¾î":
+			case "ë³µë ¹ì–´":
 				tcc.cmdList(e, ch);
 				return;
 
 			case "tlwkr":
-			case "½ÃÀÛ": // ½ÃÀÛ
+			case "ì‹œìž‘": // ì‹œìž‘
 				del_Msg(msg);
-//				System.out.println("½ÃÀÛ ÀÔ·ÂµÊ");
+//				System.out.println("ì‹œìž‘ ìž…ë ¥ë¨");
 				tcc.start(user_arr, e);
-//				System.out.println("½ÃÀÛ ÆÄÆ® ³¡");
+//				System.out.println("ì‹œìž‘ íŒŒíŠ¸ ë");
 				return;
 
-			case "whdfy":case "Rmx":case "Á¤Áö":case "Á¾·á":case "ƒP":case "rmx":
-			case "³¡":
+			case "whdfy":case "Rmx":case "ì •ì§€":case "ì¢…ë£Œ":case "ê¸‘":case "rmx":
+			case "ë":
 				del_Msg(msg);
 				tcc.end(user_arr, e, msg);
 				return;
-			case "ÁøÇàÁß":
-				// ¸Þ¼¼ÁöÁ¦°Å(message);
+				
+			case "ì§„í–‰ì¤‘":
+				// ë©”ì„¸ì§€ì œê±°(message);
 				del_Msg(msg);
 				tcc.queue(user_arr, e);
 				return;
-			case "½Ã°£È®ÀÎ":
+			case "ì‹œê°„í™•ì¸":
 				del_Msg(msg);
 				tcc.total_time(user_arr, e);
 				return;
-			case "ÀÏ½ÃÁ¤Áö":
+			case "ì¼ì‹œì •ì§€":
 				del_Msg(msg);
-				// sayMsg(ch, "ÀÏ½ÃÁ¤Áö Å×½ºÆ®Áß.");
+				// sayMsg(ch, "ì¼ì‹œì •ì§€ í…ŒìŠ¤íŠ¸ì¤‘.");
 				tcc.pause(user_arr, e);
-			case "½ÃÇè±â´É":
+			case "ì‹œí—˜ê¸°ëŠ¥":
 				// tcc.test();
 				Channel tch;
 
@@ -97,11 +98,11 @@ public class TimeCheckListener extends ListenerAdapter {
 //						.addUserChangeStatusListener(org.javacord.api.listener.user.UserChangeStatusListener)));
 				return;
 
-			case "ÁÖ°£½Ã°£º¸±â":
+			case "ì£¼ê°„ì‹œê°„ë³´ê¸°":
 				tcc.view_week(user_arr, e);
 				return;
 				
-			case "Ãâ¼®":
+			case "ì¶œì„":
 				tcc.Attendance(e);
 				return;
 			}
@@ -110,7 +111,7 @@ public class TimeCheckListener extends ListenerAdapter {
 
 //	public void onStatusChange(StatusChangeEvent e) {
 //		// TODO Auto-generated method stub
-//		// System.out.println("»óÅÂ º¯È¯..?");
+//		// System.out.println("ìƒíƒœ ë³€í™˜..?");
 //		System.out.println("ns : " + e.getNewStatus());
 //		System.out.println("os : " + e.getOldStatus());
 //	}
@@ -129,27 +130,27 @@ public class TimeCheckListener extends ListenerAdapter {
 //	}
 //
 //	public void onUserUpdateActivityOrder(@Nonnull UserUpdateActivityOrderEvent e) {
-//		System.out.println("»óÅÂ º¯È¯ Çß½¿.!!");
+//		System.out.println("ìƒíƒœ ë³€í™˜ í–ˆìŠ´.!!");
 //	}
 
 //	public void onGuildJoin(@Nonnull GuildJoinEvent e) {
-//		System.out.println(e.getGuild().getId() + " À¯Àú°¡ ");
-//		System.out.println(e.getGuild() + "¼­¹ö¿¡ µé¾î¿È.");
+//		System.out.println(e.getGuild().getId() + " ìœ ì €ê°€ ");
+//		System.out.println(e.getGuild() + "ì„œë²„ì— ë“¤ì–´ì˜´.");
 //	}
 //
 //	public void onGuildLeave(@Nonnull GuildLeaveEvent e) {
-//		System.out.println(e.getGuild().getId() + " À¯Àú°¡ ");
-//		System.out.println(e.getGuild() + "¼­¹ö¿¡¼­ ÅðÀå.");
+//		System.out.println(e.getGuild().getId() + " ìœ ì €ê°€ ");
+//		System.out.println(e.getGuild() + "ì„œë²„ì—ì„œ í‡´ìž¥.");
 //	}
 //
 //	public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent e) {
-//		System.out.println(e.getGuild().getId() + " À¯Àú°¡ ");
-//		System.out.println(e.getGuild() + "Ã¤³Î¿¡ µé¾î¿È.");
+//		System.out.println(e.getGuild().getId() + " ìœ ì €ê°€ ");
+//		System.out.println(e.getGuild() + "ì±„ë„ì— ë“¤ì–´ì˜´.");
 //	}
 //
 //	public void onGuildMemberLeave(@Nonnull GuildMemberLeaveEvent e) {
-//		System.out.println(e.getGuild().getId() + " À¯Àú°¡ ");
-//		System.out.println(e.getGuild() + "Ã¤³Î¿¡¼­ ÅðÀå.");
+//		System.out.println(e.getGuild().getId() + " ìœ ì €ê°€ ");
+//		System.out.println(e.getGuild() + "ì±„ë„ì—ì„œ í‡´ìž¥.");
 //	}
 	boolean sw = false;
 	int count = 1;
@@ -157,14 +158,14 @@ public class TimeCheckListener extends ListenerAdapter {
 	// public void on
 
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent e) {
-		// À¯Àú »óÅÂ È®ÀÎ ¸®½º³Ê.
+		// ìœ ì € ìƒíƒœ í™•ì¸ ë¦¬ìŠ¤ë„ˆ.
 		// System.out.println("onUserUpdateOnlineStatus");
-		// System.out.println(e.getMember() + "À¯Àú°¡ " + e.getNewOnlineStatus());
+		// System.out.println(e.getMember() + "ìœ ì €ê°€ " + e.getNewOnlineStatus());
 		// Message message;
-		// String Ãâ·Â¹® = "";
+		// String ì¶œë ¥ë¬¸ = "";
 //		if()
 		// if(e.)
-		System.out.println("»óÅÂº¯È¯..?" + e.getNewOnlineStatus());
+		System.out.println("ìƒíƒœë³€í™˜..?" + e.getNewOnlineStatus());
 		if (!(count++ % 3 == 0))
 			return;
 		// sw = !sw;
@@ -174,15 +175,15 @@ public class TimeCheckListener extends ListenerAdapter {
 
 		String id = e.getUser().getId();
 		String name = e.getUser().getName();
-		// System.out.println("=========================»óÅÂº¯È¯!!!");
-		// e.getGuild().getSystemChannel().sendMessage("=========================»óÅÂº¯È¯!!!").queue();
-		System.out.println("¿©±â±îÁø?");
+		// System.out.println("=========================ìƒíƒœë³€í™˜!!!");
+		// e.getGuild().getSystemChannel().sendMessage("=========================ìƒíƒœë³€í™˜!!!").queue();
+		System.out.println("ì—¬ê¸°ê¹Œì§„?");
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
 			int i = -1;
 
 			for (int j = 0; j < user_arr.size(); j++) {
 				if (user_arr.get(j).id.equals(e.getUser().getId())) {
-					System.out.println("±âÁØ : " + user_arr.get(j).now_ch);
+					System.out.println("ê¸°ì¤€ : " + user_arr.get(j).now_ch);
 					i = j;
 					break;
 				}
@@ -190,18 +191,18 @@ public class TimeCheckListener extends ListenerAdapter {
 			/*
 			 * for (int j = 0; j < ch_list.size(); j++) {
 			 * 
-			 * System.out.println("ºñ±³ : " + ch_list.get(j).getId()); if
+			 * System.out.println("ë¹„êµ : " + ch_list.get(j).getId()); if
 			 * (ch_list.get(j).getId().equals(user_arr.get(i).now_ch)) {
-			 * System.out.println("Ã¤³Î id °°À½"); } }
+			 * System.out.println("ì±„ë„ id ê°™ìŒ"); } }
 			 */
-			System.out.println(name + "À¯Àú°¡ offline»óÅÂ·Î º¯È¯.");
+			System.out.println(name + "ìœ ì €ê°€ offlineìƒíƒœë¡œ ë³€í™˜.");
 			String autoP = "";
 			// System.out.println("id : " + id);
-			// System.out.println("À¯Àú »çÀÌÁî : " + user_arr.size());
+			// System.out.println("ìœ ì € ì‚¬ì´ì¦ˆ : " + user_arr.size());
 
 			if (user_arr.get(i).id.equals(id)) {
-				if (user_arr.get(i).ÁøÇàÁß) {
-					System.out.println("ÁøÇàÁß true!");
+				if (user_arr.get(i).ì§„í–‰ì¤‘) {
+					System.out.println("ì§„í–‰ì¤‘ true!");
 					// break;
 				} else {
 
@@ -213,7 +214,7 @@ public class TimeCheckListener extends ListenerAdapter {
 			if (autoP == null || autoP.equals("")) {
 				return;
 			}
-			// System.out.println("############»óÅÂº¯È¯ ÀÌº¥Æ® ¸®½º³Ê - autoP : \n " + autoP);
+			// System.out.println("############ìƒíƒœë³€í™˜ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ - autoP : \n " + autoP);
 			// System.out.println("ch_id : " + ch_id);
 			// System.out.println("e.getJDA().getTextChannelById(ch_id).getName() :" +
 			// e.getJDA().getTextChannelById(ch_id).getName());
@@ -222,9 +223,9 @@ public class TimeCheckListener extends ListenerAdapter {
 			System.out.println();
 
 //			System.out.println(user_arr.get(i).now_ch);
-//			System.out.println("ÇöÀç À¯Àú°¡ ÀÖ´Â TextChannel id : " + 
+//			System.out.println("í˜„ìž¬ ìœ ì €ê°€ ìžˆëŠ” TextChannel id : " + 
 //								e.getJDA().getTextChannelById(user_arr.get(i).now_ch));
-//			System.out.println("ÇöÀç À¯Àú°¡ ÀÖ´Â TextChannel id : " + 
+//			System.out.println("í˜„ìž¬ ìœ ì €ê°€ ìžˆëŠ” TextChannel id : " + 
 //								e.getGuild().getTextChannelById(user_arr.get(i).now_ch));
 			
 //			System.out.println(e.getGuild().getChannels().equals(user_arr.get(i).now_ch));
@@ -239,12 +240,12 @@ public class TimeCheckListener extends ListenerAdapter {
 	}
 
 	private void sayMsg(TextChannel channel, String msg) {
-		// System.out.println("¸Þ¼¼Áö @ : \n" + msg);
-		System.out.print("Ã¤³Î : ");
+		// System.out.println("ë©”ì„¸ì§€ @ : \n" + msg);
+		System.out.print("ì±„ë„ : ");
 		// System.out.println(channel.);
 		channel.sendMessage(msg).queue();
 //		channel.sendMessage("asdfasdfasdfasdf").apply();
-//		channel.sendMessage("ÀÌ°Ç µÇ°ÚÁö").queue();
+//		channel.sendMessage("ì´ê±´ ë˜ê² ì§€").queue();
 		// channel.sendMessage()
 		return;
 	}

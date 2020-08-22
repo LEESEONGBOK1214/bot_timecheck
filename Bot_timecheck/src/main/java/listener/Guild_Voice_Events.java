@@ -22,7 +22,7 @@ public class Guild_Voice_Events extends ListenerAdapter {
 	}
 
 	public void onGuildVoiceJoin(@Nonnull GuildVoiceJoinEvent e) {
-		System.out.println(e.getMember().getUser().getName() + "À¯Àú°¡ º¸ÀÌ½ºÃ¤ÆÃ µé¾î¿È!");
+		System.out.println(e.getMember().getUser().getName() + "ìœ ì €ê°€ ë³´ì´ìŠ¤ì±„íŒ… ë“¤ì–´ì˜´!");
 	}
 
 	public void onGuildVoiceMove(@Nonnull GuildVoiceMoveEvent e) {
@@ -33,7 +33,7 @@ public class Guild_Voice_Events extends ListenerAdapter {
 		
 		// System.out.println("OUT!!");
 		// System.out.println(e.getGuild().getJDA().getSelfUser().);
-		// tcl.Operations("³¡", e.getGuild().getJDA().getSelfUser());
+		// tcl.Operations("ë", e.getGuild().getJDA().getSelfUser());
 
 	}
 

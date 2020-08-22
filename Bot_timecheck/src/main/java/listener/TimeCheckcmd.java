@@ -12,7 +12,7 @@ import oracleDB.OracleDB;
 public class TimeCheckcmd {
 	OracleDB DB;
 
-	// int À¯Àú¼ö = 0;
+	// int ìœ ì €ìˆ˜ = 0;
 	TimeCheckcmd(ArrayList<user> user_arr) {
 		DB = new OracleDB(user_arr);
 		DB.select_user(user_arr);
@@ -24,7 +24,7 @@ public class TimeCheckcmd {
 	}
 	void echo(MessageReceivedEvent e, MessageChannel ch,String cmd) {
 		if (cmd.isEmpty()) {
-			sayMsg(ch, "echo´Â ¸Ş¾Æ¸®ÇÒ ¸»À» ÀÔ·ÂÇØ¾ß ÇÕ´Ï´Ù.");
+			sayMsg(ch, "echoëŠ” ë©”ì•„ë¦¬í•  ë§ì„ ì…ë ¥í•´ì•¼ í•©ë‹ˆë‹¤.");
 		} else {
 			sayMsg(ch, cmd);
 		}
@@ -33,92 +33,92 @@ public class TimeCheckcmd {
 	void holy(MessageReceivedEvent e, MessageChannel ch)
 	{
 		if (e.getAuthor().getId().equals("715527843827810355")) {
-			sayMsg(ch, "¸¶¸¶");
+			sayMsg(ch, "ë§ˆë§ˆ");
 		} else {
-			sayMsg(ch, "¸ô¸®");
+			sayMsg(ch, "ëª°ë¦¬");
 		}
 	}
 	
 	void cmdList(MessageReceivedEvent e, MessageChannel ch) {
-		String ¸í·É¾î¸ñ·Ï[] = { "½ÃÀÛ", "³¡", "ÁÖ°£½Ã°£º¸±â", "½Ã°£È®ÀÎ(¿©ÅÂ ÃÑ ½Ã°£)", "ÀÏ½ÃÁ¤Áö (´Ù½ÃÇÏ¸é ÇØÁ¦±â´ÉÇÔ)", "ping", "È¦¸®", "»ê»ê" };
-		String Ãâ·Â = "";
-		Ãâ·Â += "===¸í·É¾î ¸ñ·Ï===\n";
-		for (int i = 0; i < ¸í·É¾î¸ñ·Ï.length; i++) {
-			Ãâ·Â += (¸í·É¾î¸ñ·Ï[i] + "\n");
+		String ëª…ë ¹ì–´ëª©ë¡[] = { "ì‹œì‘", "ë", "ì£¼ê°„ì‹œê°„ë³´ê¸°", "ì‹œê°„í™•ì¸(ì—¬íƒœ ì´ ì‹œê°„)", "ì¼ì‹œì •ì§€ (ë‹¤ì‹œí•˜ë©´ í•´ì œê¸°ëŠ¥í•¨)", "ping", "í™€ë¦¬", "ì‚°ì‚°" };
+		String ì¶œë ¥ = "";
+		ì¶œë ¥ += "===ëª…ë ¹ì–´ ëª©ë¡===\n";
+		for (int i = 0; i < ëª…ë ¹ì–´ëª©ë¡.length; i++) {
+			ì¶œë ¥ += (ëª…ë ¹ì–´ëª©ë¡[i] + "\n");
 		}
-		sayMsg(ch, Ãâ·Â);
+		sayMsg(ch, ì¶œë ¥);
 	}
 
 	void total_time(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		String À¯ÀúID = e.getAuthor().getId();
+		String ìœ ì €ID = e.getAuthor().getId();
 		
 		for (int i = 0; i < user_arr.size(); i++) {
-			// System.out.println("ÇöÀç id : " + user_arr.get(i).id);
-			if (user_arr.get(i).id.equals(À¯ÀúID))
-      		  {// °ª Ã£¾Æ¼­ ÇØ´ç °ª ÃÑ½Ã°£ Ãâ·Â.
-					user_arr.get(i).ÃÑ½Ã°£(e, user_arr);
+			// System.out.println("í˜„ì¬ id : " + user_arr.get(i).id);
+			if (user_arr.get(i).id.equals(ìœ ì €ID))
+      		  {// ê°’ ì°¾ì•„ì„œ í•´ë‹¹ ê°’ ì´ì‹œê°„ ì¶œë ¥.
+					user_arr.get(i).ì´ì‹œê°„(e, user_arr);
 					return;
       		  }
       	  }
 	}
 	
 	void start(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		String À¯ÀúID = e.getAuthor().getId();
-		String À¯Àú¸í = e.getAuthor().getName();
+		String ìœ ì €ID = e.getAuthor().getId();
+		String ìœ ì €ëª… = e.getAuthor().getName();
 		
-		int À¯Àú¹øÈ£ = -1; // ArrayListÀÇ ÇöÀç À¯Àú¹øÈ£ Ã£±âÀ§ÇÔ.
+		int ìœ ì €ë²ˆí˜¸ = -1; // ArrayListì˜ í˜„ì¬ ìœ ì €ë²ˆí˜¸ ì°¾ê¸°ìœ„í•¨.
 		
-		for (int i = 0; i < DB.getusers(); i++) { // Áßº¹°ª È®ÀÎ
+		for (int i = 0; i < DB.getusers(); i++) { // ì¤‘ë³µê°’ í™•ì¸
 
-			if (user_arr.get(i).id.equals(À¯ÀúID)) { // ID°¡ ÀÖÀ¸¸é true ¾øÀ¸¸é false
-				System.out.println("===============id°Ë»ö ¼º°ø.");
-				// ÇöÀç À¯Àú¿Í °°Àº ¹øÈ£¸¦ Ã£¾Æ¼­, ÁøÇàÁßÀÌ¸é ¸Ş¼¼Áö Ãâ·Â ÈÄ Á¾·á.
+			if (user_arr.get(i).id.equals(ìœ ì €ID)) { // IDê°€ ìˆìœ¼ë©´ true ì—†ìœ¼ë©´ false
+				System.out.println("===============idê²€ìƒ‰ ì„±ê³µ.");
+				// í˜„ì¬ ìœ ì €ì™€ ê°™ì€ ë²ˆí˜¸ë¥¼ ì°¾ì•„ì„œ, ì§„í–‰ì¤‘ì´ë©´ ë©”ì„¸ì§€ ì¶œë ¥ í›„ ì¢…ë£Œ.
 
 				user_arr.get(i).now_ch = e.getChannel().getId();
-				if (user_arr.get(i).ÁøÇàÁß) {
-					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> Áßº¹ ½ÃÀÛÇß½À´Ï´Ù.]```").queue();
-					// System.out.println("Áßº¹ ½ÃÀÛ : " + user_arr.get(i).name);
+				if (user_arr.get(i).ì§„í–‰ì¤‘) {
+					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> ì¤‘ë³µ ì‹œì‘í–ˆìŠµë‹ˆë‹¤.]```").queue();
+					// System.out.println("ì¤‘ë³µ ì‹œì‘ : " + user_arr.get(i).name);
 					return;
 				} else {
-					// ÁøÇàÁßÀº ¾Æ´Ñµ¥ ÇØ´ç À¯Àú°¡ ÀÖÀ»°æ¿ì.
-					// ¾ÆÀÌµğ¸¦ ¾È¸¸µé¾î¾ßÇÔ.
-					À¯Àú¹øÈ£ = i;
+					// ì§„í–‰ì¤‘ì€ ì•„ë‹Œë° í•´ë‹¹ ìœ ì €ê°€ ìˆì„ê²½ìš°.
+					// ì•„ì´ë””ë¥¼ ì•ˆë§Œë“¤ì–´ì•¼í•¨.
+					ìœ ì €ë²ˆí˜¸ = i;
 					break;
 				}
 			}
 		}
-		// ¸¸µé¾î¾ßÇÔ!!
-		if (À¯Àú¹øÈ£ < 0) { // -1ÀÏ¶§´Â À¯Àú°¡ ¾øÀ» ¶§ÀÓ!!
-			// System.out.println("À¯Àú°¡ ¾øÀ½!!");
+		// ë§Œë“¤ì–´ì•¼í•¨!!
+		if (ìœ ì €ë²ˆí˜¸ < 0) { // -1ì¼ë•ŒëŠ” ìœ ì €ê°€ ì—†ì„ ë•Œì„!!
+			// System.out.println("ìœ ì €ê°€ ì—†ìŒ!!");
 			user_arr.add(new user(e.getAuthor().getId(), e.getAuthor().getName()));
-			String query = "insert into t_user values('" + À¯ÀúID + "', '" + À¯Àú¸í + "')";
+			String query = "insert into t_user values('" + ìœ ì €ID + "', '" + ìœ ì €ëª… + "')";
 			DB.insert(query);
-			À¯Àú¹øÈ£ = user_arr.size() - 1;
+			ìœ ì €ë²ˆí˜¸ = user_arr.size() - 1;
 		}
-		user_arr.get(À¯Àú¹øÈ£).½ÃÀÛ();
-		String ½ÃÀÛ½Ã°£ = ToTime(user_arr.get(À¯Àú¹øÈ£).get½ÃÀÛ½Ã°£());
-		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(À¯Àú¹øÈ£).name + "]ÀÇ ½ÃÀÛ ½Ã°£\n[" + ½ÃÀÛ½Ã°£ + "]```");
+		user_arr.get(ìœ ì €ë²ˆí˜¸).ì‹œì‘();
+		String ì‹œì‘ì‹œê°„ = ToTime(user_arr.get(ìœ ì €ë²ˆí˜¸).getì‹œì‘ì‹œê°„());
+		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(ìœ ì €ë²ˆí˜¸).name + "]ì˜ ì‹œì‘ ì‹œê°„\n[" + ì‹œì‘ì‹œê°„ + "]```");
 		
-		// System.out.println("start ¸¶Áö¸·.");
+		// System.out.println("start ë§ˆì§€ë§‰.");
 	}
 
 	
 
-	// endÀÇ ½ÃÀÛ
+	// endì˜ ì‹œì‘
 
 	void end(ArrayList<user> user_arr, MessageReceivedEvent e, Message msg) {
-		for (int i = 0; i < user_arr.size(); i++) { // ½ÃÀÛ¿¡ ¾ÆÀÌµğ°¡ ÀÖ´Ù¸é, ³¡ ½ÇÇà.
+		for (int i = 0; i < user_arr.size(); i++) { // ì‹œì‘ì— ì•„ì´ë””ê°€ ìˆë‹¤ë©´, ë ì‹¤í–‰.
 
-			if (user_arr.get(i).Áßº¹È®ÀÎ(msg.getAuthor().getId())) {
-				if (user_arr.get(i).ÁøÇàÁß == false) {
+			if (user_arr.get(i).ì¤‘ë³µí™•ì¸(msg.getAuthor().getId())) {
+				if (user_arr.get(i).ì§„í–‰ì¤‘ == false) {
 					return;
 				}
-				sayMsg(e.getChannel(), user_arr.get(i).³¡());
-				{ // DB¿¡ À¯ÀúÀÇ ½ÃÀÛ½Ã°£ ³Ö±â.
+				sayMsg(e.getChannel(), user_arr.get(i).ë());
+				{ // DBì— ìœ ì €ì˜ ì‹œì‘ì‹œê°„ ë„£ê¸°.
 					// OracleDB DB = new OracleDB(user_arr);
 
-					SimpleDateFormat ½Ã°£Ãâ·ÂÆ÷¸Ë = new SimpleDateFormat("yyMMdd");
-					String start_date = ½Ã°£Ãâ·ÂÆ÷¸Ë.format(user_arr.get(i).get½ÃÀÛ½Ã°£().getTime());
+					SimpleDateFormat ì‹œê°„ì¶œë ¥í¬ë§· = new SimpleDateFormat("yyMMdd");
+					String start_date = ì‹œê°„ì¶œë ¥í¬ë§·.format(user_arr.get(i).getì‹œì‘ì‹œê°„().getTime());
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 							+ user_arr.get(i).diff / 1000
 							+ ")";
@@ -132,11 +132,11 @@ public class TimeCheckcmd {
 	public String end(ArrayList<user> user_arr, String id) {
 		String retn = "";
 		for (int i = 0; i < user_arr.size(); i++) {
-			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).ÁøÇàÁß);
-			if (user_arr.get(i).id.equals(id) && user_arr.get(i).ÁøÇàÁß) {
-				retn = user_arr.get(i).³¡();
-				SimpleDateFormat ½Ã°£Ãâ·ÂÆ÷¸Ë = new SimpleDateFormat("yyMMdd");
-				String start_date = ½Ã°£Ãâ·ÂÆ÷¸Ë.format(user_arr.get(i).get½ÃÀÛ½Ã°£().getTime());
+			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).ì§„í–‰ì¤‘);
+			if (user_arr.get(i).id.equals(id) && user_arr.get(i).ì§„í–‰ì¤‘) {
+				retn = user_arr.get(i).ë();
+				SimpleDateFormat ì‹œê°„ì¶œë ¥í¬ë§· = new SimpleDateFormat("yyMMdd");
+				String start_date = ì‹œê°„ì¶œë ¥í¬ë§·.format(user_arr.get(i).getì‹œì‘ì‹œê°„().getTime());
 				String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 						+ user_arr.get(i).diff / 1000 + ")";
 				DB.insert(query);
@@ -147,29 +147,30 @@ public class TimeCheckcmd {
 	}
 	// end of end
 	
+
 	void queue(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		System.out.println("===========Å¥==========");
-		sayMsg(e.getChannel(), "==============ÁøÇàÁßÀÎ »ç¶÷==============");
+		System.out.println("=====================");
+		sayMsg(e.getChannel(), "==============ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½==============");
 	 	for(int i=0;i<user_arr.size();i++)
 	 	{
-	 		if(user_arr.get(i).ÁøÇàÁß) {
+	 		if(user_arr.get(i).ì§„í–‰ì¤‘) {
 	 			System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
 	 			sayMsg(e.getChannel(), (user_arr.get(i).name + " " + user_arr.get(i).id));
 	 		}
 	 	}
-	 	System.out.println("===========Å¥==========");
-	 	sayMsg(e.getChannel(), "==============ÁøÇàÁßÀÎ »ç¶÷==============");
+	 	System.out.println("=====================");
+	 	sayMsg(e.getChannel(), "==============ì§„í–‰ì¤‘ì¸ì‚¬ëŒ==============");
 	}
 	
 	void pause(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		String À¯ÀúID = e.getAuthor().getId();
-		String À¯Àú¸í = e.getAuthor().getName();
+		String ìœ ì €ID = e.getAuthor().getId();
+		String ìœ ì €ëª… = e.getAuthor().getName();
 
-		// System.out.println("ÀÏ½ÃÁ¤Áö ¸Ş¼¼Áö À¯Àú ID" + À¯ÀúID);
+		// System.out.println("ì¼ì‹œì •ì§€ ë©”ì„¸ì§€ ìœ ì € ID" + ìœ ì €ID);
 		for (int i = 0; i < user_arr.size(); i++) {
-			if (À¯ÀúID.equals(user_arr.get(i).id)) {
-				// System.out.println("ÀÏ½ÃÁ¤Áö ¸Ş¼¼Áö ÀÏÄ¡ À¯Àú ID" + user_arr.get(i).id);
-				user_arr.get(i).ÀÏ½ÃÁ¤Áö(e);
+			if (ìœ ì €ID.equals(user_arr.get(i).id)) {
+				// System.out.println("ì¼ì‹œì •ì§€ ë©”ì„¸ì§€ ì¼ì¹˜ ìœ ì € ID" + user_arr.get(i).id);
+				user_arr.get(i).ì¼ì‹œì •ì§€(e);
 				break;
 			}
 		}
@@ -177,11 +178,11 @@ public class TimeCheckcmd {
 	}
 	
 	void view_week(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		String Ãâ·Â¹®[] = DB.week_time(user_arr.size());
-		Ãâ·Â¹®[0] += "\n";
-		sayMsg(e.getChannel(), Ãâ·Â¹®[0]);
+		String ì¶œë ¥ë¬¸[] = DB.week_time(user_arr.size());
+		ì¶œë ¥ë¬¸[0] += "\n";
+		sayMsg(e.getChannel(), ì¶œë ¥ë¬¸[0]);
 		// sayMsg(e.getChannel(), "\n");
-		sayMsg(e.getChannel(), Ãâ·Â¹®[1]);
+		sayMsg(e.getChannel(), ì¶œë ¥ë¬¸[1]);
 	}
 	
 	public void Attendance(MessageReceivedEvent e) {
@@ -210,11 +211,11 @@ public class TimeCheckcmd {
 	}
 
 	private String ToTime(Date date) {
-		SimpleDateFormat ½Ã°£Æ÷¸Ë = new SimpleDateFormat("MM¿ù/ddÀÏ/ HH½Ã :mmºĞ :ssÃÊ");
+		SimpleDateFormat ì‹œê°„í¬ë§· = new SimpleDateFormat("MMì›”/ddì¼/ HHì‹œ :mmë¶„ :ssì´ˆ");
 
-		// System.out.println(½Ã°£Æ÷¸Ë.format(date));
+		// System.out.println(ì‹œê°„í¬ë§·.format(date));
 
-		return ½Ã°£Æ÷¸Ë.format(date);
+		return ì‹œê°„í¬ë§·.format(date);
 	}
 
 

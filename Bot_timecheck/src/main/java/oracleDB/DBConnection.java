@@ -12,18 +12,18 @@ public class DBConnection
 		Connection conn = null;
 		try {
 			String user = "timeck"; // timeck <
-			String pw = "lenope1214"; // µðºñÁ¢¼Ó ºñ¹Ð¹øÈ£
+			String pw = "lenope1214"; // ë””ë¹„ì ‘ì† ë¹„ë°€ë²ˆí˜¸
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);
 
-			System.out.println("Database¿¡ ¿¬°áµÇ¾ú½À´Ï´Ù.\n");
+			System.out.println("Databaseì— ì—°ê²°ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB µå¶óÀÌ¹ö ·Îµù ½ÇÆÐ :" + cnfe.toString());
+			System.out.println("DB ë“œë¼ì´ë²„ ë¡œë”© ì‹¤íŒ¨ :" + cnfe.toString());
 		} catch (SQLException sqle) {
-			System.out.println("DB Á¢¼Ó½ÇÆÐ : " + sqle.toString());
+			System.out.println("DB ì ‘ì†ì‹¤íŒ¨ : " + sqle.toString());
 		} catch (Exception e) {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();

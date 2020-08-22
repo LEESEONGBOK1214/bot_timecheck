@@ -21,7 +21,7 @@ public class CKBOT  {
 	public static void main(String[] args) {
 		
 		JDABuilder builder = new JDABuilder(AccountType.BOT);
-		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XxcYKg.XBhfhthYAmurxWSUS2jhDbLyxcc"; //ÅäÅ«Àº ¿©·¯ºĞÀÇ µğ½ºÄÚµå ¾ÛÀÇ º¿¿¡¼­ °¡Á®¿É´Ï´Ù.
+		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XxcYKg.XBhfhthYAmurxWSUS2jhDbLyxcc"; //í† í°ì€ ì—¬ëŸ¬ë¶„ì˜ ë””ìŠ¤ì½”ë“œ ì•±ì˜ ë´‡ì—ì„œ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		builder.setToken(token);
 		
 		
@@ -38,41 +38,41 @@ public class CKBOT  {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//		System.out.println("½ÃÀÛ!");
+//		System.out.println("ì‹œì‘!");
 	}
 }
 
 class BotFrame extends JFrame implements ActionListener{
 	JDABuilder builder;
 	String token;
-	JButton ½ÃÀÛ¹öÆ°;
-	JButton Á¾·á¹öÆ°;
+	JButton ì‹œì‘ë²„íŠ¼;
+	JButton ì¢…ë£Œë²„íŠ¼;
 	BotFrame(JDABuilder builder, String token)
 	{
-		super("Ã¢ÀÌ¸§");
+		super("ì°½ì´ë¦„");
 		setSize(250, 250);
 		setLayout(null);
 		
-		½ÃÀÛ¹öÆ° = new JButton("½ÃÀÛ¹öÆ°");
-		Á¾·á¹öÆ° = new JButton("Á¾·á¹öÆ°");
-//		JPanel ¹öÆ°ÆÇ³Ú = new JPanel();
-//		¹öÆ°ÆÇ³Ú.add(½ÃÀÛ¹öÆ°);
-//		¹öÆ°ÆÇ³Ú.setSize(250, 250);
-//		¹öÆ°ÆÇ³Ú.setBorder(new LineBorder(Color.pink, 8));
-		½ÃÀÛ¹öÆ°.setBounds(70, 45, 100, 50);
-		Á¾·á¹öÆ°.setBounds(70, 100, 100, 50);
+		ì‹œì‘ë²„íŠ¼ = new JButton("ì‹œì‘ë²„íŠ¼");
+		ì¢…ë£Œë²„íŠ¼ = new JButton("ì¢…ë£Œë²„íŠ¼");
+//		JPanel ë²„íŠ¼íŒë„¬ = new JPanel();
+//		ë²„íŠ¼íŒë„¬.add(ì‹œì‘ë²„íŠ¼);
+//		ë²„íŠ¼íŒë„¬.setSize(250, 250);
+//		ë²„íŠ¼íŒë„¬.setBorder(new LineBorder(Color.pink, 8));
+		ì‹œì‘ë²„íŠ¼.setBounds(70, 45, 100, 50);
+		ì¢…ë£Œë²„íŠ¼.setBounds(70, 100, 100, 50);
 		
 		
-		½ÃÀÛ¹öÆ°.addActionListener(this);
-		Á¾·á¹öÆ°.addActionListener(this);
+		ì‹œì‘ë²„íŠ¼.addActionListener(this);
+		ì¢…ë£Œë²„íŠ¼.addActionListener(this);
 		
 //		token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XxcYKg.XBhfhthYAmurxWSUS2jhDbLyxcc";
-		System.out.println("frameÁøÀÔ");
+		System.out.println("frameì§„ì…");
 		
 		
 		builder.setToken(token);
-		add(½ÃÀÛ¹öÆ°);
-		add(Á¾·á¹öÆ°);
+		add(ì‹œì‘ë²„íŠ¼);
+		add(ì¢…ë£Œë²„íŠ¼);
 		
 		
 		
@@ -87,8 +87,8 @@ class BotFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(½ÃÀÛ¹öÆ°)) {
-			System.out.println("½ÃÀÛ¹öÆ° Å¬¸¯");
+		if(e.getSource().equals(ì‹œì‘ë²„íŠ¼)) {
+			System.out.println("ì‹œì‘ë²„íŠ¼ í´ë¦­");
 			try {
 				builder.addEventListeners(new TimeCheckListener());
 				// builder.addEventListeners(new Guild_Voice_Events());
@@ -96,8 +96,8 @@ class BotFrame extends JFrame implements ActionListener{
 			} catch (Exception ec) {
 				ec.printStackTrace();
 			}
-		}else if(e.getSource().equals(Á¾·á¹öÆ°)) {
-			System.out.println("Á¾·á¹öÆ° Å¬¸¯");
+		}else if(e.getSource().equals(ì¢…ë£Œë²„íŠ¼)) {
+			System.out.println("ì¢…ë£Œë²„íŠ¼ í´ë¦­");
 			System.exit(0);
 		}
 	}

@@ -13,176 +13,172 @@ public class user {
 	String id;
 	String name;
 	String now_ch;
-	Date ½ÃÀÛ½Ã°£ = null;
-	Date ³¡½Ã°£ = null;
-	long ¸ØÃá½Ã°£ = 0;
-	long ÃÑ½Ã°£ = 0;
-	boolean ÁøÇàÁß = false;
-	boolean Á¤Áö = false;
+	Date ì‹œì‘ì‹œê°„ = null;
+	Date ëì‹œê°„ = null;
+	long ë©ˆì¶˜ì‹œê°„ = 0;
+	long ì´ì‹œê°„ = 0;
+	boolean ì§„í–‰ì¤‘ = false;
+	boolean ì •ì§€ = false;
 	// Font font = new Font();
-	// Calendar ½ÃÀÛ½Ã°£ = Calendar.getInstance();
-	// Calendar ³¡½Ã°£ = Calendar.getInstance();
-	SimpleDateFormat ½Ã°£Ãâ·ÂÆ÷¸Ë = new SimpleDateFormat("MM/dd/ HH: mm: ss");
-	// Ãâ·ÂÆ÷¸Ë ¸¸µé±â = new SimpleDateFormat("MM / dd / HH:mm");
+	// Calendar ì‹œì‘ì‹œê°„ = Calendar.getInstance();
+	// Calendar ëì‹œê°„ = Calendar.getInstance();
+	SimpleDateFormat ì‹œê°„ì¶œë ¥í¬ë§· = new SimpleDateFormat("MM/dd/ HH: mm: ss");
+	// ì¶œë ¥í¬ë§· ë§Œë“¤ê¸° = new SimpleDateFormat("MM / dd / HH:mm");
 
-	String ½Ã°£Ãâ·Â; // ½ÃÀÛ or ³¡½Ã°£.format(cal.getTime());
-	// String ³¡ = ½ÃÀÛ½Ã°£.format(cal.getTime());
+	String ì‹œê°„ì¶œë ¥; // ì‹œì‘ or ëì‹œê°„.format(cal.getTime());
+	// String ë = ì‹œì‘ì‹œê°„.format(cal.getTime());
 
 	DiscordApi DA;
 
-	public user(String id, String name) { // ½ÃÀÛ ½Ã È£Ãâ.
-		// System.out.println("¹ŞÀº ¾ÆÀÌµğ : " + id);
+	public user(String id, String name) { // ì‹œì‘ ì‹œ í˜¸ì¶œ.
+		// System.out.println("ë°›ì€ ì•„ì´ë”” : " + id);
 		// ServerLeaveListener SLL = new ServerLeaveListener();
 
 		// ServerMemberLeaveEvent SMLE = new ServerMemberLeaveEvent(DA.getServers()
 		// server, user);
 		if (id.equals(null)) {
-			// System.out.println("³Î°ª µé¾î¿È Á¾·áÇÔ");
+			// System.out.println("ë„ê°’ ë“¤ì–´ì˜´ ì¢…ë£Œí•¨");
 			return;
 		} else {
-			// System.out.println("³Î°ª¾Æ´Ô ½ÇÇàÇÔ");
+			// System.out.println("ë„ê°’ì•„ë‹˜ ì‹¤í–‰í•¨");
 			this.id = id;
 			this.name = name;
 		}
 
-		// ½ÃÀÛ();
+		// ì‹œì‘();
 
 	}
 
-	void ½ÃÀÛ() {
-		// System.out.println("½ÃÀÛ!");
-		this.½ÃÀÛ½Ã°£ = new Date();
-		// System.out.println(½ÃÀÛ½Ã°£);
-		this.ÁøÇàÁß = true;
+	void ì‹œì‘() {
+		// System.out.println("ì‹œì‘!");
+		this.ì‹œì‘ì‹œê°„ = new Date();
+		// System.out.println(ì‹œì‘ì‹œê°„);
+		this.ì§„í–‰ì¤‘ = true;
 
 	}
 
 	// @SuppressWarnings("deprecation")
 	long diff;
 
-	String ³¡() {
-		// System.out.println("³¡ - ÀÔÀå");
+	String ë() {
+		// System.out.println("ë - ì…ì¥");
 		String retn;
-		³¡½Ã°£ = new Date();
+		ëì‹œê°„ = new Date();
 
-		if(Á¤Áö) {
-			retn = "ÀÏ½ÃÁ¤Áö¸¦ ³¡³»ÁÖ¼¼¿ä.";
-		}else {
-			diff = ³¡½Ã°£.getTime() - ½ÃÀÛ½Ã°£.getTime() - (¸ØÃá½Ã°£ * 1000); // ¸ØÃá½Ã°£Àº ÃÊ´ÜÀ§·Î ¼³Á¤µÇ¾îÀÖ´Ù.
+		if (ì§„í–‰ì¤‘) {
+			retn = "ì¼ì‹œì •ì§€ë¥¼ ëë‚´ì£¼ì„¸ìš”";
+		} else {
+			diff = ëì‹œê°„.getTime() - ì‹œì‘ì‹œê°„.getTime() - (ë©ˆì¶˜ì‹œê°„ * 1000); // ë©ˆì¶˜ì‹œê°„ì€ ì´ˆë‹¨ìœ„ë¡œ ì„¤ì •ë˜ì–´ìˆë‹¤.
 
 			long hour = diff / (60 * 60 * 1000);
 			long min = diff / (60 * 1000) % 60;
 			long sec = diff / 1000 % 60;
 
-			String ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ = ½Ã°£Ãâ·ÂÆ÷¸Ë.format(½ÃÀÛ½Ã°£.getTime());
-			½Ã°£Ãâ·ÂÆ÷¸Ë = new SimpleDateFormat("ddÀÏ/ HH½Ã: mmºĞ: ssÃÊ");
-			String ³¡½Ã°£_¹®ÀÚ¿­ = ½Ã°£Ãâ·ÂÆ÷¸Ë.format(³¡½Ã°£.getTime());
+			String ì‹œì‘ì‹œê°„_ë¬¸ìì—´ = ì‹œê°„ì¶œë ¥í¬ë§·.format(ì‹œì‘ì‹œê°„.getTime());
+			ì‹œê°„ì¶œë ¥í¬ë§· = new SimpleDateFormat("ddì¼/ HHì‹œ: mmë¶„: ssì´ˆ");
+			String ëì‹œê°„_ë¬¸ìì—´ = ì‹œê°„ì¶œë ¥í¬ë§·.format(ëì‹œê°„.getTime());
 
 			if (hour >= 1) {
-				// 1½Ã°£ ÀÌ»óÀÏ¶§
-				retn = ("```yaml\r\n" + name + "´ÔÀº\n" + ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ + "ºÎÅÍ\n" + ³¡½Ã°£_¹®ÀÚ¿­ + "±îÁö ÇÏ¿©\n" + "ÃÑ" + hour + "½Ã°£ " + min
-						+ "ºĞ " + sec + "ÃÊ °øºÎÇß½À´Ï´Ù.\n" + "```");
+				// 1ì‹œê°„ ì´ìƒì¼ë•Œ
+				retn = ("```yaml\r\n" + name + "ë‹˜ì€\n" + ì‹œì‘ì‹œê°„_ë¬¸ìì—´ + "ë¶€í„°\n" + ëì‹œê°„_ë¬¸ìì—´ + "ê¹Œì§€ í•˜ì—¬\n" + "ì´" + hour + "ì‹œê°„ "
+						+ min + "ë¶„ " + sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.\n" + "```");
 				/*
 				 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
-				 * "´ÔÀº\n#" + ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ + "ºÎÅÍ\n" + ³¡½Ã°£_¹®ÀÚ¿­ + "±îÁö ÇÏ¿©\n#" + "ÃÑ" + hour + "½Ã°£ " +min
-				 * + "ºĞ " + sec + "ÃÊ °øºÎÇß½À´Ï´Ù.\n" + "```");
+				 * "ë‹˜ì€\n#" + ì‹œì‘ì‹œê°„_ë¬¸ìì—´ + "ë¶€í„°\n" + ëì‹œê°„_ë¬¸ìì—´ + "ê¹Œì§€ í•˜ì—¬\n#" + "ì´" + hour + "ì‹œê°„ " +min
+				 * + "ë¶„ " + sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.\n" + "```");
 				 */
-				// e.getChannel().sendMessage(message.getAuthor().getName() + "´ÔÀº"+ ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ +
-				// "ºÎÅÍ\n"+ ³¡½Ã°£_¹®ÀÚ¿­ + "±îÁö ÇÏ¿©\nÃÑ" + hour + "½Ã°£ " +min + "ºĞ " + sec + "ÃÊ °øºÎÇß½À´Ï´Ù.");
+				// e.getChannel().sendMessage(message.getAuthor().getName() + "ë‹˜ì€"+ ì‹œì‘ì‹œê°„_ë¬¸ìì—´ +
+				// "ë¶€í„°\n"+ ëì‹œê°„_ë¬¸ìì—´ + "ê¹Œì§€ í•˜ì—¬\nì´" + hour + "ì‹œê°„ " +min + "ë¶„ " + sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.");
 			} else {
-				// 1½Ã°£ ¹Ì¸¸ÀÏ¶§,
-				// ½Ã°£ Ãâ·Â x
-				retn = ("```yaml\r\n" + name + "´ÔÀº\n" + ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ + "ºÎÅÍ\n" + ³¡½Ã°£_¹®ÀÚ¿­ + "±îÁö ÇÏ¿©\n" + "ÃÑ" + min + "ºĞ " + sec
-						+ "ÃÊ °øºÎÇß½À´Ï´Ù.\n" + "```");
+				// 1ì‹œê°„ ë¯¸ë§Œì¼ë•Œ,
+				// ì‹œê°„ ì¶œë ¥ x
+				retn = ("```yaml\r\n" + name + "ë‹˜ì€\n" + ì‹œì‘ì‹œê°„_ë¬¸ìì—´ + "ë¶€í„°\n" + ëì‹œê°„_ë¬¸ìì—´ + "ê¹Œì§€ í•˜ì—¬\n" + "ì´" + min + "ë¶„ " + sec
+						+ "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.\n" + "```");
 				;
-				// e.getChannel().sendMessage(message.getAuthor().getName() + "´ÔÀº"+ ½ÃÀÛ½Ã°£_¹®ÀÚ¿­ +
-				// "ºÎÅÍ\n"+ ³¡½Ã°£_¹®ÀÚ¿­ + "±îÁö ÇÏ¿©\nÃÑ" +min + "ºĞ " + sec + "ÃÊ °øºÎÇß½À´Ï´Ù.");
-			}
-			
-			¸ØÃá½Ã°£ = 0;
-			ÁøÇàÁß = false;
+				// e.getChannel().sendMessage(message.getAuthor().getName() + "ë‹˜ì€"+ ì‹œì‘ì‹œê°„_ë¬¸ìì—´ +
+				// "ë¶€í„°\n"+ ëì‹œê°„_ë¬¸ìì—´ + "ê¹Œì§€ í•˜ì—¬\nì´" +min + "ë¶„ " + sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.");
+			}	
 		}
 		
-		
-
-		// System.out.println("³¡ - retn : \n\t" + retn);
-		// System.out.println("³¡ - retn ³¡³²!");
+		ë©ˆì¶˜ì‹œê°„ = 0;
+		ì§„í–‰ì¤‘ = false;
+		// System.out.println("ë - retn : \n\t" + retn);
+		// System.out.println("ë - retn ëë‚¨!");
 		return retn;
-		// ÃÑ½Ã°£ = ÃÑ½Ã°£ + diff; // ÇÕ ÀúÀå. Æ÷¸Ë °¡µ¶¼º À§ÇØ¼­ ±×³É ÀúÀå.
+		// ì´ì‹œê°„ = ì´ì‹œê°„ + diff; // í•© ì €ì¥. í¬ë§· ê°€ë…ì„± ìœ„í•´ì„œ ê·¸ëƒ¥ ì €ì¥.
 	}
 
-	void ÃÑ½Ã°£(MessageReceivedEvent e, ArrayList<user> user_arr) {
-		// System.out.println("ÃÑ½Ã°£ ÁøÀÔ..!");
+	void ì´ì‹œê°„(MessageReceivedEvent e, ArrayList<user> user_arr) {
+		// System.out.println("ì´ì‹œê°„ ì§„ì…..!");
 		OracleDB DB = new OracleDB(user_arr);
-		// System.out.println("ÃÑ½Ã°£ µé¾î¿Â À¯ÀúÀÇ ID : " + id);
-		ÃÑ½Ã°£ = DB.today_time(id); // ÃÑ½Ã°£Àº ÃÊ´ÜÀ§·Î ÀúÀåµÇ°í ¹İÈ¯ÇÑ´Ù.
-		// System.out.println("À¯ÀúÀÇ ÃÑ½Ã°£ : " + ÃÑ½Ã°£);
+		// System.out.println("ì´ì‹œê°„ ë“¤ì–´ì˜¨ ìœ ì €ì˜ ID : " + id);
+		ì´ì‹œê°„ = DB.today_time(id); // ì´ì‹œê°„ì€ ì´ˆë‹¨ìœ„ë¡œ ì €ì¥ë˜ê³  ë°˜í™˜í•œë‹¤.
+		// System.out.println("ìœ ì €ì˜ ì´ì‹œê°„ : " + ì´ì‹œê°„);
 
-		long hour = ÃÑ½Ã°£ / (60 * 60);
-		long min = (ÃÑ½Ã°£ / 60) % 60;
-		long sec = ÃÑ½Ã°£ % 60;
+		long hour = ì´ì‹œê°„ / (60 * 60);
+		long min = (ì´ì‹œê°„ / 60) % 60;
+		long sec = ì´ì‹œê°„ % 60;
 		// System.out.println();
-		// e.getChannel().sendMessage("½Ã½ºÅÛ ½ÃÀÛ ÀÌÈÄ·Î, " + message.getAuthor().getName() +
-		// "´ÔÀº ÃÑ" + hour + "½Ã°£ " +min + "ºĞ " + sec + "ÃÊ °øºÎÇß½À´Ï´Ù.");
-		e.getChannel().sendMessage("```diff\r\n" + "-½Ã½ºÅÛ ½ÃÀÛ ÀÌÈÄ·Î,\n-" + name + "´ÔÀº ÃÑ\n-" + hour + "½Ã°£ " + min + "ºĞ "
-				+ sec + "ÃÊ °øºÎÇß½À´Ï´Ù.\n" + "```").queue();
+		// e.getChannel().sendMessage("ì‹œìŠ¤í…œ ì‹œì‘ ì´í›„ë¡œ, " + message.getAuthor().getName() +
+		// "ë‹˜ì€ ì´" + hour + "ì‹œê°„ " +min + "ë¶„ " + sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.");
+		e.getChannel().sendMessage("```diff\r\n" + "-ì‹œìŠ¤í…œ ì‹œì‘ ì´í›„ë¡œ,\n-" + name + "ë‹˜ì€ ì´\n-" + hour + "ì‹œê°„ " + min + "ë¶„ "
+				+ sec + "ì´ˆ ê³µë¶€í–ˆìŠµë‹ˆë‹¤.\n" + "```").queue();
 	}
 
-	Date Á¤Áö½ÃÀÛ½Ã°£ = null;
-	Date Á¤Áö³¡³½½Ã°£ = null;
+	Date ì •ì§€ì‹œì‘ì‹œê°„ = null;
+	Date ì •ì§€ëë‚¸ì‹œê°„ = null;
 
-	void ÀÏ½ÃÁ¤Áö(MessageReceivedEvent e) {
+	void ì¼ì‹œì •ì§€(MessageReceivedEvent e) {
 
 		// print(e.getChannel(), "test!");
-		if (ÁøÇàÁß == false) {
-			e.getChannel().sendMessage("½ÃÀÛ ¹ÌÀÔ·Â.").queue();
+		if (ì§„í–‰ì¤‘ == false) {
+			e.getChannel().sendMessage("ì‹œì‘ ë¯¸ì…ë ¥.").queue();
 			return;
 		}
-		if (!Á¤Áö) { // 0ÀÌ¸é ÇØÁ¦ 1ÀÌ¸é Á¤Áö
-			// Á¤Áö
-			System.out.println("Á¤Áö ÇÔ");
-			Á¤Áö½ÃÀÛ½Ã°£ = new Date();
-			½Ã°£Ãâ·ÂÆ÷¸Ë = new SimpleDateFormat("ddÀÏ/ HH½Ã: mmºĞ: ssÃÊ");
-			String Á¤Áö½ÃÀÛ¹®ÀÚ¿­ = ½Ã°£Ãâ·ÂÆ÷¸Ë.format(Á¤Áö½ÃÀÛ½Ã°£.getTime());
-			e.getChannel().sendMessage("```tex\n$" + name + "Á¤Áö ½ÃÀÛ½Ã°£ : " + Á¤Áö½ÃÀÛ¹®ÀÚ¿­ + "\n```").queue();
+		if (!ì •ì§€) { // 0ì´ë©´ í•´ì œ 1ì´ë©´ ì •ì§€
+			// ì •ì§€
+			System.out.println("ì •ì§€ í•¨");
+			ì •ì§€ì‹œì‘ì‹œê°„ = new Date();
+			ì‹œê°„ì¶œë ¥í¬ë§· = new SimpleDateFormat("ddì¼/ HHì‹œ: mmë¶„: ssì´ˆ");
+			String ì •ì§€ì‹œì‘ë¬¸ìì—´ = ì‹œê°„ì¶œë ¥í¬ë§·.format(ì •ì§€ì‹œì‘ì‹œê°„.getTime());
+			e.getChannel().sendMessage("```tex\n$" + name + "ì •ì§€ ì‹œì‘ì‹œê°„ : " + ì •ì§€ì‹œì‘ë¬¸ìì—´ + "\n```").queue();
 
 		} else {
-			// ÇØÁ¦
-			System.out.println("ÇØÁ¦ ÇÔ");
+			// í•´ì œ
+			System.out.println("í•´ì œ í•¨");
 
-			Á¤Áö³¡³½½Ã°£ = new Date();
+			ì •ì§€ëë‚¸ì‹œê°„ = new Date();
 
-			¸ØÃá½Ã°£ = ¸ØÃá½Ã°£ + (Á¤Áö³¡³½½Ã°£.getTime() - Á¤Áö½ÃÀÛ½Ã°£.getTime()) / 1000;
+			ë©ˆì¶˜ì‹œê°„ = ë©ˆì¶˜ì‹œê°„ + (ì •ì§€ëë‚¸ì‹œê°„.getTime() - ì •ì§€ì‹œì‘ì‹œê°„.getTime()) / 1000;
 
-			long hour = ¸ØÃá½Ã°£ / (60 * 60);
-			long min = (¸ØÃá½Ã°£ / 60) % 60;
-			long sec = ¸ØÃá½Ã°£ % 60;
-			System.out.println("¸ØÃá ½Ã°£ : " + ¸ØÃá½Ã°£);
-			e.getChannel().sendMessage("```tex\n$" + name + "¸ØÃá½Ã°£ : " + hour + "½Ã°£" + min + "ºĞ" + sec + "ÃÊ" + "\n```")
+			long hour = ë©ˆì¶˜ì‹œê°„ / (60 * 60);
+			long min = (ë©ˆì¶˜ì‹œê°„ / 60) % 60;
+			long sec = ë©ˆì¶˜ì‹œê°„ % 60;
+			System.out.println("ë©ˆì¶˜ ì‹œê°„ : " + ë©ˆì¶˜ì‹œê°„);
+			e.getChannel().sendMessage("```tex\n$" + name + "ë©ˆì¶˜ì‹œê°„ : " + hour + "ì‹œê°„" + min + "ë¶„" + sec + "ì´ˆ" + "\n```")
 					.queue();
-			
+
 		}
-		
-		Á¤Áö = !Á¤Áö;
+
+		ì •ì§€ = !ì •ì§€;
 	}
 
-
-	boolean Áßº¹È®ÀÎ(String id) {
+	boolean ì¤‘ë³µí™•ì¸(String id) {
 		if (id.equals(this.id)) {
-			// Áßº¹!!
+			// ì¤‘ë³µ!!
 			return true;
 		}
 		return false;
 	}
 
 	/*
-	 * »ç¿ë Æ÷¸Ë for(int i=0;i<user_arr.size();i++) { // ½ÃÀÛ¿¡ ¾ÆÀÌµğ°¡ ÀÖ´Ù¸é, ³¡ ½ÇÇà.
-	 * if(user_arr.get(i).Áßº¹È®ÀÎ(message.getAuthor().getAvatarId())) {
+	 * ì‚¬ìš© í¬ë§· for(int i=0;i<user_arr.size();i++) { // ì‹œì‘ì— ì•„ì´ë””ê°€ ìˆë‹¤ë©´, ë ì‹¤í–‰.
+	 * if(user_arr.get(i).ì¤‘ë³µí™•ì¸(message.getAuthor().getAvatarId())) {
 	 * 
 	 * } }
 	 */
 
-	Date get½ÃÀÛ½Ã°£() {
-		return this.½ÃÀÛ½Ã°£;
+	Date getì‹œì‘ì‹œê°„() {
+		return this.ì‹œì‘ì‹œê°„;
 	}
 }

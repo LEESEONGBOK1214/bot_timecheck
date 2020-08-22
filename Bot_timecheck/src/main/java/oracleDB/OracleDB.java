@@ -19,7 +19,7 @@ public class OracleDB {
 	int users = 0;
 
 	public int getusers() {
-		// System.out.println("USERS ¹İÈ¯ " + users);
+		// System.out.println("USERS ë°˜í™˜ " + users);
 		return users;
 		// conn.
 	}
@@ -39,7 +39,7 @@ public class OracleDB {
 			// System.out.println("count users");
 			
 			conn = DBConnection.getConnection();
-			System.out.println("Äõ¸® : " + query);
+			System.out.println("ì¿¼ë¦¬ : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			
@@ -49,12 +49,12 @@ public class OracleDB {
 				// users = rs.getInt(1);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+			System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
 			sqle.printStackTrace();
 
 		}
-		System.out.println("À¯Àú ¼ö : " + users);
-		// returnÀº user ¼ö == count(*)
+		System.out.println("ìœ ì € ìˆ˜ : " + users);
+		// returnì€ user ìˆ˜ == count(*)
 		return users;
 	}
 
@@ -65,7 +65,7 @@ public class OracleDB {
 			// System.out.println("ck user");
 
 			conn = DBConnection.getConnection();
-			System.out.println("Äõ¸® : " + query);
+			System.out.println("ì¿¼ë¦¬ : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			// insert into t_record
@@ -73,33 +73,33 @@ public class OracleDB {
 
 
 			if (rs.next()) {
-				// System.out.println("ÇØ´ç id°¡ ÀÖÀ½!");
+				// System.out.println("í•´ë‹¹ idê°€ ìˆìŒ!");
 				return true;
 			} else {
-				// System.out.println("ÇØ´ç id°¡ ¾øÀ½. »õ·Î ¸¸µé¾î¾ß ÇÔ.");
+				// System.out.println("í•´ë‹¹ idê°€ ì—†ìŒ. ìƒˆë¡œ ë§Œë“¤ì–´ì•¼ í•¨.");
 				return false;
 			}
 
 		} catch (SQLException sqle) {
-			System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+			System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
 			sqle.printStackTrace();
 
 		}
 		return false;
 	}
 	public void insert(String query) {
-		System.out.println("DB - insert - ÀÔÀå\n Query : " + query);
+		System.out.println("DB - insert - ì…ì¥\n Query : " + query);
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
-			// System.out.println("Äõ¸® : " + query);
+			// System.out.println("ì¿¼ë¦¬ : " + query);
 			pstm = conn.prepareStatement(query);
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
 			rs = pstm.executeQuery();
 
 			if (rs.next()) {
-				// ¼º°ø.
+				// ì„±ê³µ.
 				System.out.println("===============insert success ==============");
 				users++;
 //				conn.commit();
@@ -110,7 +110,7 @@ public class OracleDB {
 			// System.out.println("end of insert");
 
 		} catch (SQLException sqle) {
-			System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+			System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
 			sqle.printStackTrace();
 
 		}
@@ -121,7 +121,7 @@ public class OracleDB {
 		String query = "select nvl(sum(rec_time), 0) from t_record where rec_id = " + id;
 		String tot_t = null;
 		try {
-			System.out.println("Äõ¸® : " + query);
+			System.out.println("ì¿¼ë¦¬ : " + query);
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
@@ -131,9 +131,9 @@ public class OracleDB {
 
 				tot_t = rs.getString(1);
 			}
-			// System.out.println(id + "´ÔÀÇ ÃÑ ½Ã°£ : " + tot_t);
+			// System.out.println(id + "ë‹˜ì˜ ì´ ì‹œê°„ : " + tot_t);
 		} catch (SQLException sqle) {
-			System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+			System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
 			sqle.printStackTrace();
 		}
 		// long total = Long.parseLong(tot_t);
@@ -143,76 +143,76 @@ public class OracleDB {
 	}
 
 	public String[] week_time(int size) {
-		String À¯Àú¸í[] = new String[size];
-		int ÁÖ°£½Ã°£[] = new int[size];
+		String ìœ ì €ëª…[] = new String[size];
+		int ì£¼ê°„ì‹œê°„[] = new int[size];
 
 		String query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
 				"from t_record, t_user\r\n" + 
 				"where rec_id = usr_id and\r\n" + 
-				"rec_date between to_number(to_char((next_day(sysdate-6, 'ÀÏ¿äÀÏ')),'yyMMdd')) and next_day(sysdate, 'ÀÏ¿äÀÏ')\r\n" + 
+				"rec_date between to_number(to_char((next_day(sysdate-6, 'ì¼ìš”ì¼')),'yyMMdd')) and next_day(sysdate, 'ì¼ìš”ì¼')\r\n" + 
 				"group by usr_name\r\n" + 
 				"order by sum(rec_time) desc";
 
 		int count = 0;
 		try {
-			System.out.println("Äõ¸® : " + query);
+			System.out.println("ì¿¼ë¦¬ : " + query);
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
 			while (rs.next()) {
-//				System.out.println("ÇöÀç count" + count);
-				À¯Àú¸í[count] = rs.getString(1);
-				ÁÖ°£½Ã°£[count++] = rs.getInt(2);
+//				System.out.println("í˜„ì¬ count" + count);
+				ìœ ì €ëª…[count] = rs.getString(1);
+				ì£¼ê°„ì‹œê°„[count++] = rs.getInt(2);
 			}
-			// System.out.println(id + "´ÔÀÇ ÃÑ ½Ã°£ : " + tot_t);
+			// System.out.println(id + "ë‹˜ì˜ ì´ ì‹œê°„ : " + tot_t);
 		} catch (SQLException sqle) {
-			System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+			System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
 			sqle.printStackTrace();
 		}
 		
 
 		System.out.println("us : " + size);
-		String °øºÎ½Ã°£¹®ÀÚ¿­ = "";
-		String °øºÎÇĞ»ı¹®ÀÚ¿­ = "========°øºÎÇÑ ÇĞ»ı ¸ñ·Ï========\n";
+		String ê³µë¶€ì‹œê°„ë¬¸ìì—´ = "";
+		String ê³µë¶€í•™ìƒë¬¸ìì—´ = "========ê³µë¶€í•œ í•™ìƒ ëª©ë¡========\n";
 		if (count <= 0) {
-			°øºÎ½Ã°£¹®ÀÚ¿­ = "ÀÌ¹ø ÁÖ °øºÎÇÑ ÇĞ»ıÀÌ ¾ø½À´Ï´Ù.";
-			°øºÎÇĞ»ı¹®ÀÚ¿­ += "¾ø½À´Ï´Ù.";
+			ê³µë¶€ì‹œê°„ë¬¸ìì—´ = "ì´ë²ˆ ì£¼ ê³µë¶€í•œ í•™ìƒì´ ì—†ìŠµë‹ˆë‹¤.";
+			ê³µë¶€í•™ìƒë¬¸ìì—´ += "ì—†ìŠµë‹ˆë‹¤.";
 		} else {
-			°øºÎÇĞ»ı¹®ÀÚ¿­ += À¯Àú¸í[0];
-			°øºÎ½Ã°£¹®ÀÚ¿­ += À¯Àú¸í[0] + "´ÔÀÇ ÁÖ°£½Ã°£ : " + ÁÖ°£½Ã°£[0]/3600 + "h" + (ÁÖ°£½Ã°£[0]/60)%60 + "m" + ÁÖ°£½Ã°£[0]%60 + "s" + "\n";
+			ê³µë¶€í•™ìƒë¬¸ìì—´ += ìœ ì €ëª…[0];
+			ê³µë¶€ì‹œê°„ë¬¸ìì—´ += ìœ ì €ëª…[0] + "ë‹˜ì˜ ì£¼ê°„ì‹œê°„ : " + ì£¼ê°„ì‹œê°„[0]/3600 + "h" + (ì£¼ê°„ì‹œê°„[0]/60)%60 + "m" + ì£¼ê°„ì‹œê°„[0]%60 + "s" + "\n";
 			for (int i = 1; i < count; i++) {
-				long hour = ÁÖ°£½Ã°£[i]/3600;
-				long min = (ÁÖ°£½Ã°£[i]/60)%60;
-				long sec = ÁÖ°£½Ã°£[i]%60;
+				long hour = ì£¼ê°„ì‹œê°„[i]/3600;
+				long min = (ì£¼ê°„ì‹œê°„[i]/60)%60;
+				long sec = ì£¼ê°„ì‹œê°„[i]%60;
 				
-				°øºÎ½Ã°£¹®ÀÚ¿­ += À¯Àú¸í[i] + "´ÔÀÇ ÁÖ°£½Ã°£ : " + hour + "h" + min + "m" + sec + "s" + "\n";
+				ê³µë¶€ì‹œê°„ë¬¸ìì—´ += ìœ ì €ëª…[i] + "ë‹˜ì˜ ì£¼ê°„ì‹œê°„ : " + hour + "h" + min + "m" + sec + "s" + "\n";
 				if(i%5!=0) {
-					°øºÎÇĞ»ı¹®ÀÚ¿­ += ", ";
+					ê³µë¶€í•™ìƒë¬¸ìì—´ += ", ";
 				}
-				°øºÎÇĞ»ı¹®ÀÚ¿­ += À¯Àú¸í[i];
+				ê³µë¶€í•™ìƒë¬¸ìì—´ += ìœ ì €ëª…[i];
 				if (i % 5 == 4) {
-					°øºÎÇĞ»ı¹®ÀÚ¿­ += "\n";
+					ê³µë¶€í•™ìƒë¬¸ìì—´ += "\n";
 				}
 			}
 		}
 
-		String[] Ãâ·Â¹® = new String[2];
-		Ãâ·Â¹®[0] = °øºÎÇĞ»ı¹®ÀÚ¿­;
-		Ãâ·Â¹®[0] += "\n===========================";
+		String[] ì¶œë ¥ë¬¸ = new String[2];
+		ì¶œë ¥ë¬¸[0] = ê³µë¶€í•™ìƒë¬¸ìì—´;
+		ì¶œë ¥ë¬¸[0] += "\n===========================";
 
-		Ãâ·Â¹®[1] += "\n===========================";
-		Ãâ·Â¹®[1] = °øºÎ½Ã°£¹®ÀÚ¿­;
-		Ãâ·Â¹®[1] += "===========================";
+		ì¶œë ¥ë¬¸[1] += "\n===========================";
+		ì¶œë ¥ë¬¸[1] = ê³µë¶€ì‹œê°„ë¬¸ìì—´;
+		ì¶œë ¥ë¬¸[1] += "===========================";
 
-		return Ãâ·Â¹®;
+		return ì¶œë ¥ë¬¸;
 	}
 
 //	public String run_sql(String query) {
-//		String Ãâ·Â¹® = "";
+//		String ì¶œë ¥ë¬¸ = "";
 //		try {
-//			System.out.println("Äõ¸® : " + query);
+//			System.out.println("ì¿¼ë¦¬ : " + query);
 //
 //			conn = DBConnection.getConnection();
 //			pstm = conn.prepareStatement(query);
@@ -221,10 +221,10 @@ public class OracleDB {
 //			while (rs.next()) {
 //
 //			}
-//			// System.out.println(id + "´ÔÀÇ ÃÑ ½Ã°£ : " + tot_t);
+//			// System.out.println(id + "ë‹˜ì˜ ì´ ì‹œê°„ : " + tot_t);
 //		} catch (SQLException sqle) {
-//			System.out.println("sql¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
-//			Ãâ·Â¹® = "sql¹®¿¡¼­ ¿¹¿Ü ¹ß»ı";
+//			System.out.println("sqlë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
+//			ì¶œë ¥ë¬¸ = "sqlë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ";
 //			sqle.printStackTrace();
 //		}
 //
@@ -233,10 +233,10 @@ public class OracleDB {
 
 	public String getAttendance(String query) {
 		// TODO Auto-generated method stub
-		String Ãâ·Â¹® = "";
+		String ì¶œë ¥ë¬¸ = "";
 
 		try {
-			System.out.println("Äõ¸®  : " + query);
+			System.out.println("ì¿¼ë¦¬  : " + query);
 //			select usr_name
 //			from t_user, t_record
 //			where usr_id = rec_id and
@@ -247,36 +247,36 @@ public class OracleDB {
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
-			Ãâ·Â¹® += "========¿À´Ã Ãâ¼®ÇÑ »ç¶÷ ¸ñ·Ï========\n";
-			int count = 0; // , or ÁÙ³Ñ±è ÇØÁÖ±â À§ÇØ.
+			ì¶œë ¥ë¬¸ += "========ì˜¤ëŠ˜ ì¶œì„í•œ ì‚¬ëŒ ëª©ë¡========\n";
+			int count = 0; // , or ì¤„ë„˜ê¹€ í•´ì£¼ê¸° ìœ„í•´.
 
 			while (rs.next()) {
-				Ãâ·Â¹® += rs.getString(1);
+				ì¶œë ¥ë¬¸ += rs.getString(1);
 				if (count % 5 < 4) {
-					Ãâ·Â¹® += ", ";
+					ì¶œë ¥ë¬¸ += ", ";
 				} else {
-					Ãâ·Â¹® += "\n";
+					ì¶œë ¥ë¬¸ += "\n";
 				}
 				count++;
 			}
 
-			System.out.println(Ãâ·Â¹®.charAt(Ãâ·Â¹®.length() - 2));
-			System.out.println(Ãâ·Â¹®.charAt(Ãâ·Â¹®.length() - 3));
-			if (Ãâ·Â¹®.charAt(Ãâ·Â¹®.length() - 2) == ',') {
-				Ãâ·Â¹® = Ãâ·Â¹®.substring(0, Ãâ·Â¹®.length() - 2);
+			System.out.println(ì¶œë ¥ë¬¸.charAt(ì¶œë ¥ë¬¸.length() - 2));
+			System.out.println(ì¶œë ¥ë¬¸.charAt(ì¶œë ¥ë¬¸.length() - 3));
+			if (ì¶œë ¥ë¬¸.charAt(ì¶œë ¥ë¬¸.length() - 2) == ',') {
+				ì¶œë ¥ë¬¸ = ì¶œë ¥ë¬¸.substring(0, ì¶œë ¥ë¬¸.length() - 2);
 			}
-//			StringUtils.removeEnd(Ãâ·Â¹®, ",");
-			Ãâ·Â¹® += "\n==============================";
+//			StringUtils.removeEnd(ì¶œë ¥ë¬¸, ",");
+			ì¶œë ¥ë¬¸ += "\n==============================";
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
 
-		return Ãâ·Â¹®;
+		return ì¶œë ¥ë¬¸;
 
 	}
 
-	// db connection Á¾·á.
+	// db connection ì¢…ë£Œ.
 	{
 		try
 
@@ -296,12 +296,12 @@ public class OracleDB {
 	}
 }
 /*
- * public void test() { // Connection conn = null; // DB¿¬°áµÈ »óÅÂ(¼¼¼Ç)À» ´ãÀº °´Ã¼ //
- * PreparedStatement pstm = null; // SQL ¹®À» ³ªÅ¸³»´Â °´Ã¼ // ResultSet rs = null; //
- * Äõ¸®¹®À» ³¯¸°°Í¿¡ ´ëÇÑ ¹İÈ¯°ªÀ» ´ãÀ» °´Ã¼
+ * public void test() { // Connection conn = null; // DBì—°ê²°ëœ ìƒíƒœ(ì„¸ì…˜)ì„ ë‹´ì€ ê°ì²´ //
+ * PreparedStatement pstm = null; // SQL ë¬¸ì„ ë‚˜íƒ€ë‚´ëŠ” ê°ì²´ // ResultSet rs = null; //
+ * ì¿¼ë¦¬ë¬¸ì„ ë‚ ë¦°ê²ƒì— ëŒ€í•œ ë°˜í™˜ê°’ì„ ë‹´ì„ ê°ì²´
  * 
- * try { // SQL ¹®ÀåÀ» ¸¸µé°í ¸¸¾à ¹®ÀåÀÌ ÁúÀÇ¾î(SELECT¹®)¶ó¸é // ±× °á°ú¸¦ ´ãÀ» ResulSet °´Ã¼¸¦ ÁØºñÇÑ ÈÄ
- * ½ÇÇà½ÃÅ²´Ù. String quary = "SELECT * FROM t_record";
+ * try { // SQL ë¬¸ì¥ì„ ë§Œë“¤ê³  ë§Œì•½ ë¬¸ì¥ì´ ì§ˆì˜ì–´(SELECTë¬¸)ë¼ë©´ // ê·¸ ê²°ê³¼ë¥¼ ë‹´ì„ ResulSet ê°ì²´ë¥¼ ì¤€ë¹„í•œ í›„
+ * ì‹¤í–‰ì‹œí‚¨ë‹¤. String quary = "SELECT * FROM t_record";
  * 
  * conn = DBConnection.getConnection(); pstm = conn.prepareStatement(quary); rs
  * = pstm.executeQuery();
@@ -317,33 +317,33 @@ public class OracleDB {
  * String result = rec_id + "\t" + rec_date + "\t" + rec_time;
  * //System.out.println(result); }
  * 
- * } catch (SQLException sqle) { System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+ * } catch (SQLException sqle) { System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
  * sqle.printStackTrace();
  * 
  * } } try{
  * 
- * } catch (SQLException sqle) { System.out.println("SELECT¹®¿¡¼­ ¿¹¿Ü ¹ß»ı");
+ * } catch (SQLException sqle) { System.out.println("SELECTë¬¸ì—ì„œ ì˜ˆì™¸ ë°œìƒ");
  * sqle.printStackTrace();
  * 
- * } finally { // DB ¿¬°áÀ» Á¾·áÇÑ´Ù. try { if (rs != null) { rs.close(); } if (pstm !=
+ * } finally { // DB ì—°ê²°ì„ ì¢…ë£Œí•œë‹¤. try { if (rs != null) { rs.close(); } if (pstm !=
  * null) { pstm.close(); } if (conn != null) { conn.close(); } } catch
  * (Exception e) { throw new RuntimeException(e.getMessage()); }
  * 
  * }
  */
 /*
- * EMP Å×ÀÌºíÀÇ µ¥ÀÌÅÍ Å¸ÀÔ
+ * EMP í…Œì´ë¸”ì˜ ë°ì´í„° íƒ€ì…
  * 
  * EMPNO NOT NULL NUMBER(4) -- int ENAME VARCHAR2(10) -- String JOB VARCHAR2(9)
  * -- String MGR NUMBER(4) -- int HIREDATE DATE -- Date SAL NUMBER(7,2) --
  * float/double COMM NUMBER(7,2) -- float/double DEPTNO NUMBER(2) -- int
  */
 
-// int empno = rs.getInt(1); //int empno = rs.getInt("empno"); ¼ıÀÚ ´ë½Å ÄÃ·³  ÀÌ¸§À» Àû¾îµµ µÈ´Ù. 
+// int empno = rs.getInt(1); //int empno = rs.getInt("empno"); ìˆ«ì ëŒ€ì‹  ì»¬ëŸ¼  ì´ë¦„ì„ ì ì–´ë„ ëœë‹¤. 
 // String ename = rs.getString(2); 
 // String job = rs.getString(3); 
 // int mgr = rs.getInt(4); 
-// java.sql.Date hiredate = rs.getDate(5); // Date Å¸ÀÔ Ã³¸® 
+// java.sql.Date hiredate = rs.getDate(5); // Date íƒ€ì… ì²˜ë¦¬ 
 // int sal = rs.getInt(6); 
 // int comm = rs.getInt(7); 
 // int deptno = rs.getInt(8); 
@@ -351,4 +351,4 @@ public class OracleDB {
 // empno+" "+ename+" "+job+" "+mgr+" "+hiredate+" "+sal+" "+comm+" "+deptno;
 // System.out.println(result);
 //
-// ÃâÃ³:https:// all-record.tistory.com/72 [¼¼»óÀÇ ¸ğµç ±â·Ï]
+// ì¶œì²˜:https:// all-record.tistory.com/72 [ì„¸ìƒì˜ ëª¨ë“  ê¸°ë¡]
