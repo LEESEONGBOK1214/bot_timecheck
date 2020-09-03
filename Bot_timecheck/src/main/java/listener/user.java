@@ -98,10 +98,11 @@ public class user {
 				// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
 				// "부터\n"+ 끝시간_문자열 + "까지 하여\n총" +min + "분 " + sec + "초 공부했습니다.");
 			}	
+			멈춘시간 = 0;
+			진행중 = false;
 		}
 		
-		멈춘시간 = 0;
-		진행중 = false;
+		
 		// System.out.println("끝 - retn : \n\t" + retn);
 		// System.out.println("끝 - retn 끝남!");
 		return retn;

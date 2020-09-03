@@ -117,7 +117,7 @@ public class TimeCheckcmd {
 				{ // DB에 유저의 시작시간 넣기.
 					// OracleDB DB = new OracleDB(user_arr);
 
-					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
+					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMddHH");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 							+ user_arr.get(i).diff / 1000
@@ -135,7 +135,7 @@ public class TimeCheckcmd {
 			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).진행중);
 			if (user_arr.get(i).id.equals(id) && user_arr.get(i).진행중) {
 				retn = user_arr.get(i).끝();
-				SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMdd");
+				SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMddHH");
 				String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 				String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
 						+ user_arr.get(i).diff / 1000 + ")";

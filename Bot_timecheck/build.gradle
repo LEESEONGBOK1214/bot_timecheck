@@ -32,5 +32,26 @@ dependencies {
 	compile group: 'net.dv8tion', name: 'JDA', version: '4.0.0_45'
 	
 	implementation 'org.javacord:javacord:3.0.6'
+	
+	compile group: 'com.google.guava', name: 'guava', version: '15.0'
+	//compile group: 'Bot_timecheck.CKBOT', name: 'CKBOT', version: '1.0'
+}
+
+jar {
+    // Keep jar clean:
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+	doFirst {
+    	manifest {
+        	if (!configurations.runtime.isEmpty()) {
+                attributes('Class-Path': 
+                                configurations.runtime.collect{it.toURI().toString()}.join(' '))
+            }
+    	}
+    }
+}
+    
+    // How-to add class path:
+    //     https://stackoverflow.com/questions/22659463/add-classpath-in-manifest-using-gradle
+    //     https://gist.github.com/simon04/6865179
 }
 
