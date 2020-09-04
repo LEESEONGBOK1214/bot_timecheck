@@ -113,7 +113,7 @@ public class TimeCheckcmd {
 				if (user_arr.get(i).진행중 == false) {
 					return;
 				}
-				sayMsg(e.getChannel(), user_arr.get(i).끝());
+				sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), user_arr.get(i).끝());
 				{ // DB에 유저의 시작시간 넣기.
 					// OracleDB DB = new OracleDB(user_arr);
 
@@ -132,7 +132,7 @@ public class TimeCheckcmd {
 	public String end(ArrayList<user> user_arr, String id) {
 		String retn = "";
 		for (int i = 0; i < user_arr.size(); i++) {
-			System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).진행중);
+			//System.out.println(i + " " + user_arr.get(i).name + user_arr.get(i).진행중);
 			if (user_arr.get(i).id.equals(id) && user_arr.get(i).진행중) {
 				retn = user_arr.get(i).끝();
 				SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMddHH");
@@ -193,13 +193,6 @@ public class TimeCheckcmd {
 				+ "to_char(sysdate+1, 'RRMMDD') || '06' group by usr_name";
 
 		sayMsg(e.getChannel(), DB.getAttendance(query));
-
-		/*
-		 * 
-		 * select usr_name, sum(rec_time) from t_user, t_record where usr_id = rec_id
-		 * and rec_date between to_char(sysdate, 'RRMMDD') || '06' and
-		 * to_char(sysdate+1, 'RRMMDD') || '06' group by usr_name;
-		 */
 	}
 	
 	private void del_Msg(Message msg) {
@@ -217,7 +210,48 @@ public class TimeCheckcmd {
 
 		return 시간포맷.format(date);
 	}
+	
+	public boolean 강제종료하기(ArrayList<user> user_arr, MessageReceivedEvent e, String msg) {
+		for (int i = 0; i < user_arr.size(); i++) {
+			// 느낌표 떼고 그 뒤에거만 왔을것.
+			// ex !이성복 -> 이성복
+			//    이성복          ==     이성복 비교
+			if (msg.equals(user_arr.get(i).name)) {
+				if(user_arr.get(i).진행중==false) {
+					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+							user_arr.get(i).name + " 진행중이 아님.");
+					return false;
+				}
+				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+						user_arr.get(i).name + "을 강제종료 합니다.");
+				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+						user_arr.get(i).끝());
+				
+				
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 
+	public boolean 고수인가(String id) {
+		String[] 고수들 = {
+				"221937902093991936", //중원이형
+				"562265706079584256", //창현이형
+				"715536378141868042", //동진이형
+				"380676589349896193",  //원용이형
+				"262951571053084673" // 테스트용 이성복
+		};
+		
+		for(int i=0;i<고수들.length;i++) {
+			if(id.equals(고수들[i])) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 }

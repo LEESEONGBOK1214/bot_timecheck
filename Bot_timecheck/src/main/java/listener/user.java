@@ -6,10 +6,15 @@ import java.util.Date;
 
 import org.javacord.api.DiscordApi;
 
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import oracleDB.OracleDB;
 
-public class user {
+public class user{
 	String id;
 	String name;
 	String now_ch;
@@ -58,16 +63,19 @@ public class user {
 	}
 
 	// @SuppressWarnings("deprecation")
-	long diff;
+	long diff = 0;
 
 	String 끝() {
 		// System.out.println("끝 - 입장");
 		String retn;
 		끝시간 = new Date();
 
-		if (진행중) {
-			retn = "일시정지를 끝내주세요";
+		if (정지) {
+			retn = ">일시정지를 끝내주세요";
 		} else {
+//			System.out.println(끝시간.getTime());
+//			System.out.println(시작시간.getTime());
+//			System.out.println((멈춘시간 * 1000));
 			diff = 끝시간.getTime() - 시작시간.getTime() - (멈춘시간 * 1000); // 멈춘시간은 초단위로 설정되어있다.
 
 			long hour = diff / (60 * 60 * 1000);
@@ -182,4 +190,6 @@ public class user {
 	Date get시작시간() {
 		return this.시작시간;
 	}
+
+	
 }
