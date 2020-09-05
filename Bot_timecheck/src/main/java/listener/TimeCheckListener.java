@@ -55,20 +55,17 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		// System.out.println(cmd);
 
 //		System.out.println(강제종료 + cmd);
-		if (강제종료) {
-			if(cmd.startsWith("!")) { // !로 시작하면.
+		if (강제종료 && cmd.startsWith("!")) {
+  // !로 시작하면.
 //				System.out.println("강제종료 : " + 강제종료 +"\n" + cmd);
-				cmd = cmd.substring(1); // ! 떼고 나서.
-				if (tcc.고수인가(e.getMember().getId())) {
+			cmd = cmd.substring(1); // ! 떼고 나서.
+			if (tcc.고수인가(e.getMember().getId())) {
 //					System.out.println("강제종료 후");
-					강제종료 = tcc.강제종료하기(user_arr, e, cmd);	
-					if(강제종료) {
-						sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력 ");
-					}
+				강제종료 = tcc.강제종료하기(user_arr, e, cmd);	
+				if(강제종료) {
+					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력 ");
 				}
 			}
-			
-			return;
 		}
 		if (cmd.startsWith("$")) {
 
@@ -117,7 +114,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				del_Msg(msg);
 				tcc.queue(user_arr, e);
 				return;
-			case "시간확인":
+			case "총시간":
 				del_Msg(msg);
 				tcc.total_time(user_arr, e);
 				return;
@@ -136,6 +133,9 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 			case "주간시간보기":
 				tcc.view_week(user_arr, e);
 				return;
+			case "일일시간보기":
+				tcc.view_today(user_arr, e);
+				return;
 
 			case "출석":
 				tcc.Attendance(e);
@@ -143,7 +143,11 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 
 			case "강제종료":
 				강제종료 = tcc.고수인가(e.getMember().getId());
-				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력");
+				if(강제종료) {
+					tcc.queue(user_arr, e);
+					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력");
+					
+				}
 			}
 		}
 	}
@@ -203,7 +207,10 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		// e.getGuild().getSystemChannel().sendMessage("=========================상태변환!!!").queue();
 		// System.out.println("여기까진?");
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
-			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), 강제종료(e.getMember().getId()));
+			String msg = 강제종료(e.getMember().getId());
+			if(!msg.equals("no")) {
+				sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), msg);
+			}
 		}
 		return;
 	}
@@ -234,6 +241,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				autoP = tcc.end(user_arr, id);
 			} else {
 				System.out.println("진행중 아니므로 할거없따~");
+				return "no";
 			}
 		}
 
@@ -249,7 +257,11 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		// 길드 보이스 나감.. 이라는데.. 과연!!
 //		System.out.println(e.getMember().getUser().getName());
 //		System.out.println(e.getVoiceState().getChannel().getName());
-		sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), 강제종료(e.getMember().getId()));
+		String msg = 강제종료(e.getMember().getId());
+		if(!msg.equals("no")) {
+			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), msg);
+		}
+		
 
 	}
 
@@ -258,7 +270,10 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		System.out.print("채널 : ");
 		System.out.println(channel.getName());
 		System.out.println("메세지 : " + msg);
-		channel.sendMessage(msg).queue();
+		if(msg != null) {
+			channel.sendMessage(msg).queue();
+		}
+		
 //		channel.sendMessage("asdfasdfasdfasdf").apply();
 //		channel.sendMessage("이건 되겠지").queue();
 		// channel.sendMessage()

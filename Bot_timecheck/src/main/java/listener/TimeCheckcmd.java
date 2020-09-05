@@ -40,7 +40,7 @@ public class TimeCheckcmd {
 	}
 	
 	void cmdList(MessageReceivedEvent e, MessageChannel ch) {
-		String 명령어목록[] = { "시작", "끝", "주간시간보기", "시간확인(여태 총 시간)", "일시정지 (다시하면 해제기능함)", "ping", "홀리", "산산" };
+		String 명령어목록[] = { "시작", "끝", "주간시간보기", "일일시간보기", "출석", "총시간", "일시정지 (다시하면 해제)", "ping", "홀리", "산산" };
 		String 출력 = "";
 		출력 += "===명령어 목록===\n";
 		for (int i = 0; i < 명령어목록.length; i++) {
@@ -76,7 +76,7 @@ public class TimeCheckcmd {
 
 				user_arr.get(i).now_ch = e.getChannel().getId();
 				if (user_arr.get(i).진행중) {
-					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).name + "-> 중복 시작했습니다.]```").queue();
+					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).이름 + "-> 중복 시작했습니다.]```").queue();
 					// System.out.println("중복 시작 : " + user_arr.get(i).name);
 					return;
 				} else {
@@ -97,7 +97,7 @@ public class TimeCheckcmd {
 		}
 		user_arr.get(유저번호).시작();
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
-		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).name + "]의 시작 시간\n[" + 시작시간 + "]```");
+		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).이름 + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
 		// System.out.println("start 마지막.");
 	}
@@ -149,17 +149,20 @@ public class TimeCheckcmd {
 	
 
 	void queue(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		System.out.println("=====================");
-		sayMsg(e.getChannel(), "==============�������� ���==============");
-	 	for(int i=0;i<user_arr.size();i++)
+
+		sayMsg(e.getChannel(), ">>>  진행중 목록");
+		int c = 0;
+	 	for(int i=0 ;i<user_arr.size();i++)
 	 	{
 	 		if(user_arr.get(i).진행중) {
-	 			System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
-	 			sayMsg(e.getChannel(), (user_arr.get(i).name + " " + user_arr.get(i).id));
+	 			//System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
+	 			sayMsg(e.getChannel(), (user_arr.get(i).이름 + " " + user_arr.get(i).id));
+	 			c++;
 	 		}
+	 	}if(c==0) {
+	 		sayMsg(e.getChannel(), ">없음");
 	 	}
-	 	System.out.println("=====================");
-	 	sayMsg(e.getChannel(), "==============진행중인사람==============");
+	 	//sayMsg(e.getChannel(), "==============진행중인사람==============");
 	}
 	
 	void pause(ArrayList<user> user_arr, MessageReceivedEvent e) {
@@ -185,6 +188,13 @@ public class TimeCheckcmd {
 		sayMsg(e.getChannel(), 출력문[1]);
 	}
 	
+	public void view_today(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		// TODO Auto-generated method stub
+		String 출력문 = DB.today_time(user_arr);
+		sayMsg(e.getChannel(), 출력문);
+
+	}
+	
 	public void Attendance(MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
 
@@ -195,35 +205,22 @@ public class TimeCheckcmd {
 		sayMsg(e.getChannel(), DB.getAttendance(query));
 	}
 	
-	private void del_Msg(Message msg) {
-		msg.delete().queue();
-	}
 
-	private void sayMsg(MessageChannel channel, String msg) {
-		channel.sendMessage(msg).queue();
-	}
-
-	private String ToTime(Date date) {
-		SimpleDateFormat 시간포맷 = new SimpleDateFormat("MM월/dd일/ HH시 :mm분 :ss초");
-
-		// System.out.println(시간포맷.format(date));
-
-		return 시간포맷.format(date);
-	}
+	
 	
 	public boolean 강제종료하기(ArrayList<user> user_arr, MessageReceivedEvent e, String msg) {
 		for (int i = 0; i < user_arr.size(); i++) {
 			// 느낌표 떼고 그 뒤에거만 왔을것.
 			// ex !이성복 -> 이성복
 			//    이성복          ==     이성복 비교
-			if (msg.equals(user_arr.get(i).name)) {
+			if (msg.equals(user_arr.get(i).이름)) {
 				if(user_arr.get(i).진행중==false) {
 					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
-							user_arr.get(i).name + " 진행중이 아님.");
+							user_arr.get(i).이름 + " 진행중이 아님.");
 					return false;
 				}
 				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
-						user_arr.get(i).name + "을 강제종료 합니다.");
+						user_arr.get(i).이름 + "을 강제종료 합니다.");
 				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
 						user_arr.get(i).끝());
 				
@@ -252,6 +249,20 @@ public class TimeCheckcmd {
 		}
 		
 		return false;
+	}
+
+	
+	
+	private void sayMsg(MessageChannel channel, String msg) {
+		channel.sendMessage(msg).queue();
+	}
+
+	private String ToTime(Date date) {
+		SimpleDateFormat 시간포맷 = new SimpleDateFormat("MM월/dd일/ HH시 :mm분 :ss초");
+
+		// System.out.println(시간포맷.format(date));
+
+		return 시간포맷.format(date);
 	}
 
 }

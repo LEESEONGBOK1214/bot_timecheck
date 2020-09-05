@@ -15,8 +15,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import oracleDB.OracleDB;
 
 public class user{
-	String id;
-	String name;
+	public String id;
+	public String 이름;
 	String now_ch;
 	Date 시작시간 = null;
 	Date 끝시간 = null;
@@ -47,7 +47,8 @@ public class user{
 		} else {
 			// System.out.println("널값아님 실행함");
 			this.id = id;
-			this.name = name;
+			this.이름 = name;
+			//System.out.println(this.name);
 		}
 
 		// 시작();
@@ -88,7 +89,7 @@ public class user{
 
 			if (hour >= 1) {
 				// 1시간 이상일때
-				retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 "
+				retn = ("```yaml\r\n" + 이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 "
 						+ min + "분 " + sec + "초 공부했습니다.\n" + "```");
 				/*
 				 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
@@ -100,7 +101,7 @@ public class user{
 			} else {
 				// 1시간 미만일때,
 				// 시간 출력 x
-				retn = ("```yaml\r\n" + name + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
+				retn = ("```yaml\r\n" + 이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
 						+ "초 공부했습니다.\n" + "```");
 				;
 				// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
@@ -121,7 +122,7 @@ public class user{
 		// System.out.println("총시간 진입..!");
 		OracleDB DB = new OracleDB(user_arr);
 		// System.out.println("총시간 들어온 유저의 ID : " + id);
-		총시간 = DB.today_time(id); // 총시간은 초단위로 저장되고 반환한다.
+		총시간 = DB.total_time(id); // 총시간은 초단위로 저장되고 반환한다.
 		// System.out.println("유저의 총시간 : " + 총시간);
 
 		long hour = 총시간 / (60 * 60);
@@ -130,7 +131,7 @@ public class user{
 		// System.out.println();
 		// e.getChannel().sendMessage("시스템 시작 이후로, " + message.getAuthor().getName() +
 		// "님은 총" + hour + "시간 " +min + "분 " + sec + "초 공부했습니다.");
-		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + name + "님은 총\n-" + hour + "시간 " + min + "분 "
+		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + 이름 + "님은 총\n-" + hour + "시간 " + min + "분 "
 				+ sec + "초 공부했습니다.\n" + "```").queue();
 	}
 
@@ -150,7 +151,7 @@ public class user{
 			정지시작시간 = new Date();
 			시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
 			String 정지시작문자열 = 시간출력포맷.format(정지시작시간.getTime());
-			e.getChannel().sendMessage("```tex\n$" + name + "정지 시작시간 : " + 정지시작문자열 + "\n```").queue();
+			e.getChannel().sendMessage("```tex\n$" + 이름 + "정지 시작시간 : " + 정지시작문자열 + "\n```").queue();
 
 		} else {
 			// 해제
@@ -164,7 +165,7 @@ public class user{
 			long min = (멈춘시간 / 60) % 60;
 			long sec = 멈춘시간 % 60;
 			System.out.println("멈춘 시간 : " + 멈춘시간);
-			e.getChannel().sendMessage("```tex\n$" + name + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
+			e.getChannel().sendMessage("```tex\n$" + 이름 + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
 					.queue();
 
 		}
