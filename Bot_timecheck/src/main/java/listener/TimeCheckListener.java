@@ -124,7 +124,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				tcc.pause(user_arr, e);
 			case "시험기능":
 				// tcc.test();
-				Channel tch;
+				user_arr.get(14).getname();
 
 //				System.out.println(tch.getApi()
 //						.addUserChangeStatusListener(org.javacord.api.listener.user.UserChangeStatusListener)));

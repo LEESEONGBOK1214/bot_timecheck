@@ -35,6 +35,10 @@ public class user{
 
 	DiscordApi DA;
 
+	public String getname() {
+		return this.이름;
+	}
+	
 	public user(String id, String name) { // 시작 시 호출.
 		// System.out.println("받은 아이디 : " + id);
 		// ServerLeaveListener SLL = new ServerLeaveListener();
@@ -89,7 +93,7 @@ public class user{
 
 			if (hour >= 1) {
 				// 1시간 이상일때
-				retn = ("```yaml\r\n" + 이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 "
+				retn = ("```yaml\r\n" + this.이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + hour + "시간 "
 						+ min + "분 " + sec + "초 공부했습니다.\n" + "```");
 				/*
 				 * e.getChannel().sendMessage("```css\r\n#" + message.getAuthor().getName() +
@@ -101,7 +105,7 @@ public class user{
 			} else {
 				// 1시간 미만일때,
 				// 시간 출력 x
-				retn = ("```yaml\r\n" + 이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
+				retn = ("```yaml\r\n" + this.이름 + "님은\n" + 시작시간_문자열 + "부터\n" + 끝시간_문자열 + "까지 하여\n" + "총" + min + "분 " + sec
 						+ "초 공부했습니다.\n" + "```");
 				;
 				// e.getChannel().sendMessage(message.getAuthor().getName() + "님은"+ 시작시간_문자열 +
@@ -131,7 +135,7 @@ public class user{
 		// System.out.println();
 		// e.getChannel().sendMessage("시스템 시작 이후로, " + message.getAuthor().getName() +
 		// "님은 총" + hour + "시간 " +min + "분 " + sec + "초 공부했습니다.");
-		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + 이름 + "님은 총\n-" + hour + "시간 " + min + "분 "
+		e.getChannel().sendMessage("```diff\r\n" + "-시스템 시작 이후로,\n-" + this.이름 + "님은 총\n-" + hour + "시간 " + min + "분 "
 				+ sec + "초 공부했습니다.\n" + "```").queue();
 	}
 
@@ -151,7 +155,7 @@ public class user{
 			정지시작시간 = new Date();
 			시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
 			String 정지시작문자열 = 시간출력포맷.format(정지시작시간.getTime());
-			e.getChannel().sendMessage("```tex\n$" + 이름 + "정지 시작시간 : " + 정지시작문자열 + "\n```").queue();
+			e.getChannel().sendMessage("```tex\n$" + this.이름 + "정지 시작시간 : " + 정지시작문자열 + "\n```").queue();
 
 		} else {
 			// 해제
@@ -165,7 +169,7 @@ public class user{
 			long min = (멈춘시간 / 60) % 60;
 			long sec = 멈춘시간 % 60;
 			System.out.println("멈춘 시간 : " + 멈춘시간);
-			e.getChannel().sendMessage("```tex\n$" + 이름 + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
+			e.getChannel().sendMessage("```tex\n$" + this.이름 + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
 					.queue();
 
 		}

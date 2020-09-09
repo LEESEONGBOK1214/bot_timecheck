@@ -147,13 +147,29 @@ public class OracleDB {
 		String 유저명[] = new String[size];
 		int 주간시간[] = new int[size];
 
+		Date 현재시간 = new Date();
+		int now_hour = 현재시간.getHours();
+		int now_day = 현재시간.getDay();  // 0~6 일~토
+		
+		
 		String query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
 				"from t_record, t_user\r\n" + 
 				"where rec_id = usr_id and\r\n" + 
-				"rec_date between to_char((next_day(sysdate-7, '일요일')),'yyMMdd') || '06' and to_char(next_day(sysdate, '일요일'),'yyMMdd') || '06'\r\n" + 
+				"rec_date between to_char((next_day(sysdate-7, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate, '월요일'),'yyMMdd') || '06'\r\n" + 
 				"group by usr_name\r\n" + 
 				"order by sum(rec_time) desc";
 
+		if(now_day==1) {
+			if(now_hour<24 && now_hour>06) {
+				query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
+					"from t_record, t_user\r\n" + 
+					"where rec_id = usr_id and\r\n" + 
+					"rec_date between to_char((next_day(sysdate-8, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate-2, '월요일'),'yyMMdd') || '06'\r\n" + 
+					"group by usr_name\r\n" + 
+					"order by sum(rec_time) desc";
+			}
+		}
+		
 		int count = 0;
 		try {
 			System.out.println("쿼리 : " + query);
@@ -213,9 +229,10 @@ public class OracleDB {
 	public String today_time(ArrayList<user> user_arr) {
 		// TODO Auto-generated method stub
 		Date 현재시간 = new Date();
-		String 유저명[] = new String[user_arr.size()];
+		ArrayList<String> 유저목록 = new ArrayList<String>();
 		int hour = 현재시간.getHours();
 		//System.out.println(hour);
+		int now_users = user_arr.size();
 		String query;
 		if(hour<24 && hour>06) {
 			query = "select usr_name, sum(rec_time)\r\n" + 
@@ -236,7 +253,9 @@ public class OracleDB {
 		
 		
 		String 출력문  = ">>>    #일일시간보기\n";
-		ArrayList<user> temp = user_arr;
+		
+		System.out.println("현재 users : " + now_users);
+	
 		try {
 			System.out.println("쿼리 : " + query);
 
@@ -245,41 +264,38 @@ public class OracleDB {
 			rs = pstm.executeQuery();
 
 			int count = 0;
+			
 			while (rs.next()) {
-				유저명[count] = rs.getString(1);
+				String name = rs.getString(1);
 //				System.out.println(유저명[count]);
 				int time = rs.getInt(2);
-				출력문 += (유저명[count] + " : ");
+				출력문 += (name + " : ");
 				출력문 +=   (int)time/3600 + "h " +
 						(time/60)%60 + "m " +
 						 time%60 + "s\n";
-				count ++;
+				유저목록.add(name);
+				//count ++;
+				System.out.println("데이터 읽어들이는중..");
+			}
+			if(유저목록.size() == 0) {
+				return "> 아무도없음.";
 			}
 			
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
-			while(count < users) {
-				for(int j=0;j<count && count < users;j++) {
-					for(int k=0;k<users && count < users;k++) {
-						if(유저명[j].equals(user_arr.get(k).이름)){
-							temp.get(k).이름 = "";
-
+			
+			System.out.println("유저목록.size() : " + 유저목록.size());
+			while(유저목록.size()< now_users) {
+				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
+					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
+						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
+							유저목록.add(user_arr.get(i).getname());
+							출력문 += user_arr.get(i).getname() + " : 0s\n";
+						}else if(유저목록.get(j).equals(user_arr.get(i).getname())) {
 							break;
 						}
-					}
-				}// for j
-				for(int j=0;j<count && count < users;j++) {
-					for(int k=0;k<users && count < users;k++) {
-						//System.out.println(temp.get(k).name);
-						if(temp.get(k).이름.equals(""))continue;
-						else {	
-							출력문 += (temp.get(k).이름 + " : ");
-							출력문 +=  "0h 0m 0s\n";
-							유저명[count] = temp.get(k).이름;
-							count++;
-						}
-					}
-				}
-			}	// if
+					}// for j
+				}// for i
+			}
 
 			
 		} catch (SQLException sqle) {

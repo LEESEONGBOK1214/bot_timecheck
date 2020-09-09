@@ -76,7 +76,7 @@ public class TimeCheckcmd {
 
 				user_arr.get(i).now_ch = e.getChannel().getId();
 				if (user_arr.get(i).진행중) {
-					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).이름 + "-> 중복 시작했습니다.]```").queue();
+					e.getChannel().sendMessage("```ini\r\n[" + user_arr.get(i).getname() + "-> 중복 시작했습니다.]```").queue();
 					// System.out.println("중복 시작 : " + user_arr.get(i).name);
 					return;
 				} else {
@@ -97,7 +97,7 @@ public class TimeCheckcmd {
 		}
 		user_arr.get(유저번호).시작();
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
-		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).이름 + "]의 시작 시간\n[" + 시작시간 + "]```");
+		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).getname() + "]의 시작 시간\n[" + 시작시간 + "]```");
 		
 		// System.out.println("start 마지막.");
 	}
