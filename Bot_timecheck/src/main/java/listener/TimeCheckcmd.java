@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import oracleDB.OracleDB;
 
-public class TimeCheckcmd {
+public class TimeCheckcmd  {
 	OracleDB DB;
 
 	// int 유저수 = 0;
@@ -63,14 +63,18 @@ public class TimeCheckcmd {
       	  }
 	}
 	
-	void start(ArrayList<user> user_arr, MessageReceivedEvent e) {
+	void start(ArrayList<user> user_arr, MessageReceivedEvent e) throws Exception{
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
 		
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		
 		System.out.println("DB.getusers() : " + DB.getusers());
-		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
+		System.out.println("user_arr.size() : " + user_arr.size());
+		for (int i = 0; i < DB.getusers() && i < user_arr.size(); i++) { // 중복값 확인
+			
+			// user_arr.size()는 DB에서 가져온 값이므로 DB.getusers와 같은 값일것이다.
+			// user_arr과 DB.getusers보다 작으면. 실행.
 			
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				//System.out.println("===============id검색 성공.");
@@ -154,6 +158,7 @@ public class TimeCheckcmd {
 
 		sayMsg(e.getChannel(), ">>>  진행중 목록");
 		int c = 0;
+		System.out.println("user_arr.size() : " + user_arr.size());
 	 	for(int i=0 ;i<user_arr.size();i++)
 	 	{
 	 		if(user_arr.get(i).진행중) {

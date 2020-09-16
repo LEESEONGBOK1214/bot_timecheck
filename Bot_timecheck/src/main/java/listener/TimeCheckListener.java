@@ -95,7 +95,12 @@ public class TimeCheckListener extends ListenerAdapter {
 			case "시작": // 시작
 				del_Msg(msg);
 //				System.out.println("시작 입력됨");
-				tcc.start(user_arr, e);
+				try {
+					tcc.start(user_arr, e);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 //				System.out.println("시작 파트 끝");
 				return;
 
@@ -170,6 +175,9 @@ public class TimeCheckListener extends ListenerAdapter {
 				
 				return ;
 			case "테스트":
+				return ;
+			case "DB유저수":
+				//tcc.
 				//sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), "테스트중맞음.");
 			}
 			

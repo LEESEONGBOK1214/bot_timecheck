@@ -11,12 +11,12 @@ public class DBConnection
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-//			String user = "timeck"; // timeck <
-//			String pw = "lenope1214"; // 디비접속 비밀번호
-//			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			 String user = "s1901206";
-		     String pw = "p1901206";
-			 String url = "jdbc:oracle:thin:@net.yju.ac.kr:1521:orcl";
+			String user = "timeck"; // timeck <
+			String pw = "lenope1214"; // 디비접속 비밀번호
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//			 String user = "s1901206";
+//		     String pw = "p1901206";
+//			 String url = "jdbc:oracle:thin:@net.yju.ac.kr:1521:orcl";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);

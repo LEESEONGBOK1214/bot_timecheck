@@ -43,7 +43,8 @@ class BotFrame extends JFrame implements ActionListener {
 	JButton 종료버튼;
 
 	BotFrame(JDABuilder builder, String token) {
-		super("메인");
+		super("테스팅");
+//		super("메인");
 		setSize(250, 250);
 		setLayout(null);
 
@@ -68,7 +69,7 @@ class BotFrame extends JFrame implements ActionListener {
 
 		this.builder = builder;
 		this.token = token;
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
