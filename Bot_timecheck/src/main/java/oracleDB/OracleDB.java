@@ -53,6 +53,14 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 		System.out.println("유저 수 : " + users);
 		// return은 user 수 == count(*)
@@ -85,6 +93,14 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 		return false;
 	}
@@ -93,7 +109,7 @@ public class OracleDB {
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
-			// System.out.println("쿼리 : " + query);
+			//System.out.println("Insert 쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
@@ -114,6 +130,14 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 	}// end of insert_user
 
@@ -136,6 +160,14 @@ public class OracleDB {
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 		// long total = Long.parseLong(tot_t);
 		// System.out.println("total : " + total);
@@ -187,6 +219,14 @@ public class OracleDB {
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 		
 
@@ -252,9 +292,11 @@ public class OracleDB {
 		// 저녁 12시 지난 후에는 바꿔야함.
 		
 		
-		String 출력문  = ">>>    #일일시간보기\n";
-		
-		System.out.println("현재 users : " + now_users);
+		String 출력문  = ">>>" + (현재시간.getMonth()+1) + "월 " + 현재시간.getDate() + "일" + " 일일시간보기";
+		출력문 += "\n";
+				
+				
+		//System.out.println("현재 users : " + now_users);
 	
 		try {
 			System.out.println("쿼리 : " + query);
@@ -275,7 +317,7 @@ public class OracleDB {
 						 time%60 + "s\n";
 				유저목록.add(name);
 				//count ++;
-				System.out.println("데이터 읽어들이는중..");
+				//System.out.println("데이터 읽어들이는중..");
 			}
 			if(유저목록.size() == 0) {
 				return "> 아무도없음.";
@@ -283,7 +325,7 @@ public class OracleDB {
 			
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
 			
-			System.out.println("유저목록.size() : " + 유저목록.size());
+			//System.out.println("유저목록.size() : " + 유저목록.size());
 			while(유저목록.size()< now_users) {
 				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
 					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
@@ -301,6 +343,14 @@ public class OracleDB {
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 
 		return 출력문;
@@ -367,29 +417,18 @@ public class OracleDB {
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+				pstm.close();
+				rs.close();
+			    } catch (SQLException e) {
+			    	e.printStackTrace();
+			    }
 		}
 
 		return 출력문;
 
-	}
-
-	// db connection 종료.
-	{
-		try
-
-		{
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstm != null) {
-				pstm.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
-		}
 	}
 
 	

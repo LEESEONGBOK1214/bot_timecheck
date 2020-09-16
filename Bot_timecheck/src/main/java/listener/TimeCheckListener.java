@@ -23,26 +23,17 @@ import net.dv8tion.jda.api.events.user.UserActivityEndEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class TimeCheckListener extends ListenerAdapter implements GuildVoiceState {
-	// DiscordApi discordbot;
+public class TimeCheckListener extends ListenerAdapter {
+	// =================================================================
+	// 전역변수 영역
 	final ArrayList<user> user_arr = new ArrayList<user>();
 	TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
+	boolean 강제종료 = false; // 강제종료가 입력이 됐을 경우 true.
+	final int 문제없음 = -999999;
+	int 답 = 문제없음;	// 문제내기가 입력이 됐을 경우 true.
+	// =================================================================
 
-	void Operations(String op) {
-//		for (int i = 0; i < user_arr.size(); i++) {
-//			System.out.println(user_arr.get(i).name + " = " + user_arr.get(i).진행중);
-//		}
-		switch (op) {
-		case "끝":
-			System.out.println("go to tcc-end");
-
-			// String 출력문 = tcc.end(user_arr, ch.getId());
-			// System.out.println("받은 출력문 ##################\n" + 출력문);
-			return;
-		}
-	}
-
-	boolean 강제종료 = false;
+	
 
 	public void onMessageReceived(MessageReceivedEvent e) {
 //		System.out.println("채팅치는 채널 id :" + e.getChannel().getId());
@@ -52,20 +43,30 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		MessageChannel ch = e.getChannel();
 
 		// System.out.println(cmd);
-		// System.out.println(cmd);
 
 //		System.out.println(강제종료 + cmd);
-		if (강제종료 && cmd.startsWith("!")) {
-  // !로 시작하면.
-//				System.out.println("강제종료 : " + 강제종료 +"\n" + cmd);
+		if (cmd.startsWith("!")) {
+			// !로 시작하면.
 			cmd = cmd.substring(1); // ! 떼고 나서.
-			if (tcc.고수인가(e.getMember().getId())) {
-//					System.out.println("강제종료 후");
-				강제종료 = tcc.강제종료하기(user_arr, e, cmd);	
-				if(강제종료) {
-					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력 ");
+			if(강제종료) {
+				tcc.강제종료하기(user_arr, e, cmd);	 // 강제종료 시키기.
+				//강제종료() 메서드를 사용하면 시간이 추가가 됨.
+				return;
+			}
+			else if(!cmd.equals("문제종료") && 답 != 문제없음) { // 답이 문제없음이 아님 => 문제가 있다.
+				tcc.solve_problem(user_arr, e, 답, cmd);
+				return;
+			}else {
+				switch(cmd) {
+				case "문제종료":
+					//System.out.println("문제 종료.");
+					//sayMsg(e.getTextChannel(), "강제종료된 사람 수 : " + tcc.end_problem(user_arr, e));
+					sayMsg(e.getTextChannel(), "문제 제출 종료.");
+					답 = 문제없음;
+					return;
 				}
 			}
+			
 		}
 		if (cmd.startsWith("$")) {
 
@@ -134,6 +135,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				tcc.view_week(user_arr, e);
 				return;
 			case "일일시간보기":
+				del_Msg(msg);
 				tcc.view_today(user_arr, e);
 				return;
 
@@ -146,66 +148,42 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				if(강제종료) {
 					tcc.queue(user_arr, e);
 					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력");
-					
 				}
+				return;
+			case "문제내기":
+				
+				if(e.getTextChannel().getName().equals("문제내기"))
+				{
+					if(tcc.queue(user_arr, e) !=0 ) { // 진행중인 사람이 있어야 정상작동.
+						if(답 == 문제없음) { // 출제중이 아니므로 문제를 낸다.
+							답 = tcc.start_problem(user_arr, e); // 답 저장.
+							//System.out.println("start_problem 실행.");
+							//System.out.println("답 : " + 답);
+							return;
+						}else {//문제가 있다면 문제 풀이를 안한 사람 전부 강제 끝 처리.
+							sayMsg(e.getJDA().getTextChannelsByName("문제내기", true).get(0), "현재 제출된 문제가 있습니다.");
+							return;
+						}
+					}
+				}
+				
+				
+				return ;
+			case "테스트":
+				//sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), "테스트중맞음.");
 			}
+			
+				
 		}
 	}
 
-	/*
-	 * // public void onStatusChange(StatusChangeEvent e) { // // TODO
-	 * Auto-generated method stub // // System.out.println("상태 변환..?"); //
-	 * System.out.println("ns : " + e.getNewStatus()); // System.out.println("os : "
-	 * + e.getOldStatus()); // }
-	 * 
-	 * // public void onUserActivityStart(@Nonnull UserActivityStartEvent e) // { //
-	 * // System.out.println(e.getGuild()); // System.out.print(e.getUser() + "  ");
-	 * // System.out.println("onUserActivityStart"); // } // // public void
-	 * onUserActivityEnd(UserActivityEndEvent e) { // System.out.print(e.getUser());
-	 * // System.out.println("=============onUserActivityEnd==============="); //
-	 * tcc.end(user_arr, e.getUser().getId()); // } // // public void
-	 * onUserUpdateActivityOrder(@Nonnull UserUpdateActivityOrderEvent e) { //
-	 * System.out.println("상태 변환 했슴.!!"); // }
-	 * 
-	 * // public void onGuildJoin(@Nonnull GuildJoinEvent e) { //
-	 * System.out.println(e.getGuild().getId() + " 유저가 "); //
-	 * System.out.println(e.getGuild() + "서버에 들어옴."); // } // // public void
-	 * onGuildLeave(@Nonnull GuildLeaveEvent e) { //
-	 * System.out.println(e.getGuild().getId() + " 유저가 "); //
-	 * System.out.println(e.getGuild() + "서버에서 퇴장."); // } // // public void
-	 * onGuildMemberJoin(@Nonnull GuildMemberJoinEvent e) { //
-	 * System.out.println(e.getGuild().getId() + " 유저가 "); //
-	 * System.out.println(e.getGuild() + "서버에 들어옴."); // } // // public void
-	 * onGuildMemberLeave(@Nonnull GuildMemberLeaveEvent e) { //
-	 * System.out.println(e.getGuild().getId() + " 유저가 "); //
-	 * System.out.println(e.getGuild() + "서버에서 퇴장."); // }
-	 * 
-	 */
 
 	int count = 1;
-
-	// public void on
-
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent e) {
-		// 유저 상태 확인 리스너.
-		// System.out.println("onUserUpdateOnlineStatus");
-		// System.out.println(e.getMember() + "유저가 " + e.getNewOnlineStatus());
-		// Message message;
-		// String 출력문 = "";
-//		if()
-		// if(e.)
-//		System.out.println("상태변환..?" + e.getNewOnlineStatus());
+		
 		if (!(count++ % 3 == 0))
 			return;
-		// sw = !sw;
-		// System.out.println(e.getNewOnlineStatus().name());
-		// message.editMessage("test1");
-//		List<TextChannel> ch_list = e.getGuild().getTextChannels();
-
 		String id = e.getUser().getId();
-		// System.out.println("=========================상태변환!!!");
-		// e.getGuild().getSystemChannel().sendMessage("=========================상태변환!!!").queue();
-		// System.out.println("여기까진?");
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
 			String msg = 강제종료(e.getMember().getId());
 			if(!msg.equals("no")) {
@@ -214,18 +192,6 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		}
 		return;
 	}
-
-//	public void onGuildUpdateAfkChannel(@Nonnull GuildUpdateAfkChannelEvent e) {
-//  말그대로 잠수 채널 변경시의 이벤트.. 별 의미 없다.
-//		System.out.println(e.getNewAfkChannel());
-//	}
-
-//	public void onGuildVoiceJoin(@Nonnull GuildVoiceJoinEvent e) {
-//		// 무엇인지 아직 모른다. 실험 해봐야 함.
-//		// 특정 길드에 들어갈 때 되면 좋겠다 ㅎㅎ..
-//		// 뭔지 모르겠다. 그냥 작동 안함.
-//		System.out.println(e.getMember().getUser().getName() + "\t" + e.getNewValue());
-//	}
 	public String 강제종료(String id) {
 
 		int i = -1;
@@ -236,16 +202,18 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 			}
 		}
 		String autoP = "";
+		if(i==-1)return "no";
+		
 		if (user_arr.get(i).id.equals(id)) {
 			if (user_arr.get(i).진행중) {
 				autoP = tcc.end(user_arr, id);
 			} else {
-				System.out.println("진행중 아니므로 할거없따~");
+				//System.out.println("진행중 아니므로 할거없따~");
 				return "no";
 			}
 		}
 
-		if (autoP == null || autoP.equals("")) {
+		if (autoP.equals( null) || autoP.equals("")) {
 			return null;
 		}
 
@@ -254,9 +222,6 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 	}
 
 	public void onGuildVoiceLeave(@Nonnull GuildVoiceLeaveEvent e) {
-		// 길드 보이스 나감.. 이라는데.. 과연!!
-//		System.out.println(e.getMember().getUser().getName());
-//		System.out.println(e.getVoiceState().getChannel().getName());
 		String msg = 강제종료(e.getMember().getId());
 		if(!msg.equals("no")) {
 			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), msg);
@@ -267,9 +232,9 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 
 	private void sayMsg(TextChannel channel, String msg) {
 		// System.out.println("메세지 @ : \n" + msg);
-		System.out.print("채널 : ");
-		System.out.println(channel.getName());
-		System.out.println("메세지 : " + msg);
+		//System.out.print("채널 : ");
+		//System.out.println(channel.getName());
+		//System.out.println("메세지 : " + msg);
 		if(msg != null) {
 			channel.sendMessage(msg).queue();
 		}
@@ -283,86 +248,4 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 	private void del_Msg(Message msg) {
 		msg.delete().queue();
 	}
-
-	public JDA getJDA() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isSelfMuted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isSelfDeafened() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isMuted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isDeafened() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isGuildMuted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isGuildDeafened() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isSuppressed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public VoiceChannel getChannel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Guild getGuild() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Member getMember() {
-		return null;
-	}
-
-	@Override
-	public boolean inVoiceChannel() {
-//		// TODO Auto-generated method stub
-//		net.dv8tion.jda.api.entities.Member Member = getMember();
-//		net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel;
-//		System.out.println("inVoiceChannel Evenet");
-//		if(guild.getVoiceChannelsByName("잠수채널(15분 잠수시)", true) != null) {
-//			System.out.println(name + "유저가 잠수채널로 입장.");
-//		}
-		return false;
-	}
-
-	@Override
-	public String getSessionId() {
-		return null;
-	}
-
 }

@@ -24,6 +24,7 @@ public class user{
 	long 총시간 = 0;
 	boolean 진행중 = false;
 	boolean 정지 = false;
+	boolean 문제해결중 = false;
 	// Font font = new Font();
 	// Calendar 시작시간 = Calendar.getInstance();
 	// Calendar 끝시간 = Calendar.getInstance();
@@ -151,7 +152,7 @@ public class user{
 		}
 		if (!정지) { // 0이면 해제 1이면 정지
 			// 정지
-			System.out.println("정지 함");
+			//System.out.println("정지 함");
 			정지시작시간 = new Date();
 			시간출력포맷 = new SimpleDateFormat("dd일/ HH시: mm분: ss초");
 			String 정지시작문자열 = 시간출력포맷.format(정지시작시간.getTime());
@@ -159,7 +160,7 @@ public class user{
 
 		} else {
 			// 해제
-			System.out.println("해제 함");
+			//System.out.println("해제 함");
 
 			정지끝낸시간 = new Date();
 
@@ -168,7 +169,7 @@ public class user{
 			long hour = 멈춘시간 / (60 * 60);
 			long min = (멈춘시간 / 60) % 60;
 			long sec = 멈춘시간 % 60;
-			System.out.println("멈춘 시간 : " + 멈춘시간);
+			//System.out.println("멈춘 시간 : " + 멈춘시간);
 			e.getChannel().sendMessage("```tex\n$" + this.이름 + "멈춘시간 : " + hour + "시간" + min + "분" + sec + "초" + "\n```")
 					.queue();
 

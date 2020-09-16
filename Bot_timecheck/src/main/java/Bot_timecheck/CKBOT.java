@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import Functions.RandomFunc;
 import listener.TimeCheckListener;
 
 import net.dv8tion.jda.api.AccountType;
@@ -19,6 +20,10 @@ public class CKBOT {
 		builder.setToken(token);
 
 		new BotFrame(builder, token);
+//		RandomFunc RndFun = new RandomFunc();
+//		for(int i = 0;i<30;i++){
+//			System.out.println(RndFun.RandomInt(10));
+//		}
 
 //		try {
 //			builder.addEventListeners(new TimeCheckListener());
@@ -38,7 +43,7 @@ class BotFrame extends JFrame implements ActionListener {
 	JButton 종료버튼;
 
 	BotFrame(JDABuilder builder, String token) {
-		super("창이름");
+		super("메인");
 		setSize(250, 250);
 		setLayout(null);
 

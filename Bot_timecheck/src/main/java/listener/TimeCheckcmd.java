@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Functions.RandomFunc;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -68,10 +69,11 @@ public class TimeCheckcmd {
 		
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
 		
+		System.out.println("DB.getusers() : " + DB.getusers());
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
-
+			
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
-				System.out.println("===============id검색 성공.");
+				//System.out.println("===============id검색 성공.");
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
 
 				user_arr.get(i).now_ch = e.getChannel().getId();
@@ -148,7 +150,7 @@ public class TimeCheckcmd {
 	// end of end
 	
 
-	void queue(ArrayList<user> user_arr, MessageReceivedEvent e) {
+	int queue(ArrayList<user> user_arr, MessageReceivedEvent e) {
 
 		sayMsg(e.getChannel(), ">>>  진행중 목록");
 		int c = 0;
@@ -156,12 +158,15 @@ public class TimeCheckcmd {
 	 	{
 	 		if(user_arr.get(i).진행중) {
 	 			//System.out.println(user_arr.get(i).name + " " + user_arr.get(i).id);
-	 			sayMsg(e.getChannel(), (user_arr.get(i).이름 + " " + user_arr.get(i).id));
+	 			//sayMsg(e.getChannel(), (user_arr.get(i).이름 + " " + user_arr.get(i).id));
+	 			sayMsg(e.getChannel(), user_arr.get(i).이름);
 	 			c++;
 	 		}
 	 	}if(c==0) {
-	 		sayMsg(e.getChannel(), ">없음");
+	 		sayMsg(e.getChannel(), "진행중인 사람 없음");
 	 	}
+	 	sayMsg(e.getTextChannel(), ">끝.");
+	 	return c;
 	 	//sayMsg(e.getChannel(), "==============진행중인사람==============");
 	}
 	
@@ -208,30 +213,34 @@ public class TimeCheckcmd {
 
 	
 	
-	public boolean 강제종료하기(ArrayList<user> user_arr, MessageReceivedEvent e, String msg) {
+	public void 강제종료하기(ArrayList<user> user_arr, MessageReceivedEvent e, String msg) {
 		for (int i = 0; i < user_arr.size(); i++) {
 			// 느낌표 떼고 그 뒤에거만 왔을것.
 			// ex !이성복 -> 이성복
 			//    이성복          ==     이성복 비교
-			if (msg.equals(user_arr.get(i).이름)) {
-				if(user_arr.get(i).진행중==false) {
+			
+			user 해당유저 = user_arr.get(i);
+			if (고수인가(e.getMember().getId())) { // 고수이면,
+				 // 강제종료 시키기.
+					//sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력 ");
+				if (msg.equals(해당유저.이름)) {
+					if(해당유저.진행중==false) {
+						sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+						해당유저.이름 + " 진행중이 아님.");
+						return ;
+					}
 					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
-							user_arr.get(i).이름 + " 진행중이 아님.");
-					return false;
-				}
-				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
-						user_arr.get(i).이름 + "을 강제종료 합니다.");
-				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
-						user_arr.get(i).끝());
-				
-				
-				return false;
+							해당유저.이름 + "을 강제종료 합니다.");
+					해당유저.진행중 = false;
+	//				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+	//						user_arr.get(i).끝());
+					return ;	
+				}		
 			}
 		}
-		
-		return true;
+		sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+				"이름을 다시 입력해주세요");
 	}
-
 
 	public boolean 고수인가(String id) {
 		String[] 고수들 = {
@@ -250,12 +259,7 @@ public class TimeCheckcmd {
 		
 		return false;
 	}
-
 	
-	
-	private void sayMsg(MessageChannel channel, String msg) {
-		channel.sendMessage(msg).queue();
-	}
 
 	private String ToTime(Date date) {
 		SimpleDateFormat 시간포맷 = new SimpleDateFormat("MM월/dd일/ HH시 :mm분 :ss초");
@@ -264,5 +268,90 @@ public class TimeCheckcmd {
 
 		return 시간포맷.format(date);
 	}
+
+	public int start_problem(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		// TODO Auto-generated method stub
+		int A, B; // 문제 앞 뒤 변수  =>  problem = A op B
+		String 출력문 = ""; // 문제출력 할 문자열
+		String operation; // 연산자 적용할 변수
+		String op[] = { "+", "-", "*", "/" }; // 플 마 곱 나
+		RandomFunc RF = new RandomFunc();
+		
+		A = RF.RandomInt(100);
+		do {
+			B = RF.RandomInt(100);
+		}while(B==0); // B로 나눌 경우를 대비해 B는 0이 아니어야 함.
+		operation = op[RF.RandomInt(4)];
+		
+		출력문 += "문제 : " + A + operation + B; 
+		sayMsg(e.getJDA().getTextChannelsByName("잠수확인", true).get(0), 출력문);
+		
+		for(int i=0;i<user_arr.size();i++) {
+			user 해당유저 = user_arr.get(i);
+			if(해당유저.진행중) {
+				해당유저.문제해결중 = true;
+			}
+		}
+		
+		switch(operation) {
+		case "+":
+			return A+B;
+		case "-":
+			return A-B;
+		case "*":
+			return A*B;
+		case "/":
+			return A/B;
+		default :
+			// 기본 값 0. 문제가 제대로 안나왔을 경우.
+			return 0;
+		}
+		
+	}
+	
+	public void solve_problem(ArrayList<user> user_arr, MessageReceivedEvent e, int 답, String 제출답) {
+		// TODO Auto-generated method stub
+		//System.out.println("답 : " + 답  + "제출답 : " + Integer.parseInt(제출답));
+		if(Integer.parseInt(제출답) == 답) {
+			for(int i=0;i<user_arr.size();i++) {
+				user 해당유저 = user_arr.get(i);
+				if(해당유저.진행중) {
+					//System.out.println("해당유저 : " + 해당유저.getname());
+					//System.out.println("문제해결중 : " + 해당유저.문제해결중);
+					해당유저.문제해결중 = false;
+					//System.out.println("문제해결후 : " + 해당유저.문제해결중);
+				}
+			}
+		}
+		
+			
+	}
+	
+
+	public int end_problem(ArrayList<user> user_arr, MessageReceivedEvent e) {
+		// TODO Auto-generated method stub
+		int count = 0;
+		for(int i=0;i<user_arr.size();i++) {
+			user 해당유저 = user_arr.get(i);
+			
+			if(해당유저.문제해결중) {
+				// 아직도 문제를 안풀었다고?! 넌 강제종료다.
+				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
+						해당유저.이름 + "을 강제종료 합니다.");
+				강제종료하기(user_arr, e, 해당유저.이름);
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	
+	
+	private void sayMsg(MessageChannel channel, String msg) {
+		channel.sendMessage(msg).queue();
+	}
+
+	
 
 }
