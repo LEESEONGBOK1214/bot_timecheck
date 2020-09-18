@@ -266,7 +266,7 @@ public class OracleDB {
 		return 출력문;
 	}
 	
-	public String today_time(ArrayList<user> user_arr) {
+	public String today_times(ArrayList<user> user_arr) {
 		// TODO Auto-generated method stub
 		Date 현재시간 = new Date();
 		ArrayList<String> 유저목록 = new ArrayList<String>();
@@ -326,7 +326,7 @@ public class OracleDB {
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
 			
 			//System.out.println("유저목록.size() : " + 유저목록.size());
-			while(유저목록.size()< now_users) {
+			if (유저목록.size() < now_users) {
 				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
 					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
 						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
@@ -426,11 +426,15 @@ public class OracleDB {
 			    	e.printStackTrace();
 			    }
 		}
-
 		return 출력문;
-
 	}
 
+	public String my_time(String id) {
+		// TODO Auto-generated method stub
+		String 출력문 = "";
+		String sql = "select ";
+		return null;
+	}
 	
 }
 /*

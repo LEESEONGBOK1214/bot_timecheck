@@ -198,13 +198,19 @@ public class TimeCheckcmd  {
 		sayMsg(e.getChannel(), 출력문[1]);
 	}
 	
-	public void view_today(ArrayList<user> user_arr, MessageReceivedEvent e) {
+	public void view_today_times(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
-		String 출력문 = DB.today_time(user_arr);
+		String 출력문 = DB.today_times(user_arr);
 		sayMsg(e.getChannel(), 출력문);
 
 	}
 	
+	public void view_today_time(MessageReceivedEvent e) {
+		// TODO Auto-generated method stub
+		String 출력문 = DB.my_time((e.getAuthor().getId()));
+		sayMsg(e.getChannel(), 출력문);
+	}
+
 	public void Attendance(MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
 
@@ -358,5 +364,6 @@ public class TimeCheckcmd  {
 	}
 
 	
+
 
 }

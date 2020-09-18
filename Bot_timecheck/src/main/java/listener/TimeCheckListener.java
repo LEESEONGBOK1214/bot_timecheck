@@ -4,22 +4,11 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-import org.javacord.api.entity.channel.Channel;
-
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.guild.update.GuildUpdateAfkChannelEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.user.UserActivityEndEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -130,7 +119,7 @@ public class TimeCheckListener extends ListenerAdapter {
 				tcc.pause(user_arr, e);
 			case "시험기능":
 				// tcc.test();
-				user_arr.get(14).getname();
+				// user_arr.get(14).getname();
 
 //				System.out.println(tch.getApi()
 //						.addUserChangeStatusListener(org.javacord.api.listener.user.UserChangeStatusListener)));
@@ -141,9 +130,12 @@ public class TimeCheckListener extends ListenerAdapter {
 				return;
 			case "일일시간보기":
 				del_Msg(msg);
-				tcc.view_today(user_arr, e);
+				tcc.view_today_times(user_arr, e);
 				return;
-
+			case "시간확인":
+				del_Msg(msg);
+				tcc.view_today_time(e);
+				return;
 			case "출석":
 				tcc.Attendance(e);
 				return;
