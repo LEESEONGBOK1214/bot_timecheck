@@ -54,7 +54,7 @@ public class OracleDB {
 			sqle.printStackTrace();
 
 		}
-		System.out.println("유저 수 : " + users);
+		//System.out.println("유저 수 : " + users);
 		// return은 user 수 == count(*)
 		return users;
 	}
@@ -89,7 +89,7 @@ public class OracleDB {
 		return false;
 	}
 	public void insert(String query) {
-		System.out.println("DB - insert - 입장\n Query : " + query);
+		//System.out.println("DB - insert - 입장\n Query : " + query);
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
@@ -102,7 +102,7 @@ public class OracleDB {
 			if (rs.next()) {
 				// 성공.
 				System.out.println("===============insert success ==============");
-				users++;
+//				users++;
 //				conn.commit();
 			} else {
 				conn.rollback();
@@ -122,7 +122,7 @@ public class OracleDB {
 		String query = "select nvl(sum(rec_time), 0) from t_record where rec_id = " + id;
 		String tot_t = null;
 		try {
-			System.out.println("쿼리 : " + query);
+			//System.out.println("쿼리 : " + query);
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
@@ -190,7 +190,7 @@ public class OracleDB {
 		}
 		
 
-		System.out.println("us : " + size);
+		//System.out.println("us : " + size);
 		String 공부시간문자열 = "";
 		String 공부학생문자열 = "========공부한 학생 목록========\n";
 		if (count <= 0) {
@@ -254,10 +254,10 @@ public class OracleDB {
 		
 		String 출력문  = ">>>    #일일시간보기\n";
 		
-		System.out.println("현재 users : " + now_users);
+		//System.out.println("현재 users : " + now_users);
 	
 		try {
-			System.out.println("쿼리 : " + query);
+			//System.out.println("쿼리 : " + query);
 
 			conn = DBConnection.getConnection();
 			pstm = conn.prepareStatement(query);
@@ -275,16 +275,18 @@ public class OracleDB {
 						 time%60 + "s\n";
 				유저목록.add(name);
 				//count ++;
-				System.out.println("데이터 읽어들이는중..");
+				//System.out.println("데이터 읽어들이는중..");
 			}
-			if(유저목록.size() == 0) {
+			System.out.println(유저목록.size() + ", " + now_users);
+			if(유저목록.size() == 0 || 유저목록 == null) {
 				return "> 아무도없음.";
 			}
 			
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
 			
-			System.out.println("유저목록.size() : " + 유저목록.size());
+			//System.out.println("유저목록.size() : " + 유저목록.size());
 			while(유저목록.size()< now_users) {
+				System.out.println(now_users);
 				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
 					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
 						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
@@ -302,6 +304,8 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		}
+		
+		System.out.println("return 출력문 : " + 출력문);
 
 		return 출력문;
 	}
@@ -357,8 +361,8 @@ public class OracleDB {
 				count++;
 			}
 
-			System.out.println(출력문.charAt(출력문.length() - 2));
-			System.out.println(출력문.charAt(출력문.length() - 3));
+			//System.out.println(출력문.charAt(출력문.length() - 2));
+			//System.out.println(출력문.charAt(출력문.length() - 3));
 			if (출력문.charAt(출력문.length() - 2) == ',') {
 				출력문 = 출력문.substring(0, 출력문.length() - 2);
 			}

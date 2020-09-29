@@ -32,6 +32,8 @@ dependencies {
 	compile group: 'net.dv8tion', name: 'JDA', version: '4.0.0_45'
 	
 	implementation 'org.javacord:javacord:3.0.6'
+	
+	
 }
 
 /*
