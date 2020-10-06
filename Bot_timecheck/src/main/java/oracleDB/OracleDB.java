@@ -58,7 +58,7 @@ public class OracleDB {
 		try {
 			// System.out.println("count users");
 			
-			System.out.println("쿼리 : " + query);
+			//System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			
@@ -82,7 +82,7 @@ public class OracleDB {
 		
 		try {
 			// System.out.println("ck user");
-			System.out.println("쿼리 : " + query);
+			//System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 			// insert into t_record
@@ -187,7 +187,7 @@ public class OracleDB {
 		
 		int count = 0;
 		try {
-			System.out.println("쿼리 : " + query);
+			//System.out.println("쿼리 : " + query);
 
 			
 			pstm = conn.prepareStatement(query);
@@ -292,7 +292,7 @@ public class OracleDB {
 				//count ++;
 				//System.out.println("데이터 읽어들이는중..");
 			}
-			System.out.println(유저목록.size() + ", " + now_users);
+			//System.out.println(유저목록.size() + ", " + now_users);
 			if(유저목록.size() == 0 || 유저목록 == null) {
 				return "> 아무도없음.";
 			}
@@ -301,7 +301,7 @@ public class OracleDB {
 			
 			//System.out.println("유저목록.size() : " + 유저목록.size());
 			while(유저목록.size()< now_users) {
-				System.out.println(now_users);
+				//System.out.println(now_users);
 				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
 					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
 						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
@@ -320,7 +320,7 @@ public class OracleDB {
 			sqle.printStackTrace();
 		}
 		
-		System.out.println("return 출력문 : " + 출력문);
+		//System.out.println("return 출력문 : " + 출력문);
 
 		return 출력문;
 	}
@@ -352,7 +352,7 @@ public class OracleDB {
 		String 출력문 = "";
 
 		try {
-			System.out.println("쿼리  : " + query);
+			//System.out.println("쿼리  : " + query);
 //			select usr_name
 //			from t_user, t_record
 //			where usr_id = rec_id and
@@ -397,7 +397,7 @@ public class OracleDB {
 		String 출력문 = "";
 
 		try {
-			System.out.println("쿼리  : " + query);
+			//System.out.println("쿼리  : " + query);
 //			select usr_name
 //			from t_user, t_record
 //			where usr_id = rec_id and
