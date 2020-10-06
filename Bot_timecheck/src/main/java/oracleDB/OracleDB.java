@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.common.collect.Table;
+
 import listener.user;
 
 
@@ -16,6 +18,7 @@ public class OracleDB {
 	Connection conn;
 	PreparedStatement pstm;
 	ResultSet rs;
+	ArrayList<TB> tableList = new ArrayList<TB>();
 
 	int users = 0;
 
@@ -26,9 +29,25 @@ public class OracleDB {
 	}
 
 	public OracleDB(ArrayList<user> user_arr) {
-		conn = null;
+		conn = DBConnection.getConnection();
 		pstm = null;
 		rs = null;
+		
+		TB<String, String> t_user = new TB<String, String>();
+		String sql = "select * from t_user";
+		try {
+			pstm = conn.prepareStatement(sql);
+			rs = pstm.executeQuery();
+			while(rs.next()) {
+				t_user.
+				t_user.columns.add()
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		// select_user(user_arr);
 	}
@@ -39,7 +58,6 @@ public class OracleDB {
 		try {
 			// System.out.println("count users");
 			
-			conn = DBConnection.getConnection();
 			System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
@@ -64,8 +82,6 @@ public class OracleDB {
 		
 		try {
 			// System.out.println("ck user");
-
-			conn = DBConnection.getConnection();
 			System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
@@ -92,7 +108,6 @@ public class OracleDB {
 		//System.out.println("DB - insert - 입장\n Query : " + query);
 		try {
 			// System.out.println("start insert");
-			conn = DBConnection.getConnection();
 			// System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			// insert into t_record
@@ -124,7 +139,7 @@ public class OracleDB {
 		try {
 			//System.out.println("쿼리 : " + query);
 
-			conn = DBConnection.getConnection();
+
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
@@ -174,7 +189,7 @@ public class OracleDB {
 		try {
 			System.out.println("쿼리 : " + query);
 
-			conn = DBConnection.getConnection();
+			
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
@@ -259,7 +274,7 @@ public class OracleDB {
 		try {
 			//System.out.println("쿼리 : " + query);
 
-			conn = DBConnection.getConnection();
+			
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
@@ -315,7 +330,7 @@ public class OracleDB {
 //		try {
 //			System.out.println("쿼리 : " + query);
 //
-//			conn = DBConnection.getConnection();
+//			
 //			pstm = conn.prepareStatement(query);
 //			rs = pstm.executeQuery();
 //
@@ -344,7 +359,7 @@ public class OracleDB {
 //			      rec_date between to_char(sysdate, 'RRMMDD') || '06' and to_char(sysdate+1, 'RRMMDD') || '06'
 //			group by usr_name;
 
-			conn = DBConnection.getConnection();
+			
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
 
@@ -376,6 +391,52 @@ public class OracleDB {
 		return 출력문;
 
 	}
+	
+	
+	public String Runsql(String query){
+		String 출력문 = "";
+
+		try {
+			System.out.println("쿼리  : " + query);
+//			select usr_name
+//			from t_user, t_record
+//			where usr_id = rec_id and
+//			      rec_date between to_char(sysdate, 'RRMMDD') || '06' and to_char(sysdate+1, 'RRMMDD') || '06'
+//			group by usr_name;
+
+			
+			pstm = conn.prepareStatement(query);
+			rs = pstm.executeQuery();
+
+			출력문 += "======== sql 실행 결과 ========\n";
+			int count = 0; // , or 줄넘김 해주기 위해.
+
+			while (rs.next()) {
+				출력문 += rs.getString(1);
+				if (count % 5 < 4) {
+					출력문 += ", ";
+				} else {
+					출력문 += "\n";
+				}
+				count++;
+			}
+
+			//System.out.println(출력문.charAt(출력문.length() - 2));
+			//System.out.println(출력문.charAt(출력문.length() - 3));
+			if (출력문.charAt(출력문.length() - 2) == ',') {
+				출력문 = 출력문.substring(0, 출력문.length() - 2);
+			}
+//			StringUtils.removeEnd(출력문, ",");
+			출력문 += "\n==========================";
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+
+		return 출력문;
+
+	}
+	
 
 	// db connection 종료.
 	{
@@ -406,7 +467,7 @@ public class OracleDB {
  * try { // SQL 문장을 만들고 만약 문장이 질의어(SELECT문)라면 // 그 결과를 담을 ResulSet 객체를 준비한 후
  * 실행시킨다. String quary = "SELECT * FROM t_record";
  * 
- * conn = DBConnection.getConnection(); pstm = conn.prepareStatement(quary); rs
+ *  pstm = conn.prepareStatement(quary); rs
  * = pstm.executeQuery();
  * 
  * 
