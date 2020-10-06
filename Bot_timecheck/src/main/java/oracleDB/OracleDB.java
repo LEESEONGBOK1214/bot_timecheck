@@ -33,19 +33,19 @@ public class OracleDB {
 		pstm = null;
 		rs = null;
 		
-		TB<String, String> t_user = new TB<String, String>();
-		String sql = "select * from t_user";
-		try {
-			pstm = conn.prepareStatement(sql);
-			rs = pstm.executeQuery();
-			while(rs.next()) {
-				t_user.
-				t_user.columns.add()
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		TB<String, String> t_user = new TB<String, String>();
+//		String sql = "select * from t_user";
+//		try {
+//			pstm = conn.prepareStatement(sql);
+//			rs = pstm.executeQuery();
+//			while(rs.next()) {
+//				t_user.
+//				t_user.columns.add()
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
 		

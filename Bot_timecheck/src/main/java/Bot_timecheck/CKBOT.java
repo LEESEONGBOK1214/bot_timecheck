@@ -15,7 +15,7 @@ public class CKBOT {
 	public static void main(String[] args) {
 
 		JDABuilder builder = new JDABuilder(AccountType.BOT);
-		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XxcYKg.XBhfhthYAmurxWSUS2jhDbLyxcc"; // 토큰은 여러분의 디스코드 앱의 봇에서 가져옵니다.
+		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XvN0Vw.tdcWzyW3SznqW-V9HRLbhgwVGz8"; // 토큰은 여러분의 디스코드 앱의 봇에서 가져옵니다.
 		builder.setToken(token);
 
 		new BotFrame(builder, token);
