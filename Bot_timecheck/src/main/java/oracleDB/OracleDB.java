@@ -91,9 +91,13 @@ public class OracleDB {
 
 			if (rs.next()) {
 				// System.out.println("해당 id가 있음!");
+				rs.close();
+				pstm.close();
 				return true;
 			} else {
 				// System.out.println("해당 id가 없음. 새로 만들어야 함.");
+				rs.close();
+				pstm.close();
 				return false;
 			}
 
@@ -122,7 +126,8 @@ public class OracleDB {
 			} else {
 				conn.rollback();
 			}
-
+			rs.close();
+			pstm.close();
 			// System.out.println("end of insert");
 
 		} catch (SQLException sqle) {
@@ -154,7 +159,7 @@ public class OracleDB {
 		}
 		// long total = Long.parseLong(tot_t);
 		// System.out.println("total : " + total);
-
+		
 		return Long.parseLong(tot_t);
 	}
 
@@ -198,6 +203,8 @@ public class OracleDB {
 				유저명[count] = rs.getString(1);
 				주간시간[count++] = rs.getInt(2);
 			}
+			rs.close();
+			pstm.close();
 			// System.out.println(id + "님의 총 시간 : " + tot_t);
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -237,7 +244,7 @@ public class OracleDB {
 		출력문[1] += "\n===========================";
 		출력문[1] = 공부시간문자열;
 		출력문[1] += "===========================";
-
+		
 		return 출력문;
 	}
 	
@@ -313,7 +320,8 @@ public class OracleDB {
 					}// for j
 				}// for i
 			}
-
+			rs.close();
+			pstm.close();
 			
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -383,7 +391,8 @@ public class OracleDB {
 			}
 //			StringUtils.removeEnd(출력문, ",");
 			출력문 += "\n==============================";
-
+			rs.close();
+			pstm.close();
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
@@ -428,7 +437,8 @@ public class OracleDB {
 			}
 //			StringUtils.removeEnd(출력문, ",");
 			출력문 += "\n==========================";
-
+			rs.close();
+			pstm.close();
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
