@@ -34,7 +34,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
-
+		System.out.println("입력 : " + cmd);
 		if (강제종료 && cmd.startsWith("!")) {
   // !로 시작하면.
 //				System.out.println("강제종료 : " + 강제종료 +"\n" + cmd);
@@ -111,6 +111,7 @@ public class TimeCheckListener extends ListenerAdapter implements GuildVoiceStat
 				tcc.view_week(user_arr, e);
 				return;
 			case "일일시간보기":
+				System.out.println("일일시간보기 진입.");
 				tcc.view_today(user_arr, e);
 				return;
 

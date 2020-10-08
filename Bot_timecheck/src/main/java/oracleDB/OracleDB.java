@@ -250,10 +250,12 @@ public class OracleDB {
 	
 	public String today_time(ArrayList<user> user_arr) {
 		// TODO Auto-generated method stub
+		System.out.println("DB > 일일시간보기");
 		Date 현재시간 = new Date();
 		ArrayList<String> 유저목록 = new ArrayList<String>();
 		int hour = 현재시간.getHours();
 		//System.out.println(hour);
+		System.out.println("user_arr.size() : " + user_arr.size());
 		int now_users = user_arr.size();
 		String query;
 		if(hour<24 && hour>06) {
@@ -284,11 +286,10 @@ public class OracleDB {
 			
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
-
-			int count = 0;
 			
 			while (rs.next()) {
 				String name = rs.getString(1);
+//				System.out.println(name);
 //				System.out.println(유저명[count]);
 				int time = rs.getInt(2);
 				출력문 += (name + " : ");
@@ -297,7 +298,7 @@ public class OracleDB {
 						 time%60 + "s\n";
 				유저목록.add(name);
 				//count ++;
-				//System.out.println("데이터 읽어들이는중..");
+//				System.out.println("데이터 읽어들이는중..");
 			}
 			//System.out.println(유저목록.size() + ", " + now_users);
 			if(유저목록.size() == 0 || 유저목록 == null) {
@@ -306,20 +307,20 @@ public class OracleDB {
 			
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
 			
-			//System.out.println("유저목록.size() : " + 유저목록.size());
-			while(유저목록.size()< now_users) {
-				//System.out.println(now_users);
-				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
-					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
-						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
-							유저목록.add(user_arr.get(i).getname());
-							출력문 += user_arr.get(i).getname() + " : 0s\n";
-						}else if(유저목록.get(j).equals(user_arr.get(i).getname())) {
-							break;
-						}
-					}// for j
-				}// for i
-			}
+
+			for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
+				System.out.println("for1");
+				for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서
+					System.out.println("for2");
+					if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
+						유저목록.add(user_arr.get(i).getname());
+						출력문 += user_arr.get(i).getname() + " : 0s\n";
+					}else if(유저목록.get(j).equals(user_arr.get(i).getname())) {
+						break;
+					}
+				}// for j
+			}// for i
+
 			rs.close();
 			pstm.close();
 			
@@ -328,8 +329,8 @@ public class OracleDB {
 			sqle.printStackTrace();
 		}
 		
-		//System.out.println("return 출력문 : " + 출력문);
-
+		System.out.println("return 출력문 : " + 출력문);
+		
 		return 출력문;
 	}
 
@@ -447,25 +448,6 @@ public class OracleDB {
 
 	}
 	
-
-	// db connection 종료.
-	{
-		try
-
-		{
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstm != null) {
-				pstm.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
 
 	
 }
