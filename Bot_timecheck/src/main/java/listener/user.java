@@ -24,6 +24,7 @@ public class user{
 	long 총시간 = 0;
 	boolean 진행중 = false;
 	boolean 정지 = false;
+	boolean 시작확인 = false;
 	// Font font = new Font();
 	// Calendar 시작시간 = Calendar.getInstance();
 	// Calendar 끝시간 = Calendar.getInstance();
