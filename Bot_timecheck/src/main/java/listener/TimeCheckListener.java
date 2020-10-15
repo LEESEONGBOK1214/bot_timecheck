@@ -19,18 +19,17 @@ public class TimeCheckListener extends ListenerAdapter {
 	// DiscordApi discordbot;
 	final ArrayList<user> user_arr = new ArrayList<user>();
 	TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
-
+	
 	boolean 강제종료 = false;
-	boolean 시작확인보냄 = false;
 	ArrayList<Message> 시작확인메세지 = new ArrayList<Message>();
 	public void onMessageReceived(MessageReceivedEvent e) {
+//		System.out.println("e.getGuild().getName() : " + e.getGuild().getName());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
 //		System.out.println("입력 : " + cmd);
 		if(cmd.contains("시작확인")) {
 			시작확인메세지.add(msg);
-			시작확인보냄 = true;
 		}
 		
 		if (강제종료 && cmd.startsWith("!")) {
@@ -68,7 +67,7 @@ public class TimeCheckListener extends ListenerAdapter {
 			case "tlwkr":
 			case "시작1": // 시작
 //				System.out.println("시작 진입" + "시작확인보냄 : " + 시작확인보냄);
-				if(시작확인보냄){
+				if(시작확인메세지.size() != 0){
 //					System.out.print("시작확인보냄 > for 진입 > ");
 					for(int i =0; i< user_arr.size();i++) {
 //						System.out.println(user_arr.get(i).시작확인);
@@ -81,7 +80,7 @@ public class TimeCheckListener extends ListenerAdapter {
 //									System.out.println("메세지 확인까지 옴.");
 //									System.out.println("메세지 : " + msg);
 //									System.out.println("체크된 메세지 : " + tmpMsg);
-									
+									시작확인메세지.remove(j);
 									tmpMsg.delete().queue();
 //									System.out.println(tmpMsg);
 								}
@@ -210,11 +209,18 @@ public class TimeCheckListener extends ListenerAdapter {
 	public void onGuildVoiceJoin(@Nonnull GuildVoiceJoinEvent e) {
 		String name = e.getMember().getUser().getName();
 		String channel = e.getChannelJoined().getName();
+		if(!e.getGuild().getName().equals("자격증스터디")) {
+			return;
+		}else if(e.getGuild().getName().equals("ㅅ1")) {
+			String 출력문 = e.getMember().getUser().getAsMention() +" 시작확인!";
+			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), 출력문);
+		}
+		
 		if(channel.equals("1번방") || channel.equals("2번방") || channel.equals("3번방") || channel.equals("test01")) {
 //			System.out.println("들어온 사람 : " + name);
 //			System.out.println("들어간 채널 : " + channel );
 			String 출력문 = e.getMember().getUser().getAsMention() +" 시작확인!";
-			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), 출력문);
+			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), 출력문);
 //			System.out.println("getMem.usr.id : " + e.getMember().getUser().getId());
 			for(int i =0; i< user_arr.size();i++) {
 //				System.out.println("user_arr_id : " + user_arr.get(i).id);
@@ -223,11 +229,10 @@ public class TimeCheckListener extends ListenerAdapter {
 				{
 //					System.out.println("여기 안오니...??????@@@@@@@@@@@@@");
 					user_arr.get(i).시작확인 = true;
-					시작확인보냄 = true;
 				}
 			}
-			TextChannel test01 = e.getJDA().getTextChannelsByName("test1", true).get(0);
-			MessageEmbed testMsgEmbed = new MessageEmbed(channel, channel, channel, null, null, count, null, null, null, null, null, null, null);
+//			TextChannel test01 = e.getJDA().getTextChannelsByName("test1", true).get(0);
+//			MessageEmbed testMsgEmbed = new MessageEmbed(channel, channel, channel, null, null, count, null, null, null, null, null, null, null);
 			
 		}
 		
