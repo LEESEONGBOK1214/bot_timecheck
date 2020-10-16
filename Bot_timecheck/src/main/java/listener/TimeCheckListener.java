@@ -19,19 +19,20 @@ public class TimeCheckListener extends ListenerAdapter {
 	// DiscordApi discordbot;
 	final ArrayList<user> user_arr = new ArrayList<user>();
 	TimeCheckcmd tcc = new TimeCheckcmd(user_arr);
-	
+
 	boolean 강제종료 = false;
 	ArrayList<Message> 시작확인메세지 = new ArrayList<Message>();
+
 	public void onMessageReceived(MessageReceivedEvent e) {
 //		System.out.println("e.getGuild().getName() : " + e.getGuild().getName());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
 //		System.out.println("입력 : " + cmd);
-		if(cmd.contains("시작확인")) {
+		if (cmd.contains("시작확인")) {
 			시작확인메세지.add(msg);
 		}
-		
+
 		if (강제종료 && cmd.startsWith("!")) {
 			// !로 시작하면.
 //				System.out.println("강제종료 : " + 강제종료 +"\n" + cmd);
@@ -67,29 +68,9 @@ public class TimeCheckListener extends ListenerAdapter {
 			case "tlwkr":
 			case "시작1": // 시작
 //				System.out.println("시작 진입" + "시작확인보냄 : " + 시작확인보냄);
-				if(시작확인메세지.size() != 0){
-//					System.out.print("시작확인보냄 > for 진입 > ");
-					for(int i =0; i< user_arr.size();i++) {
-//						System.out.println(user_arr.get(i).시작확인);
-						if(user_arr.get(i).시작확인)
-						{
-//							System.out.print("유저의 시작확인이 체크 > ");
-							for(int j = 0; j<시작확인메세지.size();j++) {
-								if(시작확인메세지.get(j).toString().contains(e.getMember().getUser().getName())) {
-									Message tmpMsg = 시작확인메세지.get(j);
-//									System.out.println("메세지 확인까지 옴.");
-//									System.out.println("메세지 : " + msg);
-//									System.out.println("체크된 메세지 : " + tmpMsg);
-									시작확인메세지.remove(j);
-									tmpMsg.delete().queue();
-//									System.out.println(tmpMsg);
-								}
-							}
-							user_arr.get(i).시작확인 = false;
-						}
-					}
-					
-				}
+//				System.out.println("시작 메세지 개수 : " + 시작확인메세지.size());
+				String 이름 = e.getMember().getUser().getName();
+				del시작확인메세지(이름);
 				del_Msg(msg);
 //				System.out.println("시작 입력됨");
 				tcc.start(user_arr, e);
@@ -132,7 +113,7 @@ public class TimeCheckListener extends ListenerAdapter {
 				tcc.view_week(user_arr, e);
 				return;
 			case "일일시간보기":
-				//System.out.println("일일시간보기 진입.");
+				// System.out.println("일일시간보기 진입.");
 				tcc.view_today(user_arr, e);
 				return;
 
@@ -151,13 +132,39 @@ public class TimeCheckListener extends ListenerAdapter {
 		}
 	}
 
+	private boolean del시작확인메세지(String 이름) {
+		// TODO Auto-generated method stub
+		if (시작확인메세지.size() > 0) {
+			for (int i = 0; i < user_arr.size(); i++) {
+//				System.out.println("name : " + user_arr.get(i).getname() + user_arr.get(i).시작확인);
+				if (user_arr.get(i).시작확인) {
+//					System.out.print("유저의 시작확인이 체크 > ");
+					for (int j = 0; j < 시작확인메세지.size(); j++) {
+						
+						String 메세지 = 시작확인메세지.get(j).toString();
+//						System.out.println("메세지 : " + 메세지);
+						if (isContain(메세지, 이름)) {
+							Message tmpMsg = 시작확인메세지.get(j);
+							시작확인메세지.remove(j);
+							tmpMsg.delete().queue();
+							user_arr.get(i).시작확인 = false;
+							return true;
+//							System.out.println(tmpMsg);
+						}
+					}
+					
+				}
+			}
+
+		}
+		return false;
+	}
+
 	int count = 1;
 
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent e) {
 		if (!(count++ % 3 == 0))
 			return;
-
-		String id = e.getUser().getId();
 
 		if (e.getNewOnlineStatus().toString().equals("OFFLINE")) {
 			String msg = 강제종료(e.getMember().getId());
@@ -207,47 +214,55 @@ public class TimeCheckListener extends ListenerAdapter {
 	}
 
 	public void onGuildVoiceJoin(@Nonnull GuildVoiceJoinEvent e) {
-		String name = e.getMember().getUser().getName();
+		// String name = e.getMember().getUser().getName();
 		String channel = e.getChannelJoined().getName();
-		if(!e.getGuild().getName().equals("자격증스터디")) {
+//		System.out.println("서버 : " + e.getGuild().getName());
+//		System.out.println("채널 : " +channel);
+		if (!e.getGuild().getName().equals("자격증 스터디")) {
 			return;
-		}else if(e.getGuild().getName().equals("ㅅ1")) {
-			String 출력문 = e.getMember().getUser().getAsMention() +" 시작확인!";
-			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), 출력문);
 		}
-		
-		if(channel.equals("1번방") || channel.equals("2번방") || channel.equals("3번방") || channel.equals("test01")) {
+//		}else if(e.getGuild().getName().equals("ㅅ1") || channel.equals("test01")) {
+//			String 출력문 = e.getMember().getUser().getAsMention() +" 시작확인!";
+//			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), 출력문);
+//			System.out.println("테스팅으로 옴.");
+//		}
+
+			if (channel.equals("1번방") || channel.equals("2번방") || channel.equals("3번방") || channel.equals("test01")) {
 //			System.out.println("들어온 사람 : " + name);
 //			System.out.println("들어간 채널 : " + channel );
-			String 출력문 = e.getMember().getUser().getAsMention() +" 시작확인!";
-			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), 출력문);
-//			System.out.println("getMem.usr.id : " + e.getMember().getUser().getId());
-			for(int i =0; i< user_arr.size();i++) {
-//				System.out.println("user_arr_id : " + user_arr.get(i).id);
 				
-				if(user_arr.get(i).id.equals(e.getMember().getUser().getId()))
-				{
+//			System.out.println("getMem.usr.id : " + e.getMember().getUser().getId());
+				for (int i = 0; i < user_arr.size(); i++) {
+//				System.out.println("user_arr_id : " + user_arr.get(i).id);
+					if (user_arr.get(i).id.equals(e.getMember().getUser().getId()) && !user_arr.get(i).시작확인) {
+//						System.out.println("user_arr.get(i).시작확인 : " + user_arr.get(i).시작확인);
+
 //					System.out.println("여기 안오니...??????@@@@@@@@@@@@@");
-					user_arr.get(i).시작확인 = true;
+						String 출력문 = e.getMember().getUser().getAsMention() + " 시작확인!";
+						sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), 출력문);
+						user_arr.get(i).시작확인 = true;
+					}
 				}
-			}
 //			TextChannel test01 = e.getJDA().getTextChannelsByName("test1", true).get(0);
 //			MessageEmbed testMsgEmbed = new MessageEmbed(channel, channel, channel, null, null, count, null, null, null, null, null, null, null);
+
 			
 		}
-		
-	}
 
+	}
+		
 	public void onGuildVoiceLeave(@Nonnull GuildVoiceLeaveEvent e) {
-		// 길드 보이스 나감.. 이라는데.. 과연!!
-//		System.out.println(e.getMember().getUser().getName());
-//		System.out.println(e.getVoiceState().getChannel().getName());
-		// sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), "음성채팅방 나갈 때
-		// 출력됩니다.");
+		// 음챗 나갈 때 활성화
+
 		String msg = 강제종료(e.getMember().getId());
 		if (!msg.equals("no")) {
-			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), msg);
+			sayMsg(e.getJDA().getTextChannelsByName("출석", true).get(0), msg);
 		}
+//		if (!msg.equals("no")) {
+//			sayMsg(e.getJDA().getTextChannelsByName("test1", true).get(0), msg);
+//		}
+		String 이름 = e.getMember().getUser().getName();
+		del시작확인메세지(이름);
 
 	}
 
@@ -270,6 +285,12 @@ public class TimeCheckListener extends ListenerAdapter {
 		msg.delete().queue();
 	}
 
-
+	boolean isContain(String msg, String name) {
+		if (msg.contains(name)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
