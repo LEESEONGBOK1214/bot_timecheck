@@ -67,9 +67,9 @@ public class TimeCheckcmd {
 		String 유저명 = e.getAuthor().getName();
 		
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
-		
+		System.out.println("TCC > start");
 		for (int i = 0; i < DB.getusers(); i++) { // 중복값 확인
-
+			System.out.println("in for...");
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				System.out.println("===============id검색 성공.");
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
@@ -120,8 +120,7 @@ public class TimeCheckcmd {
 					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMddHH");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
-							+ user_arr.get(i).diff / 1000
-							+ ")";
+							+ user_arr.get(i).diff / 1000 + ")";
 					DB.insert(query);
 				}
 				return;

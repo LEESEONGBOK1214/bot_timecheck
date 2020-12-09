@@ -3,22 +3,37 @@ package Bot_timecheck;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.security.auth.login.LoginException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import listener.TimeCheckListener;
-
 import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
 public class CKBOT {
 	public static void main(String[] args) {
 
-		JDABuilder builder = new JDABuilder(AccountType.BOT);
-		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XvN0Vw.tdcWzyW3SznqW-V9HRLbhgwVGz8"; // 토큰은 여러분의 디스코드 앱의 봇에서 가져옵니다.
-		builder.setToken(token);
-
-		new BotFrame(builder, token);
+		try {
+			JDA jda = JDABuilder.createDefault("NzI1Mzc1MjQ3MjcyMTE2MjY0.XvN0Vw.HUTbVaiyHS4wiZnolskmWhyQhIU").build();
+			jda.addEventListener(new TimeCheckListener());
+		} catch (LoginException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+//		
+//		JDABuilder builder = new JDABuilder(AccountType.BOT);
+//		String token = "NzI1Mzc1MjQ3MjcyMTE2MjY0.XvN0Vw.HUTbVaiyHS4wiZnolskmWhyQhIU"; // 토큰은 여러분의 디스코드 앱의 봇에서 가져옵니다.
+//		builder.setToken(token);
+//		try {
+//			
+//			builder.build();
+//		} catch (LoginException e) {
+//			e.printStackTrace();
+//		}
+		// new BotFrame(builder, token);
 
 //		try {
 //			builder.addEventListeners(new TimeCheckListener());

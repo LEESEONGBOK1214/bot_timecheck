@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -22,13 +21,20 @@ public class TimeCheckListener extends ListenerAdapter {
 
 	boolean 강제종료 = false;
 	ArrayList<Message> 시작확인메세지 = new ArrayList<Message>();
-
-	public void onMessageReceived(MessageReceivedEvent e) {
+	
+	
+	public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent e) {
+		e.toString();
+		
+	}
+	public void onMessageReceived(@Nonnull MessageReceivedEvent e) {
 //		System.out.println("e.getGuild().getName() : " + e.getGuild().getName());
 		Message msg = e.getMessage();
 		String cmd = e.getMessage().getContentRaw();
 		MessageChannel ch = e.getChannel();
-//		System.out.println("입력 : " + cmd);
+//		System.out.println("메세지 : " + msg );
+		System.out.println("채널 : " + ch);
+		System.out.println("입력 : " + cmd);
 		if (cmd.contains("시작확인")) {
 			시작확인메세지.add(msg);
 		}
@@ -46,6 +52,7 @@ public class TimeCheckListener extends ListenerAdapter {
 			}
 		}
 		if (cmd.startsWith("$")) {
+			System.out.println("달러로 시작");
 
 			cmd = cmd.substring(1);
 			switch (cmd) {
@@ -66,7 +73,7 @@ public class TimeCheckListener extends ListenerAdapter {
 				return;
 
 			case "tlwkr":
-			case "시작1": // 시작
+			case "시작": // 시작
 //				System.out.println("시작 진입" + "시작확인보냄 : " + 시작확인보냄);
 //				System.out.println("시작 메세지 개수 : " + 시작확인메세지.size());
 				String 이름 = e.getMember().getUser().getName();

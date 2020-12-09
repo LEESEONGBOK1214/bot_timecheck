@@ -255,7 +255,7 @@ public class OracleDB {
 		ArrayList<String> 유저목록 = new ArrayList<String>();
 		int hour = 현재시간.getHours();
 		//System.out.println(hour);
-		System.out.println("user_arr.size() : " + user_arr.size());
+//		System.out.println("user_arr.size() : " + user_arr.size());
 		int now_users = user_arr.size();
 		String query;
 		if(hour<24 && hour>06) {
@@ -329,7 +329,7 @@ public class OracleDB {
 			sqle.printStackTrace();
 		}
 		
-		System.out.println("return 출력문 : " + 출력문);
+//		System.out.println("return 출력문 : " + 출력문);
 		
 		return 출력문;
 	}
