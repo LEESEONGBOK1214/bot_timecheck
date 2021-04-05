@@ -1,7 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/main/java/Bot_timecheck/CKBOT.java=UTF-8
+encoding//src/main/java/listener/Guild_Voice_Events.java=UTF-8
 encoding//src/main/java/listener/TimeCheckListener.java=UTF-8
 encoding//src/main/java/listener/TimeCheckcmd.java=UTF-8
 encoding//src/main/java/listener/user.java=UTF-8
 encoding//src/main/java/oracleDB/DBConnection.java=UTF-8
 encoding//src/main/java/oracleDB/OracleDB.java=UTF-8
+encoding/build.gradle=UTF-8

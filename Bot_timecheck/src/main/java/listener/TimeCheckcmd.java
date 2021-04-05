@@ -30,7 +30,7 @@ public class TimeCheckcmd  {
 			sayMsg(ch, cmd);
 		}
 	}
-	
+
 	void holy(MessageReceivedEvent e, MessageChannel ch)
 	{
 		if (e.getAuthor().getId().equals("715527843827810355")) {
@@ -39,7 +39,7 @@ public class TimeCheckcmd  {
 			sayMsg(ch, "몰리");
 		}
 	}
-	
+
 	void cmdList(MessageReceivedEvent e, MessageChannel ch) {
 		String 명령어목록[] = { "시작", "끝", "주간시간보기", "일일시간보기", "출석", "총시간", "일시정지 (다시하면 해제)", "ping", "홀리", "산산" };
 		String 출력 = "";
@@ -52,7 +52,7 @@ public class TimeCheckcmd  {
 
 	void total_time(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 유저ID = e.getAuthor().getId();
-		
+
 		for (int i = 0; i < user_arr.size(); i++) {
 			// System.out.println("현재 id : " + user_arr.get(i).id);
 			if (user_arr.get(i).id.equals(유저ID))
@@ -62,20 +62,20 @@ public class TimeCheckcmd  {
       		  }
       	  }
 	}
-	
+
 	void start(ArrayList<user> user_arr, MessageReceivedEvent e) throws Exception{
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
-		
+
 		int 유저번호 = -1; // ArrayList의 현재 유저번호 찾기위함.
-		
+
 		System.out.println("DB.getusers() : " + DB.getusers());
 		System.out.println("user_arr.size() : " + user_arr.size());
 		for (int i = 0; i < DB.getusers() && i < user_arr.size(); i++) { // 중복값 확인
-			
+
 			// user_arr.size()는 DB에서 가져온 값이므로 DB.getusers와 같은 값일것이다.
 			// user_arr과 DB.getusers보다 작으면. 실행.
-			
+
 			if (user_arr.get(i).id.equals(유저ID)) { // ID가 있으면 true 없으면 false
 				//System.out.println("===============id검색 성공.");
 				// 현재 유저와 같은 번호를 찾아서, 진행중이면 메세지 출력 후 종료.
@@ -104,11 +104,11 @@ public class TimeCheckcmd  {
 		user_arr.get(유저번호).시작();
 		String 시작시간 = ToTime(user_arr.get(유저번호).get시작시간());
 		sayMsg(e.getChannel(), "```ini\r\n[" + user_arr.get(유저번호).getname() + "]의 시작 시간\n[" + 시작시간 + "]```");
-		
+
 		// System.out.println("start 마지막.");
 	}
 
-	
+
 
 	// end의 시작
 
@@ -126,8 +126,7 @@ public class TimeCheckcmd  {
 					SimpleDateFormat 시간출력포맷 = new SimpleDateFormat("yyMMddHH");
 					String start_date = 시간출력포맷.format(user_arr.get(i).get시작시간().getTime());
 					String query = "insert into t_record values('" + user_arr.get(i).id + "', '" + start_date + "', "
-							+ user_arr.get(i).diff / 1000
-							+ ")";
+							+ user_arr.get(i).diff / 1000 + ")";
 					DB.insert(query);
 				}
 				return;
@@ -152,7 +151,7 @@ public class TimeCheckcmd  {
 		return retn;
 	}
 	// end of end
-	
+
 
 	int queue(ArrayList<user> user_arr, MessageReceivedEvent e) {
 
@@ -174,7 +173,7 @@ public class TimeCheckcmd  {
 	 	return c;
 	 	//sayMsg(e.getChannel(), "==============진행중인사람==============");
 	}
-	
+
 	void pause(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 유저ID = e.getAuthor().getId();
 		String 유저명 = e.getAuthor().getName();
@@ -189,7 +188,7 @@ public class TimeCheckcmd  {
 		}
 
 	}
-	
+
 	void view_week(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		String 출력문[] = DB.week_time(user_arr.size());
 		출력문[0] += "\n";
@@ -197,14 +196,14 @@ public class TimeCheckcmd  {
 		// sayMsg(e.getChannel(), "\n");
 		sayMsg(e.getChannel(), 출력문[1]);
 	}
-	
+
 	public void view_today_times(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
 		String 출력문 = DB.today_times(user_arr);
 		sayMsg(e.getChannel(), 출력문);
 
 	}
-	
+
 	public void view_today_time(MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
 		String 출력문 = DB.my_time((e.getAuthor().getId()));
@@ -220,16 +219,16 @@ public class TimeCheckcmd  {
 
 		sayMsg(e.getChannel(), DB.getAttendance(query));
 	}
-	
 
-	
-	
+
+
+
 	public void 강제종료하기(ArrayList<user> user_arr, MessageReceivedEvent e, String msg) {
 		for (int i = 0; i < user_arr.size(); i++) {
 			// 느낌표 떼고 그 뒤에거만 왔을것.
 			// ex !이성복 -> 이성복
 			//    이성복          ==     이성복 비교
-			
+
 			user 해당유저 = user_arr.get(i);
 			if (고수인가(e.getMember().getId())) { // 고수이면,
 				 // 강제종료 시키기.
@@ -245,8 +244,8 @@ public class TimeCheckcmd  {
 					해당유저.진행중 = false;
 	//				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
 	//						user_arr.get(i).끝());
-					return ;	
-				}		
+					return ;
+				}
 			}
 		}
 		sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
@@ -257,20 +256,20 @@ public class TimeCheckcmd  {
 		String[] 고수들 = {
 				"221937902093991936", //중원이형
 				"562265706079584256", //창현이형
-				"715536378141868042", //동진이형
+				"569159798919004171", //동진이형
 				"380676589349896193",  //원용이형
 				"262951571053084673" // 테스트용 이성복
 		};
-		
+
 		for(int i=0;i<고수들.length;i++) {
 			if(id.equals(고수들[i])) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 
 	private String ToTime(Date date) {
 		SimpleDateFormat 시간포맷 = new SimpleDateFormat("MM월/dd일/ HH시 :mm분 :ss초");
@@ -287,23 +286,23 @@ public class TimeCheckcmd  {
 		String operation; // 연산자 적용할 변수
 		String op[] = { "+", "-", "*", "/" }; // 플 마 곱 나
 		RandomFunc RF = new RandomFunc();
-		
+
 		A = RF.RandomInt(100);
 		do {
 			B = RF.RandomInt(100);
 		}while(B==0); // B로 나눌 경우를 대비해 B는 0이 아니어야 함.
 		operation = op[RF.RandomInt(4)];
-		
-		출력문 += "문제 : " + A + operation + B; 
+
+		출력문 += "문제 : " + A + operation + B;
 		sayMsg(e.getJDA().getTextChannelsByName("잠수확인", true).get(0), 출력문);
-		
+
 		for(int i=0;i<user_arr.size();i++) {
 			user 해당유저 = user_arr.get(i);
 			if(해당유저.진행중) {
 				해당유저.문제해결중 = true;
 			}
 		}
-		
+
 		switch(operation) {
 		case "+":
 			return A+B;
@@ -317,9 +316,9 @@ public class TimeCheckcmd  {
 			// 기본 값 0. 문제가 제대로 안나왔을 경우.
 			return 0;
 		}
-		
+
 	}
-	
+
 	public void solve_problem(ArrayList<user> user_arr, MessageReceivedEvent e, int 답, String 제출답) {
 		// TODO Auto-generated method stub
 		//System.out.println("답 : " + 답  + "제출답 : " + Integer.parseInt(제출답));
@@ -334,17 +333,17 @@ public class TimeCheckcmd  {
 				}
 			}
 		}
-		
-			
+
+
 	}
-	
+
 
 	public int end_problem(ArrayList<user> user_arr, MessageReceivedEvent e) {
 		// TODO Auto-generated method stub
 		int count = 0;
 		for(int i=0;i<user_arr.size();i++) {
 			user 해당유저 = user_arr.get(i);
-			
+
 			if(해당유저.문제해결중) {
 				// 아직도 문제를 안풀었다고?! 넌 강제종료다.
 				sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0),
@@ -353,17 +352,17 @@ public class TimeCheckcmd  {
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
-	
-	
-	
+
+
+
 	private void sayMsg(MessageChannel channel, String msg) {
 		channel.sendMessage(msg).queue();
 	}
 
-	
+
 
 
 }
