@@ -12,21 +12,21 @@ public class DBConnection
 		Connection conn = null;
 		try {
 //			String user = "timeck"; // timeck <
-//			String pw = "lenope1214"; // 디비접속 비밀번호
+//			String pw = "lenope1214"; // �뵒鍮꾩젒�냽 鍮꾨�踰덊샇
 //			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			 String user = "s1901206";
-		     String pw = "p1901206";
-			 String url = "jdbc:oracle:thin:@net.yju.ac.kr:1521:orcl";
+			 String user = "c##2001376";
+		     String pw = "p2001376";
+			 String url = "jdbc:oracle:thin:@10.30.3.95:1521:orcl";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);
 
-			System.out.println("Database에 연결되었습니다.\n");
+			System.out.println("Database�뿉 �뿰寃곕릺�뿀�뒿�땲�떎.\n");
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB 드라이버 로딩 실패 :" + cnfe.toString());
+			System.out.println("DB �뱶�씪�씠踰� 濡쒕뵫 �떎�뙣 :" + cnfe.toString());
 		} catch (SQLException sqle) {
-			System.out.println("DB 접속실패 : " + sqle.toString());
+			System.out.println("DB �젒�냽�떎�뙣 : " + sqle.toString());
 		} catch (Exception e) {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();
