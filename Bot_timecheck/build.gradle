@@ -31,6 +31,9 @@ dependencies {
     
     // https://mvnrepository.com/artifact/oracle/ojdbc6
 	//compile group: 'oracle', name: 'ojdbc6', version: '11.2.0.3'
+	// https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
+	implementation group: 'com.oracle.database.jdbc', name: 'ojdbc8', version: '21.1.0.0'
+	
     
     // https://mvnrepository.com/artifact/net.dv8tion/JDA
 	compile group: 'net.dv8tion', name: 'JDA', version: '4.2.0_222'

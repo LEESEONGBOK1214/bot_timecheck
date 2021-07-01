@@ -147,25 +147,25 @@ public class TimeCheckListener extends ListenerAdapter {
 					sayMsg(e.getJDA().getTextChannelsByName("강제종료", true).get(0), "이름입력");
 				}
 				return;
-			case "문제내기":
-				
-				if(e.getTextChannel().getName().equals("문제내기"))
-				{
-					if(tcc.queue(user_arr, e) !=0 ) { // 진행중인 사람이 있어야 정상작동.
-						if(답 == 문제없음) { // 출제중이 아니므로 문제를 낸다.
-							답 = tcc.start_problem(user_arr, e); // 답 저장.
-							//System.out.println("start_problem 실행.");
-							//System.out.println("답 : " + 답);
-							return;
-						}else {//문제가 있다면 문제 풀이를 안한 사람 전부 강제 끝 처리.
-							sayMsg(e.getJDA().getTextChannelsByName("문제내기", true).get(0), "현재 제출된 문제가 있습니다.");
-							return;
-						}
-					}
-				}
-				
-				
-				return ;
+//			case "문제내기":
+//				
+//				if(e.getTextChannel().getName().equals("문제내기"))
+//				{
+//					if(tcc.queue(user_arr, e) !=0 ) { // 진행중인 사람이 있어야 정상작동.
+//						if(답 == 문제없음) { // 출제중이 아니므로 문제를 낸다.
+//							답 = tcc.start_problem(user_arr, e); // 답 저장.
+//							//System.out.println("start_problem 실행.");
+//							//System.out.println("답 : " + 답);
+//							return;
+//						}else {//문제가 있다면 문제 풀이를 안한 사람 전부 강제 끝 처리.
+//							sayMsg(e.getJDA().getTextChannelsByName("문제내기", true).get(0), "현재 제출된 문제가 있습니다.");
+//							return;
+//						}
+//					}
+//				}
+//				
+//				
+//				return ;
 			case "테스트":
 				return ;
 			case "DB유저수":

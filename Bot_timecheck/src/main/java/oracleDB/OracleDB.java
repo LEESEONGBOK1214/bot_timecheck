@@ -9,9 +9,6 @@ import java.util.Date;
 
 import listener.user;
 
-
-
-
 public class OracleDB {
 	Connection conn;
 	PreparedStatement pstm;
@@ -29,21 +26,20 @@ public class OracleDB {
 		conn = null;
 		pstm = null;
 		rs = null;
-		
+
 		// select_user(user_arr);
 	}
-
 
 	public int select_user(ArrayList<user> user_arr) {
 		String query = "select * from t_user";
 		try {
 			// System.out.println("count users");
-			
+
 			conn = DBConnection.getConnection();
 			System.out.println("쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			rs = pstm.executeQuery();
-			
+
 			while (rs.next()) {
 				users++;
 				user_arr.add(new user(rs.getString(1), rs.getString(2)));
@@ -53,14 +49,14 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("유저 수 : " + users);
 		// return은 user 수 == count(*)
@@ -69,7 +65,7 @@ public class OracleDB {
 
 	public boolean ck_user(String id) {
 		String query = "select * from t_user where usr_id = " + id;
-		
+
 		try {
 			// System.out.println("ck user");
 
@@ -79,7 +75,6 @@ public class OracleDB {
 			rs = pstm.executeQuery();
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
-
 
 			if (rs.next()) {
 				// System.out.println("해당 id가 있음!");
@@ -93,23 +88,24 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
+
 	public void insert(String query) {
 		System.out.println("DB - insert - 입장\n Query : " + query);
 		try {
 			// System.out.println("start insert");
 			conn = DBConnection.getConnection();
-			//System.out.println("Insert 쿼리 : " + query);
+			// System.out.println("Insert 쿼리 : " + query);
 			pstm = conn.prepareStatement(query);
 			// insert into t_record
 			// values('rec_id'(varchar2), 'rec_date'(varchar2), rec_time(int));
@@ -130,17 +126,16 @@ public class OracleDB {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}// end of insert_user
-
 
 	public long total_time(String id) {
 		String query = "select nvl(sum(rec_time), 0) from t_record where rec_id = " + id;
@@ -160,14 +155,14 @@ public class OracleDB {
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		// long total = Long.parseLong(tot_t);
 		// System.out.println("total : " + total);
@@ -181,27 +176,22 @@ public class OracleDB {
 
 		Date 현재시간 = new Date();
 		int now_hour = 현재시간.getHours();
-		int now_day = 현재시간.getDay();  // 0~6 일~토
-		
-		
-		String query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
-				"from t_record, t_user\r\n" + 
-				"where rec_id = usr_id and\r\n" + 
-				"rec_date between to_char((next_day(sysdate-7, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate, '월요일'),'yyMMdd') || '06'\r\n" + 
-				"group by usr_name\r\n" + 
-				"order by sum(rec_time) desc";
+		int now_day = 현재시간.getDay(); // 0~6 일~토
 
-		if(now_day==1) {
-			if(now_hour<24 && now_hour>06) {
-				query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + 
-					"from t_record, t_user\r\n" + 
-					"where rec_id = usr_id and\r\n" + 
-					"rec_date between to_char((next_day(sysdate-8, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate-2, '월요일'),'yyMMdd') || '06'\r\n" + 
-					"group by usr_name\r\n" + 
-					"order by sum(rec_time) desc";
+		String query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + "from t_record, t_user\r\n"
+				+ "where rec_id = usr_id and\r\n"
+				+ "rec_date between to_char((next_day(sysdate-7, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate, '월요일'),'yyMMdd') || '06'\r\n"
+				+ "group by usr_name\r\n" + "order by sum(rec_time) desc";
+
+		if (now_day == 1) {
+			if (now_hour < 24 && now_hour > 06) {
+				query = "select usr_name, sum(nvl(rec_time, 0))\r\n" + "from t_record, t_user\r\n"
+						+ "where rec_id = usr_id and\r\n"
+						+ "rec_date between to_char((next_day(sysdate-8, '월요일')),'yyMMdd') || '06' and to_char(next_day(sysdate-2, '월요일'),'yyMMdd') || '06'\r\n"
+						+ "group by usr_name\r\n" + "order by sum(rec_time) desc";
 			}
 		}
-		
+
 		int count = 0;
 		try {
 			System.out.println("쿼리 : " + query);
@@ -219,16 +209,15 @@ public class OracleDB {
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		
 
 		System.out.println("us : " + size);
 		String 공부시간문자열 = "";
@@ -238,18 +227,19 @@ public class OracleDB {
 			공부학생문자열 += "없습니다.";
 		} else {
 			공부학생문자열 += 유저명[0];
-			공부시간문자열 += 유저명[0] + "님의 주간시간 : " + 주간시간[0]/3600 + "h" + (주간시간[0]/60)%60 + "m" + 주간시간[0]%60 + "s" + "\n";
+			공부시간문자열 += 유저명[0] + "님의 주간시간 : " + 주간시간[0] / 3600 + "h" + (주간시간[0] / 60) % 60 + "m" + 주간시간[0] % 60 + "s"
+					+ "\n";
 			for (int i = 1; i < count; i++) {
-				long hour = 주간시간[i]/3600;
-				long min = (주간시간[i]/60)%60;
-				long sec = 주간시간[i]%60;
-				
+				long hour = 주간시간[i] / 3600;
+				long min = (주간시간[i] / 60) % 60;
+				long sec = 주간시간[i] % 60;
+
 				공부시간문자열 += 유저명[i] + "님의 주간시간 : " + hour + "h" + min + "m" + sec + "s" + "\n";
-				if(i%5!=0) {
+				if (i % 5 != 0) {
 					공부학생문자열 += ", ";
 				}
 				공부학생문자열 += 유저명[i];
-				if (i % 5 == 4 && i != count-1) {
+				if (i % 5 == 4 && i != count - 1) {
 					공부학생문자열 += "\n";
 				}
 			}
@@ -265,39 +255,31 @@ public class OracleDB {
 
 		return 출력문;
 	}
-	
+
 	public String today_times(ArrayList<user> user_arr) {
 		// TODO Auto-generated method stub
 		Date 현재시간 = new Date();
 		ArrayList<String> 유저목록 = new ArrayList<String>();
 		int hour = 현재시간.getHours();
-		//System.out.println(hour);
+		// System.out.println(hour);
 		int now_users = user_arr.size();
 		String query;
-		if(hour<24 && hour>06) {
-			query = "select usr_name, sum(rec_time)\r\n" + 
-					"from t_record, t_user\r\n" + 
-					"where rec_id = usr_id and\r\n" + 
-					"rec_date between to_number(to_char(sysdate,'yyMMdd')|| '06') and to_number(to_char(sysdate+1, 'yyMMdd') || '06')\r\n" + 
-					"group by usr_name\r\n" + 
-					"order by sum(rec_time) desc";
-		}else {
-			query = "select usr_name, sum(rec_time)\r\n" + 
-					"from t_record, t_user\r\n" + 
-					"where rec_id = usr_id and\r\n" + 
-					"rec_date between to_number(to_char(sysdate-1,'yyMMdd')|| '06') and to_number(to_char(sysdate, 'yyMMdd') || '06')\r\n" + 
-					"group by usr_name\r\n" + 
-					"order by sum(rec_time) desc";
+		if (hour < 24 && hour > 06) {
+			query = "select usr_name, sum(rec_time)\r\n" + "from t_record, t_user\r\n" + "where rec_id = usr_id and\r\n"
+					+ "rec_date between to_number(to_char(sysdate,'yyMMdd')|| '06') and to_number(to_char(sysdate+1, 'yyMMdd') || '06')\r\n"
+					+ "group by usr_name\r\n" + "order by sum(rec_time) desc";
+		} else {
+			query = "select usr_name, sum(rec_time)\r\n" + "from t_record, t_user\r\n" + "where rec_id = usr_id and\r\n"
+					+ "rec_date between to_number(to_char(sysdate-1,'yyMMdd')|| '06') and to_number(to_char(sysdate, 'yyMMdd') || '06')\r\n"
+					+ "group by usr_name\r\n" + "order by sum(rec_time) desc";
 		}
 		// 저녁 12시 지난 후에는 바꿔야함.
-		
-		
-		String 출력문  = ">>>" + (현재시간.getMonth()+1) + "월 " + 현재시간.getDate() + "일" + " 일일시간보기";
+
+		String 출력문 = ">>>" + (현재시간.getMonth() + 1) + "월 " + 현재시간.getDate() + "일" + " 일일시간보기";
 		출력문 += "\n";
-				
-				
-		//System.out.println("현재 users : " + now_users);
-	
+
+		// System.out.println("현재 users : " + now_users);
+
 		try {
 			System.out.println("쿼리 : " + query);
 
@@ -306,51 +288,49 @@ public class OracleDB {
 			rs = pstm.executeQuery();
 
 			int count = 0;
-			
+
 			while (rs.next()) {
 				String name = rs.getString(1);
 //				System.out.println(유저명[count]);
 				int time = rs.getInt(2);
 				출력문 += (name + " : ");
-				출력문 +=   (int)time/3600 + "h " +
-						(time/60)%60 + "m " +
-						 time%60 + "s\n";
+				출력문 += (int) time / 3600 + "h " + (time / 60) % 60 + "m " + time % 60 + "s\n";
 				유저목록.add(name);
-				//count ++;
-				//System.out.println("데이터 읽어들이는중..");
+				// count ++;
+				// System.out.println("데이터 읽어들이는중..");
 			}
-			if(유저목록.size() == 0) {
+			if (유저목록.size() == 0) {
 				return "> 아무도없음.";
 			}
-			
+
 			// 출석을 안한 학생이 있음. 따로 0초 추가해주기.
-			
-			//System.out.println("유저목록.size() : " + 유저목록.size());
+
+			// System.out.println("유저목록.size() : " + 유저목록.size());
 			if (유저목록.size() < now_users) {
-				for(int i=0;i < now_users; i++) {  // 0 ~ 15번까지 돌면서 유저이름 훑어.
-					for(int j=0; j<유저목록.size();j++) { // 0 ~ size만큼 돌면서 
-						if(j==유저목록.size()-1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이 안되면, 추가.
+				for (int i = 0; i < now_users; i++) { // 0 ~ 15번까지 돌면서 유저이름 훑어.
+					for (int j = 0; j < 유저목록.size(); j++) { // 0 ~ size만큼 돌면서
+						if (j == 유저목록.size() - 1 && !유저목록.get(j).equals(user_arr.get(i).getname())) { // 마지막 까지 왔는데 매칭이
+																										// 안되면, 추가.
 							유저목록.add(user_arr.get(i).getname());
 							출력문 += user_arr.get(i).getname() + " : 0s\n";
-						}else if(유저목록.get(j).equals(user_arr.get(i).getname())) {
+						} else if (유저목록.get(j).equals(user_arr.get(i).getname())) {
 							break;
 						}
-					}// for j
-				}// for i
+					} // for j
+				} // for i
 			}
 
-			
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return 출력문;
@@ -417,14 +397,14 @@ public class OracleDB {
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				conn.close();
 				pstm.close();
 				rs.close();
-			    } catch (SQLException e) {
-			    	e.printStackTrace();
-			    }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 출력문;
 	}
@@ -435,7 +415,7 @@ public class OracleDB {
 		String sql = "select ";
 		return null;
 	}
-	
+
 }
 /*
  * public void test() { // Connection conn = null; // DB연결된 상태(세션)을 담은 객체 //

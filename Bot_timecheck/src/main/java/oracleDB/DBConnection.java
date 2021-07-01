@@ -8,15 +8,22 @@ public class DBConnection
 {
     public static Connection dbConn;
     
+    public DBConnection() {
+    	//TODO 싱글톤으로 변경 해주어야 함.
+    }
+    
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
 //			String user = "timeck"; // timeck <
 //			String pw = "lenope1214"; // �뵒鍮꾩젒�냽 鍮꾨�踰덊샇
 //			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			 String user = "c##2001376";
-		     String pw = "p2001376";
-			 String url = "jdbc:oracle:thin:@10.30.3.95:1521:orcl";
+//			 String user = "c##2001376";
+//		     String pw = "p2001376";
+//			 String url = "jdbc:oracle:thin:@10.30.3.95:1521:orcl";
+			String user = "dblab";
+		     String pw = "1234";
+			 String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);

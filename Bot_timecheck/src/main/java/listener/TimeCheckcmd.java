@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import Functions.RandomFunc;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -279,45 +278,39 @@ public class TimeCheckcmd  {
 		return 시간포맷.format(date);
 	}
 
-	public int start_problem(ArrayList<user> user_arr, MessageReceivedEvent e) {
-		// TODO Auto-generated method stub
-		int A, B; // 문제 앞 뒤 변수  =>  problem = A op B
-		String 출력문 = ""; // 문제출력 할 문자열
-		String operation; // 연산자 적용할 변수
-		String op[] = { "+", "-", "*", "/" }; // 플 마 곱 나
-		RandomFunc RF = new RandomFunc();
-
-		A = RF.RandomInt(100);
-		do {
-			B = RF.RandomInt(100);
-		}while(B==0); // B로 나눌 경우를 대비해 B는 0이 아니어야 함.
-		operation = op[RF.RandomInt(4)];
-
-		출력문 += "문제 : " + A + operation + B;
-		sayMsg(e.getJDA().getTextChannelsByName("잠수확인", true).get(0), 출력문);
-
-		for(int i=0;i<user_arr.size();i++) {
-			user 해당유저 = user_arr.get(i);
-			if(해당유저.진행중) {
-				해당유저.문제해결중 = true;
-			}
-		}
-
-		switch(operation) {
-		case "+":
-			return A+B;
-		case "-":
-			return A-B;
-		case "*":
-			return A*B;
-		case "/":
-			return A/B;
-		default :
-			// 기본 값 0. 문제가 제대로 안나왔을 경우.
-			return 0;
-		}
-
-	}
+//	public int start_problem(ArrayList<user> user_arr, MessageReceivedEvent e) {
+//		// TODO Auto-generated method stub
+//		int A, B; // 문제 앞 뒤 변수  =>  problem = A op B
+//		String 출력문 = ""; // 문제출력 할 문자열
+//		String operation; // 연산자 적용할 변수
+//		String op[] = { "+", "-", "*", "/" }; // 플 마 곱 나
+//
+//
+//		출력문 += "문제 : " + A + operation + B;
+//		sayMsg(e.getJDA().getTextChannelsByName("잠수확인", true).get(0), 출력문);
+//
+//		for(int i=0;i<user_arr.size();i++) {
+//			user 해당유저 = user_arr.get(i);
+//			if(해당유저.진행중) {
+//				해당유저.문제해결중 = true;
+//			}
+//		}
+//
+//		switch(operation) {
+//		case "+":
+//			return A+B;
+//		case "-":
+//			return A-B;
+//		case "*":
+//			return A*B;
+//		case "/":
+//			return A/B;
+//		default :
+//			// 기본 값 0. 문제가 제대로 안나왔을 경우.
+//			return 0;
+//		}
+//
+//	}
 
 	public void solve_problem(ArrayList<user> user_arr, MessageReceivedEvent e, int 답, String 제출답) {
 		// TODO Auto-generated method stub

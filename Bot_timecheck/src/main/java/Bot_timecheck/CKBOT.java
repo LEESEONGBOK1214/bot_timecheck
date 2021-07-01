@@ -7,7 +7,6 @@ import javax.security.auth.login.LoginException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import Functions.RandomFunc;
 import listener.TimeCheckListener;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
